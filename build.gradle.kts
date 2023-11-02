@@ -1,10 +1,11 @@
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.15.0"
+    id("com.adarshr.test-logger") version "3.2.0"
 }
 
 group = "org.jetbrains.research.anticopypasterpython"
-version = "1.0-SNAPSHOT"
+version = "0.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

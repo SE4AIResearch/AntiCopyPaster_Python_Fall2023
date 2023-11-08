@@ -1,6 +1,6 @@
 package org.jetbrains.research.anticopypasterpython.models;
 
-import org.jetbrains.research.anticopypaster.metrics.features.FeaturesVector;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 import org.pmml4s.model.Model;
 
 import java.util.Arrays;

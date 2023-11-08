@@ -1,4 +1,4 @@
-package org.jetbrains.research.anticopypaster.ide;
+package org.jetbrains.research.anticopypasterpython.ide;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;

@@ -1,9 +1,9 @@
-package org.jetbrains.research.anticopypaster.config.credentials;
+package org.jetbrains.research.anticopypasterpython.config.credentials;
 
 import com.intellij.icons.AllIcons;
 
 import javax.swing.*;
-import static org.jetbrains.research.anticopypaster.config.ProjectSettingsComponent.createLinkListener;
+import static org.jetbrains.research.anticopypasterpython.config.ProjectSettingsComponent.createLinkListener;
 
 public class CredentialsComponent {
     private JPasswordField passwordField;

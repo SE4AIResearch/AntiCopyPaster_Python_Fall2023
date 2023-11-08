@@ -7,8 +7,8 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 
 import com.intellij.ui.JBIntSpinner;
-import org.jetbrains.research.anticopypaster.config.advanced.AdvancedProjectSettingsDialogWrapper;
-import org.jetbrains.research.anticopypaster.config.credentials.CredentialsDialogWrapper;
+import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsDialogWrapper;
+import org.jetbrains.research.anticopypasterpython.config.credentials.CredentialsDialogWrapper;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

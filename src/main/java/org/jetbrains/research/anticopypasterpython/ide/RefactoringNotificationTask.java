@@ -13,15 +13,15 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
 import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
-import org.jetbrains.research.anticopypaster.AntiCopyPasterBundle;
-import org.jetbrains.research.anticopypaster.checkers.FragmentCorrectnessChecker;
-import org.jetbrains.research.anticopypaster.config.ProjectSettingsState;
-import org.jetbrains.research.anticopypaster.models.PredictionModel;
-import org.jetbrains.research.anticopypaster.models.UserSettingsModel;
-import org.jetbrains.research.anticopypaster.statistics.AntiCopyPasterUsageStatistics;
-import org.jetbrains.research.anticopypaster.utils.MetricsGatherer;
-import org.jetbrains.research.anticopypaster.metrics.MetricCalculator;
-import org.jetbrains.research.anticopypaster.metrics.features.FeaturesVector;
+import org.jetbrains.research.anticopypasterpython.AntiCopyPasterBundle;
+import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
+import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
+import org.jetbrains.research.anticopypasterpython.models.PredictionModel;
+import org.jetbrains.research.anticopypasterpython.models.UserSettingsModel;
+import org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterUsageStatistics;
+import org.jetbrains.research.anticopypasterpython.utils.MetricsGatherer;
+import org.jetbrains.research.anticopypasterpython.metrics.MetricCalculator;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.intellij.refactoring.extractMethod.ExtractMethodHandler.getProcessor;
-import static org.jetbrains.research.anticopypaster.utils.PsiUtil.*;
+import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
 /**
  * Shows a notification about discovered Extract Method refactoring opportunity.

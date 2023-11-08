@@ -15,16 +15,16 @@ import com.intellij.psi.PsiMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
-import org.jetbrains.research.anticopypaster.config.ProjectSettingsState;
-import org.jetbrains.research.anticopypaster.statistics.AntiCopyPasterUsageStatistics;
+import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
+import org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterUsageStatistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Timer;
 
-import static org.jetbrains.research.anticopypaster.utils.PsiUtil.findMethodByOffset;
-import static org.jetbrains.research.anticopypaster.utils.PsiUtil.getCountOfCodeLines;
+import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.findMethodByOffset;
+import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.getCountOfCodeLines;
 
 /**
  * Handles any copy-paste action and checks if the pasted code fragment could be extracted into a separate method.

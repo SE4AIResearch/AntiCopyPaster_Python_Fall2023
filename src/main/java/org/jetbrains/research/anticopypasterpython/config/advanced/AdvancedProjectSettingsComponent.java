@@ -7,7 +7,7 @@ import com.intellij.util.ui.JBUI;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import static org.jetbrains.research.anticopypaster.config.ProjectSettingsComponent.createLinkListener;
+import static org.jetbrains.research.anticopypasterpython.config.ProjectSettingsComponent.createLinkListener;
 import java.util.EnumMap;
 
 public class AdvancedProjectSettingsComponent {

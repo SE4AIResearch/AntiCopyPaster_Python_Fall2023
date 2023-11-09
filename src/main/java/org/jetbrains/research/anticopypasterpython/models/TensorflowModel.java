@@ -4,7 +4,7 @@
  * compile. It's been left here to allow for adding a feature to swap between models
  * in the future.
  */
-//package org.jetbrains.research.anticopypasterpython.models;
+//package org.jetbrains.research.anticopypaster.models;
 //
 //import com.intellij.openapi.application.PathManager;
 //import com.intellij.openapi.diagnostic.Logger;

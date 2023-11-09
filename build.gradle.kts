@@ -1,11 +1,11 @@
 plugins {
-    id("java")
+    java
     id("org.jetbrains.intellij") version "1.15.0"
     id("com.adarshr.test-logger") version "3.2.0"
 }
 
-group = "org.jetbrains.research.anticopypasterpython"
-version = "0.1"
+group = "org.jetbrains.research.anticopypaster"
+version = "2023.2-2.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -22,7 +22,15 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("org.pmml4s:pmml4s_3:1.0.1")
     implementation("org.mongodb:mongodb-driver-sync:4.10.1")
+    /**
+     * This file is commented out as it uses the TensorFlow API. By removing that dependency,
+     * the plugin will be a fifth of the size and much more lightweight, but this won't
+     * compile. It's been left here to allow for adding a feature to swap between models
+     * in the future.
+     */
+    // implementation("org.tensorflow:tensorflow:1.15.0")
 
+    // Test dependencies
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
@@ -31,34 +39,25 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:5.4.0")
 }
 
+fun properties(key: String) = project.findProperty(key).toString()
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.2.3")
-    type.set("PC")
-    plugins.set(listOf("PythonCore"))
-    downloadSources.set(false)
+    version.set(properties("platformVersion"))
+    type.set(properties("platformType"))
+    downloadSources.set(properties("platformDownloadSources").toBoolean())
+    updateSinceUntilBuild.set(true)
+    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 }
 
 tasks {
-    // Set the JVM compatibility versions
-    buildSearchableOptions {
-        enabled = false
+    withType<org.jetbrains.intellij.tasks.BuildSearchableOptionsTask>()
+            .forEach { it.enabled = false }
+    runIde {
+        maxHeapSize = "1g"
     }
-
-    patchPluginXml {
-        sinceBuild.set("222")
-        untilBuild.set("232.*")
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+    //test task
+    test {
+        useJUnitPlatform()
     }
 }
+

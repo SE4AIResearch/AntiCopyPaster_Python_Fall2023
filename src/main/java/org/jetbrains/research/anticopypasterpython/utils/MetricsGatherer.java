@@ -9,8 +9,8 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.jetbrains.research.anticopypaster.metrics.MetricCalculator;
-import org.jetbrains.research.anticopypaster.metrics.features.FeaturesVector;
+import org.jetbrains.research.anticopypasterpython.metrics.MetricCalculator;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 
 import java.util.ArrayList;
 import java.util.Collection;

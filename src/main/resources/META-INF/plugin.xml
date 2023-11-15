@@ -28,3 +28,23 @@
                 implementation="org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterTelemetry"/>
     </extensions>
 </idea-plugin>
+=======
+    <copyPastePreProcessor
+            implementation="org.jetbrains.research.anticopypaster.ide.AntiCopyPastePreProcessor"/>
+    <notificationGroup
+            id="Extract Method suggestion"
+            displayType="BALLOON"/>
+    <projectConfigurable
+            parentId="tools"
+            instance="org.jetbrains.research.anticopypaster.config.ProjectSettingsConfigurable"
+            id="org.jetbrains.research.anticopypaster.config.ProjectSettingsConfigurable"
+            displayName="AntiCopyPaster"/>
+    <postStartupActivity
+            implementation="org.jetbrains.research.anticopypaster.statistics.AntiCopyPasterTelemetry"/>
+    <actions>
+        <action id="org.intellij.sdk.pycharm.PopupDialogAction" class="org.intellij.sdk.pycharm.PopupDialogAction"
+                text="Pop Dialog Action" description="Test File">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>

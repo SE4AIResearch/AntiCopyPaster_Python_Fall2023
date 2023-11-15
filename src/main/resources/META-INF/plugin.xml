@@ -1,50 +1,31 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
-<idea-plugin>
-    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>org.jetbrains.research.anticopypasterpython</id>
+<idea-plugin url="https://github.com/JetBrains-Research/anti-copy-paster">
+    <id>org.jetbrains.research.anticopypaster</id>
+    <name>AntiCopyPaster</name>
+    <vendor>JetBrains</vendor>
+    <version>2023.2-2.0</version>
 
-    <!-- Public plugin name should be written in Title Case.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>AntiCopyPasterPython</name>
-
-    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
-
-    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Tracks the copying and pasting actions and suggests extracting duplicates into a new method. Based on imbalanced-pruned experiment. Ported to work with Python and Pycharm.
-  ]]></description>
+    Tracks the copying and pasting actions and suggests extracting duplicates into a new method. Based on imbalanced-pruned experiment.
+    ]]></description>
 
-    <!-- Product and plugin compatibility requirements.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.python</depends>
+    <depends>com.intellij.modules.python-core-capable</depends>
+    <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
 
-    <!-- Extension points defined by the plugin.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
-
+        <copyPastePreProcessor
+                implementation="org.jetbrains.research.anticopypasterpython.ide.AntiCopyPastePreProcessor"/>
+        <notificationGroup
+                id="Extract Method suggestion"
+                displayType="BALLOON"/>
+        <projectConfigurable
+                parentId="tools"
+                instance="org.jetbrains.research.anticopypasterpython.config.ProjectSettingsConfigurable"
+                id="org.jetbrains.research.anticopypasterpython.config.ProjectSettingsConfigurable"
+                displayName="AntiCopyPaster"/>
+        <postStartupActivity
+                implementation="org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterTelemetry"/>
     </extensions>
-    <copyPastePreProcessor
-            implementation="org.jetbrains.research.anticopypaster.ide.AntiCopyPastePreProcessor"/>
-    <notificationGroup
-            id="Extract Method suggestion"
-            displayType="BALLOON"/>
-    <projectConfigurable
-            parentId="tools"
-            instance="org.jetbrains.research.anticopypaster.config.ProjectSettingsConfigurable"
-            id="org.jetbrains.research.anticopypaster.config.ProjectSettingsConfigurable"
-            displayName="AntiCopyPaster"/>
-    <postStartupActivity
-            implementation="org.jetbrains.research.anticopypaster.statistics.AntiCopyPasterTelemetry"/>
-    <actions>
-        <action id="org.intellij.sdk.pycharm.PopupDialogAction" class="org.intellij.sdk.pycharm.PopupDialogAction"
-                text="Pop Dialog Action" description="Test File">
-            <add-to-group group-id="ToolsMenu" anchor="first"/>
-        </action>
-    </actions>
 </idea-plugin>

@@ -15,7 +15,7 @@ public class KeywordsMetrics extends Flag{
     }
 
     /**
-     * Keywords uses features index 16 to 77, according to this scheme:
+     * Keyword uses features index 16 to 77, according to this scheme:
          * Even indices: Total keywords
          * (DEFAULT) Odd indices: Keyword density
          * Each even-odd pair of indices corresponds to one Java keyword.

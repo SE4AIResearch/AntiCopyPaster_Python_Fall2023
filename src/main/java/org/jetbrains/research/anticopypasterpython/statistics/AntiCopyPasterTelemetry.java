@@ -25,12 +25,12 @@ import kotlin.coroutines.Continuation;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.research.anticopypaster.config.ProjectSettingsState;
+import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.intellij.remoteServer.util.CloudConfigurationUtil.createCredentialAttributes;
-import static org.jetbrains.research.anticopypaster.statistics.AntiCopyPasterUsageStatistics.TRANSMISSION_INTERVAL;
+import static org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterUsageStatistics.TRANSMISSION_INTERVAL;
 
 public class AntiCopyPasterTelemetry implements ProjectActivity {
 

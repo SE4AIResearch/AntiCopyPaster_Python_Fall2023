@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 
-import org.jetbrains.research.anticopypasterpython.AntiCopyPasterBundle;
+import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class CredentialsDialogWrapper extends DialogWrapper {
         super(true);
         this.project = project;
 
-        setTitle(AntiCopyPasterBundle.message("settings.credentials.title"));
+        setTitle(AntiCopyPasterPythonBundle.message("settings.credentials.title"));
         setResizable(true);
 
         init();

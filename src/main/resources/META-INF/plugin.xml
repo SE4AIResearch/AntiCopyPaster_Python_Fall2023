@@ -28,7 +28,6 @@
                 implementation="org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterTelemetry"/>
     </extensions>
 </idea-plugin>
-=======
     <copyPastePreProcessor
             implementation="org.jetbrains.research.anticopypaster.ide.AntiCopyPastePreProcessor"/>
     <notificationGroup

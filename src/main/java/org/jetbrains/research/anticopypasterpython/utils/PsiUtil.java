@@ -1,7 +1,9 @@
 package org.jetbrains.research.anticopypasterpython.utils;
 
+
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.ide.highlighter.JavaFileType;
+
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -22,7 +24,8 @@ import com.jetbrains.python.psi.PyParameter;
 import com.jetbrains.python.psi.PyParameterList;
 import com.jetbrains.python.psi.PyExpression;
 import com.jetbrains.python.psi.PyElement;
-
+import com.jetbrains.python.psi.types.PyType;
+import com.jetbrains.python.highlighting.PyHighlighter;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -102,7 +105,7 @@ public class PsiUtil {
             if (i != 0) {
                 out.append(',');
             }
-            final PsiType parameterType = parameters[i].getType();
+            final PyType parameterType = parameters[i].getType();
             final String parameterTypeText = parameterType.getPresentableText();
             out.append(parameterTypeText);
         }

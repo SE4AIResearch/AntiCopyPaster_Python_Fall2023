@@ -1,4 +1,4 @@
-package org.jetbrains.research.anticopypaster.anticopypasterpython.features;
+package org.jetbrains.research.anticopypasterpython.metrics.features;
 
 public enum Feature {
     //Meta-Features

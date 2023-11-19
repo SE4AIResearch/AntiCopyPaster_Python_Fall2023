@@ -1,8 +1,8 @@
 package org.jetbrains.research.anticopypasterpython.utils;
 
 import com.intellij.openapi.project.Project;
-import org.jetbrains.research.anticopypaster.metrics.features.Feature;
-import org.jetbrains.research.anticopypaster.metrics.features.FeaturesVector;
+import org.jetbrains.research.anticopypasterpython.metrics.features.Feature;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 
 import java.io.FileWriter;
 import java.io.IOException;

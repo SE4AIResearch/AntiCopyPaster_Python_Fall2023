@@ -1,12 +1,12 @@
 package org.jetbrains.research.anticopypasterpython.utils;
 
 import com.intellij.openapi.project.Project;
-import org.jetbrains.research.anticopypaster.config.ProjectSettingsState;
-import org.jetbrains.research.anticopypaster.metrics.features.Feature;
-import org.jetbrains.research.anticopypaster.metrics.features.FeaturesVector;
+import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
+import org.jetbrains.research.anticopypasterpython.metrics.features.Feature;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 
 import java.util.List;
-import org.jetbrains.research.anticopypaster.config.advanced.AdvancedProjectSettingsComponent.JavaKeywords;
+import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsComponent.JavaKeywords;
 
 public class KeywordsMetrics extends Flag{
 

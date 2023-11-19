@@ -14,7 +14,7 @@ import java.util.EnumMap;
 
 @Service(Service.Level.PROJECT)
 @State(
-        name = "org.jetbrains.research.anticopypaster.config.ProjectSettingsState",
+        name = "org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState",
         storages = @Storage("anticopypaster-plugin.xml")
 )
 public final class ProjectSettingsState implements PersistentStateComponent<ProjectSettingsState> {

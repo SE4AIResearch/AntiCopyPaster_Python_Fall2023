@@ -8,16 +8,16 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.research.anticopypaster.metrics.features.Feature;
-import org.jetbrains.research.anticopypaster.metrics.features.FeatureItem;
-import org.jetbrains.research.anticopypaster.metrics.features.FeaturesVector;
-import org.jetbrains.research.anticopypaster.metrics.utils.MemberSets;
+import org.jetbrains.research.anticopypasterpython.metrics.features.Feature;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeatureItem;
+import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
+import org.jetbrains.research.anticopypasterpython.metrics.utils.MemberSets;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static org.jetbrains.research.anticopypaster.metrics.utils.DepthAnalyzer.getNestingArea;
+import static org.jetbrains.research.anticopypasterpython.metrics.utils.DepthAnalyzer.getNestingArea;
 
 public class MetricCalculator {
     private final String statementsStr;

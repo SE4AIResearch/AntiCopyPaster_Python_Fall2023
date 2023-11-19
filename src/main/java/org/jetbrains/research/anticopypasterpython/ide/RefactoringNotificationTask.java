@@ -13,7 +13,7 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
 import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
-import org.jetbrains.research.anticopypasterpython.AntiCopyPasterBundle;
+import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
 import org.jetbrains.research.anticopypasterpython.models.PredictionModel;
@@ -122,13 +122,13 @@ public class RefactoringNotificationTask extends TimerTask {
                         } catch(IOException ioe) { ioe.printStackTrace(); }
                         settingsModel.logMetrics(logFilePath);
                     }
-                    event.setReasonToExtract(AntiCopyPasterBundle.message(
+                    event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                             "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
 
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
                         notify(event.getProject(),
-                                AntiCopyPasterBundle.message(
+                                AntiCopyPasterPythonBundle.message(
                                         "extract.method.refactoring.is.available"),
                                 getRunnableToShowSuggestionDialog(event)
                         );
@@ -163,7 +163,7 @@ public class RefactoringNotificationTask extends TimerTask {
         return () -> {
             String message = event.getReasonToExtract();
             if (message.isEmpty()) {
-                message = AntiCopyPasterBundle.message("extract.method.to.simplify.logic.of.enclosing.method");
+                message = AntiCopyPasterPythonBundle.message("extract.method.to.simplify.logic.of.enclosing.method");
             }
 
             int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
@@ -171,7 +171,7 @@ public class RefactoringNotificationTask extends TimerTask {
 
             int result =
                     Messages.showOkCancelDialog(message,
-                            AntiCopyPasterBundle.message("anticopypaster.recommendation.dialog.name"),
+                            AntiCopyPasterPythonBundle.message("anticopypaster.recommendation.dialog.name"),
                             CommonBundle.getOkButtonText(),
                             CommonBundle.getCancelButtonText(),
                             Messages.getInformationIcon());
@@ -193,7 +193,7 @@ public class RefactoringNotificationTask extends TimerTask {
     public void notify(Project project, String content, Runnable callback) {
         final Notification notification = notificationGroup.createNotification(content, NotificationType.INFORMATION);
         notification.addAction(NotificationAction.createSimple(
-                AntiCopyPasterBundle.message("anticopypaster.recommendation.notification.action"),
+                AntiCopyPasterPythonBundle.message("anticopypaster.recommendation.notification.action"),
                 callback));
         notification.notify(project);
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();

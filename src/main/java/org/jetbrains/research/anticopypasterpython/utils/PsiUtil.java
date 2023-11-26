@@ -1,8 +1,6 @@
 package org.jetbrains.research.anticopypasterpython.utils;
 
-
-import com.intellij.codeInsight.CodeInsightUtil;
-import com.intellij.ide.highlighter.JavaFileType;
+//import com.intellij.codeInsight.CodeInsightUtil;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
@@ -13,8 +11,8 @@ import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.refactoring.IntroduceVariableUtil;
-import com.intellij.util.CommonJavaRefactoringUtil;
+//import com.intellij.refactoring.IntroduceVariableUtil;
+//import com.intellij.util.CommonJavaRefactoringUtil;
 import com.jetbrains.python.psi.PyFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +23,9 @@ import com.jetbrains.python.psi.PyParameterList;
 import com.jetbrains.python.psi.PyExpression;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.types.PyType;
-import com.jetbrains.python.highlighting.PyHighlighter;
+
+
+import com.jetbrains.python.PythonFileType;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -52,7 +52,7 @@ public class PsiUtil {
                     if (content != null) {
                         PsiFile psiFileBeforeRevision =
                                 PsiFileFactory.getInstance(fileWithLocalChanges.getProject()).createFileFromText("tmp",
-                                        JavaFileType.INSTANCE,
+                                        PythonFileType.INSTANCE,
                                         content);
                         PsiElement[] children = psiFileBeforeRevision.getChildren();
                         for (PsiElement element : children) {
@@ -115,7 +115,9 @@ public class PsiUtil {
 
     public static PyFunction findMethodByOffset(PsiFile psiFile, int offset) {
         PsiElement element = psiFile.findElementAt(offset);
+
         return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
+
     }
 
     public static PyElement[] getElements(@NotNull Project project, @NotNull PsiFile file,

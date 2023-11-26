@@ -4,9 +4,9 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiCodeBlock;
+//import com.intellij.psi.PsiCodeBlock;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+import com.jetbrains.python.psi.PyFunction;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,7 @@ public final class DuplicatesInspection {
      */
     public InspectionResult resolve(PsiFile file, final String code) {
         final List<String> tokensOfPastedCode = getTokens(code);
-        @NotNull Collection<PsiMethod> methods = PsiTreeUtil.findChildrenOfType(file, PsiMethod.class);
+        @NotNull Collection<PyFunction> methods = PsiTreeUtil.findChildrenOfType(file, PyFunction.class);
         final List<DuplicateResult> results = methods.stream()
                 .map(method -> new DuplicateResultComputable(code, method, tokensOfPastedCode))
                 .map(computable -> pool.submit(() -> ApplicationManager.getApplication().runReadAction(computable)))
@@ -53,10 +53,10 @@ public final class DuplicatesInspection {
     }
 
     public static class DuplicateResult {
-        public PsiMethod method;
+        public PyFunction method;
         public double threshold;
 
-        public DuplicateResult(PsiMethod method, double threshold) {
+        public DuplicateResult(PyFunction method, double threshold) {
             this.method = method;
             this.threshold = threshold;
         }
@@ -76,10 +76,10 @@ public final class DuplicatesInspection {
 
     private static class DuplicateResultComputable implements Computable<DuplicateResult> {
         private final String code;
-        private final PsiMethod psiMethod;
+        private final PyFunction psiMethod;
         private final List<String> tokensOfPastedCode;
 
-        private DuplicateResultComputable(String code, PsiMethod psiMethod, List<String> tokensOfPastedCode) {
+        private DuplicateResultComputable(String code, PyFunction psiMethod, List<String> tokensOfPastedCode) {
             this.code = code;
             this.psiMethod = psiMethod;
             this.tokensOfPastedCode = tokensOfPastedCode;

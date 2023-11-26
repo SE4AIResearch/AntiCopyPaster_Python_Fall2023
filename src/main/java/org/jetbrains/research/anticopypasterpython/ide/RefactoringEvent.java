@@ -3,7 +3,9 @@ package org.jetbrains.research.anticopypasterpython.ide;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+
 //import com.intellij.psi.PsiMethod;
+
 import com.jetbrains.python.psi.PyFunction;
 
 /**

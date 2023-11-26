@@ -1,11 +1,11 @@
 package org.jetbrains.research.anticopypasterpython.utils;
 
-import com.intellij.ide.highlighter.JavaFileType;
+import com.jetbrains.python.PythonFileType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-
+import com.jetbrains.python.psi.PyFunction;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -53,7 +53,7 @@ public class MetricsGatherer {
         ApplicationManager.getApplication().runReadAction(() -> {
             // Gets all Java files from the Project
             vfCollectionWrapper.vfCollection = FileTypeIndex.getFiles(
-                    JavaFileType.INSTANCE,
+                    PythonFileType.INSTANCE,
                     GlobalSearchScope.projectScope(project));
         });
         Collection<VirtualFile> vfCollection = vfCollectionWrapper.vfCollection;
@@ -76,14 +76,14 @@ public class MetricsGatherer {
             // PsiTree's can't be accessed outside a read action, or it
             // can cause race conditions.
             var psiMethodWrapper = new Object() {
-                Collection<PsiMethod> psiMethods = null;
+                Collection<PyFunction> psiMethods = null;
             };
             ApplicationManager.getApplication().runReadAction(() -> {
-                psiMethodWrapper.psiMethods = PsiTreeUtil.findChildrenOfType(psiFile, PsiMethod.class);
+                psiMethodWrapper.psiMethods = PsiTreeUtil.findChildrenOfType(psiFile, PyFunction.class);
             });
 
-            Collection<PsiMethod> psiMethods = psiMethodWrapper.psiMethods;
-            for (PsiMethod method : psiMethods) {
+            Collection<PyFunction> psiMethods = psiMethodWrapper.psiMethods;
+            for (PyFunction method : psiMethods) {
                 int startLine = PsiUtil.getNumberOfLine(psiFile, method.getTextRange().getStartOffset());
                 int endLine = PsiUtil.getNumberOfLine(psiFile, method.getTextRange().getEndOffset());
 

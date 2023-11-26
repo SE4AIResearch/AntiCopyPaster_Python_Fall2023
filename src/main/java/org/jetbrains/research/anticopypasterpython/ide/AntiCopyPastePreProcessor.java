@@ -11,7 +11,7 @@ import com.intellij.openapi.editor.RawText;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+import com.jetbrains.python.psi.PyFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
@@ -76,7 +76,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         DataContext dataContext = DataManager.getInstance().getDataContext(editor.getContentComponent());
         @Nullable Caret caret = CommonDataKeys.CARET.getData(dataContext);
         int offset = caret == null ? 0 : caret.getOffset();
-        PsiMethod destinationMethod = findMethodByOffset(file, offset);
+        PyFunction destinationMethod = findMethodByOffset(file, offset);
 
         // find number of code fragments considered as duplicated
         DuplicatesInspection.InspectionResult result = inspection.resolve(file, text);

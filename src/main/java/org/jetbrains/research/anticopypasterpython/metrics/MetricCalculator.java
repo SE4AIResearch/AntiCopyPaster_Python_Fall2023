@@ -3,8 +3,8 @@ package org.jetbrains.research.anticopypasterpython.metrics;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiIdentifier;
-import com.intellij.psi.PsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.jetbrains.python.psi.PyFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,13 +21,13 @@ import static org.jetbrains.research.anticopypasterpython.metrics.utils.DepthAna
 
 public class MetricCalculator {
     private final String statementsStr;
-    private final PsiMethod method;
+    private final PyFunction method;
 
     private final int beginLine;
     private final int endLine;
     private final FeaturesVector featuresVector;
 
-    public MetricCalculator(PsiMethod dummyPsiMethod, String code, int beginLine, int endLine) {
+    public MetricCalculator(PyFunction dummyPsiMethod, String code, int beginLine, int endLine) {
         this.method = dummyPsiMethod;
         this.statementsStr = code;
         this.beginLine = beginLine;
@@ -36,7 +36,7 @@ public class MetricCalculator {
         computeFeatureVector();
     }
 
-    public static void writeFeaturesToFile(PsiMethod dummyPsiMethod, String code,
+    public static void writeFeaturesToFile(PyFunction dummyPsiMethod, String code,
                                            int beginLine, int endLine, FileWriter fileWriter) throws IOException {
         MetricCalculator metricCalculator =
                 new MetricCalculator(dummyPsiMethod, code, beginLine, endLine);

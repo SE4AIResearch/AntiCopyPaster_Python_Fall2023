@@ -9,7 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+import com.jetbrains.python.psi.PyFunction;
 import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
 import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
@@ -215,7 +215,7 @@ public class RefactoringNotificationTask extends TimerTask {
      */
     private FeaturesVector calculateFeatures(RefactoringEvent event) {
         PsiFile file = event.getFile();
-        PsiMethod methodAfterPasting = event.getDestinationMethod();
+        PyFunction methodAfterPasting = event.getDestinationMethod();
         int eventBeginLine = getNumberOfLine(file,
                 methodAfterPasting.getTextRange().getStartOffset());
         int eventEndLine = getNumberOfLine(file,

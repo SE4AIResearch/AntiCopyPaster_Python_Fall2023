@@ -13,9 +13,10 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.IntroduceVariableUtil;
 import com.intellij.util.CommonJavaRefactoringUtil;
+import com.jetbrains.python.psi.PyFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-
+import com.jetbrains.python.PythonFileType;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -41,7 +42,7 @@ public class PsiUtil {
                     if (content != null) {
                         PsiFile psiFileBeforeRevision =
                                 PsiFileFactory.getInstance(fileWithLocalChanges.getProject()).createFileFromText("tmp",
-                                        JavaFileType.INSTANCE,
+                                        PythonFileType.INSTANCE,
                                         content);
                         PsiElement[] children = psiFileBeforeRevision.getChildren();
                         for (PsiElement element : children) {
@@ -102,9 +103,9 @@ public class PsiUtil {
         return out.toString();
     }
 
-    public static PsiMethod findMethodByOffset(PsiFile psiFile, int offset) {
+    public static PyFunction findMethodByOffset(PsiFile psiFile, int offset) {
         PsiElement element = psiFile.findElementAt(offset);
-        return (PsiMethod) PsiTreeUtil.findFirstParent(element, p -> p instanceof PsiMethod);
+        return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PsiMethod);
     }
 
     public static PsiElement[] getElements(@NotNull Project project, @NotNull PsiFile file,

@@ -14,6 +14,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 //import com.intellij.refactoring.IntroduceVariableUtil;
 //import com.intellij.util.CommonJavaRefactoringUtil;
 import com.jetbrains.python.psi.PyFunction;
+import com.jetbrains.python.psi.types.TypeEvalContextCache;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ import com.jetbrains.python.psi.PyExpression;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.types.PyType;
 
-
+import com.jetbrains.python.psi.types.TypeEvalContext;
 import com.jetbrains.python.PythonFileType;
 
 import java.util.Objects;
@@ -105,8 +106,11 @@ public class PsiUtil {
             if (i != 0) {
                 out.append(',');
             }
-            final PyType parameterType = parameters[i].getType();
-            final String parameterTypeText = parameterType.getPresentableText();
+            /*
+                We need to the context somehow, so that we can look up the parameter types
+            */
+            final PyType parameterType = parameters[i].getAsNamed().getArgumentType(TypeEvalContext.deepCodeInsight(method.getProject()));
+            final String parameterTypeText = parameterType.getName();
             out.append(parameterTypeText);
         }
         out.append(')');
@@ -132,7 +136,7 @@ public class PsiUtil {
                 final PyExpression expression =
                         IntroduceVariableUtil.getSelectedExpression(project, file, startOffset, endOffset);
                 if (expression != null && IntroduceVariableUtil.getErrorMessage(expression) == null) {
-                    final PsiType originalType = CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
+                    final PyType originalType = CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
                     if (originalType != null) {
                         elements = new PyElement[]{expression};
                     }

@@ -18,6 +18,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
+
+
 public final class DuplicatesInspection {
     private static final Logger LOG = Logger.getInstance(AntiCopyPastePreProcessor.class);
 

@@ -14,7 +14,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 //import com.intellij.refactoring.IntroduceVariableUtil;
 //import com.intellij.util.CommonJavaRefactoringUtil;
 import com.jetbrains.python.psi.PyFunction;
-import com.jetbrains.python.psi.types.TypeEvalContextCache;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +27,7 @@ import com.jetbrains.python.psi.types.PyType;
 
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import com.jetbrains.python.PythonFileType;
+import com.jetbrains.python.codeInsight.ConditionUtil;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

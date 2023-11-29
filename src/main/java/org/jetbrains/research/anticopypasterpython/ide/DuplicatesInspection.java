@@ -5,8 +5,10 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.text.StringUtil;
 //import com.intellij.psi.PsiCodeBlock;
+import com.jetbrains.python.psi.PyStatementList;
 import com.intellij.psi.PsiFile;
 import com.jetbrains.python.psi.PyFunction;
+import com.jetbrains.python.psi.PyFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -90,7 +92,7 @@ public final class DuplicatesInspection {
         @Override
         public DuplicateResult compute() {
             DuplicateResult duplicateResult = null;
-            PsiCodeBlock methodBody = psiMethod.getBody();
+            PyStatementList methodBody = psiMethod.getStatementList();
             if (methodBody != null) {
                 String rawCode =
                         code.replace('\n', ' ').replace('\t', ' ')

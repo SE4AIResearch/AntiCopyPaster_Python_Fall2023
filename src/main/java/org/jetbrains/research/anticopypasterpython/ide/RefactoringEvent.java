@@ -3,14 +3,17 @@ package org.jetbrains.research.anticopypasterpython.ide;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+
+//import com.intellij.psi.PsiMethod;
+
+import com.jetbrains.python.psi.PyFunction;
 
 /**
  * Contains information about the code fragment that is recommended for extraction into a separate method.
  */
 public class RefactoringEvent {
     private final PsiFile file;
-    private final PsiMethod destinationMethod;
+    private final PyFunction destinationMethod;
     private final String text;
     private final int matches;
     private final Project project;
@@ -19,7 +22,7 @@ public class RefactoringEvent {
     private boolean forceExtraction = false;
     private String reasonToExtract;
 
-    public RefactoringEvent(PsiFile file, PsiMethod destinationMethod, String text, int matches,
+    public RefactoringEvent(PsiFile file, PyFunction destinationMethod, String text, int matches,
                             Project project,
                             Editor editor,
                             int linesOfCode
@@ -53,7 +56,7 @@ public class RefactoringEvent {
         return file;
     }
 
-    public PsiMethod getDestinationMethod() {
+    public PyFunction getDestinationMethod() {
         return destinationMethod;
     }
 

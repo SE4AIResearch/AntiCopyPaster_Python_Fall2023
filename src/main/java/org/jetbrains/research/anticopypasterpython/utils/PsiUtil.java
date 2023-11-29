@@ -1,7 +1,7 @@
 package org.jetbrains.research.anticopypasterpython.utils;
 
-import com.intellij.codeInsight.CodeInsightUtil;
-import com.intellij.ide.highlighter.JavaFileType;
+//import com.intellij.codeInsight.CodeInsightUtil;
+
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -11,10 +11,23 @@ import com.intellij.openapi.vcs.changes.ChangeListManager;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.refactoring.IntroduceVariableUtil;
-import com.intellij.util.CommonJavaRefactoringUtil;
+//import com.intellij.refactoring.IntroduceVariableUtil;
+//import com.intellij.util.CommonJavaRefactoringUtil;
+import com.jetbrains.python.psi.PyFunction;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+
+import com.jetbrains.python.psi.PyClass;
+import com.jetbrains.python.psi.PyParameter;
+import com.jetbrains.python.psi.PyParameterList;
+import com.jetbrains.python.psi.PyExpression;
+import com.jetbrains.python.psi.PyElement;
+import com.jetbrains.python.psi.types.PyType;
+
+import com.jetbrains.python.psi.types.TypeEvalContext;
+import com.jetbrains.python.PythonFileType;
+import com.jetbrains.python.codeInsight.ConditionUtil;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -30,7 +43,7 @@ public class PsiUtil {
      * @param method               method to search for;
      * @return original method.
      */
-    public static PsiMethod getMethodStartLineInBeforeRevision(PsiFile fileWithLocalChanges, PsiMethod method) {
+    public static PyFunction getMethodStartLineInBeforeRevision(PsiFile fileWithLocalChanges, PyFunction method) {
         ChangeListManager changeListManager = ChangeListManager.getInstance(fileWithLocalChanges.getProject());
         Change change = changeListManager.getChange(fileWithLocalChanges.getVirtualFile());
         if (change != null) {
@@ -41,16 +54,16 @@ public class PsiUtil {
                     if (content != null) {
                         PsiFile psiFileBeforeRevision =
                                 PsiFileFactory.getInstance(fileWithLocalChanges.getProject()).createFileFromText("tmp",
-                                        JavaFileType.INSTANCE,
+                                        PythonFileType.INSTANCE,
                                         content);
                         PsiElement[] children = psiFileBeforeRevision.getChildren();
                         for (PsiElement element : children) {
-                            if (element instanceof PsiClass) {
-                                PsiClass psiClass = (PsiClass) element;
-                                PsiMethod[] methods = psiClass.getMethods();
-                                for (PsiMethod psiMethod : methods) {
-                                    if (equalSignatures(method, psiMethod)) {
-                                        return psiMethod;
+                            if (element instanceof PyClass) {
+                                PyClass psiClass = (PyClass) element;
+                                PyFunction[] methods = psiClass.getMethods();
+                                for (PyFunction pyFunction : methods) {
+                                    if (equalSignatures(method, pyFunction)) {
+                                        return pyFunction;
                                     }
                                 }
                             }
@@ -70,12 +83,12 @@ public class PsiUtil {
         return document != null ? document.getLineNumber(offset) + 1 : 0;
     }
 
-    public static boolean equalSignatures(PsiMethod method1, PsiMethod method2) {
+    public static boolean equalSignatures(PyFunction method1, PyFunction method2) {
         return Objects.equals(calculateSignature(method1), calculateSignature(method2));
     }
 
-    public static String calculateSignature(PsiMethod method) {
-        final PsiClass containingClass = method.getContainingClass();
+    public static String calculateSignature(PyFunction method) {
+        final PyClass containingClass = method.getContainingClass();
         final String className;
         if (containingClass != null) {
             className = containingClass.getQualifiedName();
@@ -88,40 +101,45 @@ public class PsiUtil {
         out.append("::");
         out.append(methodName);
         out.append('(');
-        final PsiParameterList parameterList = method.getParameterList();
-        final PsiParameter[] parameters = parameterList.getParameters();
+        final PyParameterList parameterList = method.getParameterList();
+        final PyParameter[] parameters = parameterList.getParameters();
         for (int i = 0; i < parameters.length; i++) {
             if (i != 0) {
                 out.append(',');
             }
-            final PsiType parameterType = parameters[i].getType();
-            final String parameterTypeText = parameterType.getPresentableText();
+            /*
+                We need to the context somehow, so that we can look up the parameter types
+            */
+            final PyType parameterType = parameters[i].getAsNamed().getArgumentType(TypeEvalContext.deepCodeInsight(method.getProject()));
+            final String parameterTypeText = parameterType.getName();
             out.append(parameterTypeText);
         }
         out.append(')');
         return out.toString();
     }
 
-    public static PsiMethod findMethodByOffset(PsiFile psiFile, int offset) {
+    public static PyFunction findMethodByOffset(PsiFile psiFile, int offset) {
         PsiElement element = psiFile.findElementAt(offset);
-        return (PsiMethod) PsiTreeUtil.findFirstParent(element, p -> p instanceof PsiMethod);
+
+        return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
+
     }
 
-    public static PsiElement[] getElements(@NotNull Project project, @NotNull PsiFile file,
+    public static PyElement[] getElements(@NotNull Project project, @NotNull PsiFile file,
                                            int startOffset, int endOffset) {
-        PsiElement[] elements;
-        PsiExpression expr = CodeInsightUtil.findExpressionInRange(file, startOffset, endOffset);
+        PyElement[] elements;
+        PyExpression expr = CodeInsightUtil.findExpressionInRange(file, startOffset, endOffset);
         if (expr != null) {
-            elements = new PsiElement[]{expr};
+            elements = new PyElement[]{expr};
         } else {
             elements = CodeInsightUtil.findStatementsInRange(file, startOffset, endOffset);
             if (elements.length == 0) {
-                final PsiExpression expression =
+                final PyExpression expression =
                         IntroduceVariableUtil.getSelectedExpression(project, file, startOffset, endOffset);
                 if (expression != null && IntroduceVariableUtil.getErrorMessage(expression) == null) {
-                    final PsiType originalType = CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
+                    final PyType originalType = CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
                     if (originalType != null) {
-                        elements = new PsiElement[]{expression};
+                        elements = new PyElement[]{expression};
                     }
                 }
             }

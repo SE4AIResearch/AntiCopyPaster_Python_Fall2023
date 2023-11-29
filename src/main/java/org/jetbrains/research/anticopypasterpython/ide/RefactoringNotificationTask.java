@@ -9,9 +9,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
-import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
-import com.intellij.refactoring.extractMethod.PrepareFailedException;
+import com.jetbrains.python.psi.PyFunction;
+//import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
+//import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
 import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.intellij.refactoring.extractMethod.ExtractMethodHandler.getProcessor;
+//import static com.intellij.refactoring.extractMethod.ExtractMethodHandler.getProcessor;
 import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
 /**
@@ -215,7 +215,7 @@ public class RefactoringNotificationTask extends TimerTask {
      */
     private FeaturesVector calculateFeatures(RefactoringEvent event) {
         PsiFile file = event.getFile();
-        PsiMethod methodAfterPasting = event.getDestinationMethod();
+        PyFunction methodAfterPasting = event.getDestinationMethod();
         int eventBeginLine = getNumberOfLine(file,
                 methodAfterPasting.getTextRange().getStartOffset());
         int eventEndLine = getNumberOfLine(file,

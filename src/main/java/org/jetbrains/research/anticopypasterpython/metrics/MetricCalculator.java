@@ -6,6 +6,7 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.PyFunction;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.groovy.ast.ASTNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.research.anticopypasterpython.metrics.features.Feature;
@@ -72,8 +73,8 @@ public class MetricCalculator {
         PsiFileFactory factory = PsiFileFactory.getInstance(thisFile.getProject());
         @Nullable PsiFile psiFromText = factory.createFileFromText(statementsStr, thisFile);
         // search for all identifiers (methods and variables) in the code fragment
-        @NotNull Collection<PsiIdentifier> identifiers = PsiTreeUtil.collectElementsOfType(psiFromText,
-                PsiIdentifier.class);
+        @NotNull Collection<PyFunction> identifiers = PsiTreeUtil.collectElementsOfType(psiFromText,
+                PyFunction.class); //<Need to verify psidentifer can be replaced by pyfunction>
         HashSet<String> identifiersNames = new HashSet<>();
         identifiers.forEach(i -> identifiersNames.add(i.getText()));
 

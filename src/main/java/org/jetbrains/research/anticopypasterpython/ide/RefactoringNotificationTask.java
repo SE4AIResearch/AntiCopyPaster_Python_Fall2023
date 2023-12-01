@@ -145,25 +145,25 @@ public class RefactoringNotificationTask extends TimerTask {
         int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
         PsiElement[] elementsInCodeFragment = getElements(event.getProject(), event.getFile(),
                 startOffset, startOffset + event.getText().length());
-        ExtractMethodProcessor processor = getProcessor(event.getProject(), elementsInCodeFragment,
-                event.getFile(), false);
-        if (processor == null) return false;
-        try {
-            canBeExtracted = processor.prepare(null);
-            processor.findOccurrences();
-        } catch (PrepareFailedException e) {
-            LOG.error("[ACP] Failed to check if a code fragment can be extracted.", e.getMessage());
-            return false;
-        }
+//        ExtractMethodProcessor processor = getProcessor(event.getProject(), elementsInCodeFragment,
+//                event.getFile(), false);
+//        if (processor == null) return false;
+//        try {
+//            canBeExtracted = processor.prepare(null);
+//            processor.findOccurrences();
+//        } catch (PrepareFailedException e) {
+//            LOG.error("[ACP] Failed to check if a code fragment can be extracted.", e.getMessage());
+//            return false;
+//        }
 
-        return canBeExtracted;
+        return true;//canBeExtracted;
     }
 
     private Runnable getRunnableToShowSuggestionDialog(RefactoringEvent event) {
         return () -> {
             String message = event.getReasonToExtract();
             if (message.isEmpty()) {
-                message = AntiCopyPasterPythonBundle.message("extract.method.to.simplify.logic.of.enclosing.method");
+//                message = AntiCopyPasterPythonBundle.message("extract.method.to.simplify.logic.of.enclosing.method");
             }
 
             int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());

@@ -13,21 +13,21 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 //import com.intellij.refactoring.IntroduceVariableUtil;
 //import com.intellij.util.CommonJavaRefactoringUtil;
-import com.jetbrains.python.psi.PyFunction;
+import com.jetbrains.python.psi.*;
 
+import com.jetbrains.python.refactoring.PyRefactoringUtil;
+import com.jetbrains.python.refactoring.introduce.variable.PyIntroduceVariableHandler;
+import com.jetbrains.python.refactoring.introduce.variable.VariableValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.jetbrains.python.psi.PyClass;
-import com.jetbrains.python.psi.PyParameter;
-import com.jetbrains.python.psi.PyParameterList;
-import com.jetbrains.python.psi.PyExpression;
-import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.types.PyType;
 
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import com.jetbrains.python.PythonFileType;
-import com.jetbrains.python.codeInsight.ConditionUtil;
+//import com.jetbrains.python.codeInsight.*;
+//import com.jetbrains.python.findUsages.*;
+import com.jetbrains.python.refactoring.introduce.*;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -128,16 +128,19 @@ public class PsiUtil {
     public static PyElement[] getElements(@NotNull Project project, @NotNull PsiFile file,
                                            int startOffset, int endOffset) {
         PyElement[] elements;
-        PyExpression expr = CodeInsightUtil.findExpressionInRange(file, startOffset, endOffset);
+
+        PyExpression expr = (PyExpression) PyRefactoringUtil.findExpressionInRange(file,startOffset,endOffset);//PyUtil.createExpressionFromFragment(file.getText(),file.getContext()); //CodeInsightUtil.findExpressionInRange(file, startOffset, endOffset);
         if (expr != null) {
             elements = new PyElement[]{expr};
         } else {
-            elements = CodeInsightUtil.findStatementsInRange(file, startOffset, endOffset);
+            elements = (PyElement[]) PyRefactoringUtil.findStatementsInRange(file,startOffset,endOffset);//(PyElement[])file.getChildren();//CodeInsightUtil.findStatementsInRange(file, startOffset, endOffset);
             if (elements.length == 0) {
                 final PyExpression expression =
-                        IntroduceVariableUtil.getSelectedExpression(project, file, startOffset, endOffset);
-                if (expression != null && IntroduceVariableUtil.getErrorMessage(expression) == null) {
-                    final PyType originalType = CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
+                        PyRefactoringUtil.getSelectedExpression(project,file,null,null); //IntroduceVariableUtil.getSelectedExpression(project, file, startOffset, endOffset);
+
+                if (expression != null /*&& IntroduceVariableUtil.getErrorMessage(expression) == null*/) {
+
+                    final PyType originalType = null;//CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
                     if (originalType != null) {
                         elements = new PyElement[]{expression};
                     }

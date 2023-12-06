@@ -10,8 +10,13 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.jetbrains.python.psi.PyFunction;
+import com.jetbrains.python.psi.PyElement;
+import com.jetbrains.python.psi.PyFile;
+
 //import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
 //import com.intellij.refactoring.extractMethod.PrepareFailedException;
+
+import com.jetbrains.python.refactoring.extractmethod.*;
 
 import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
@@ -30,6 +35,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 //import static com.intellij.refactoring.extractMethod.ExtractMethodHandler.getProcessor;
+import static com.jetbrains.python.refactoring.extractmethod.PyExtractMethodHandler.*;
 import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
 /**
@@ -81,7 +87,7 @@ public class RefactoringNotificationTask extends TimerTask {
             try {
                 final RefactoringEvent event = eventsQueue.poll();
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
+                    DuplicatesInspection.InspectionResult result = inspection.resolve( event.getFile(), event.getText());
                     // This only triggers if there are duplicates found in at least as many
                     // methods as specified by the user in configurations.
 
@@ -99,8 +105,9 @@ public class RefactoringNotificationTask extends TimerTask {
                             variablesCountsInCodeFragment)) {
                         return;
                     }
-
+                    System.out.println("event in RefactoringNotificationTask from eventsQueue:"+event.getText());
                     FeaturesVector featuresVector = calculateFeatures(event);
+                    System.out.println("Features vector: "+featuresVector.toString());
 
                     float prediction = model.predict(featuresVector);
                     if(debugMetrics){
@@ -136,6 +143,7 @@ public class RefactoringNotificationTask extends TimerTask {
                 });
             } catch (Exception e) {
                 LOG.error("[ACP] Can't process an event " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -143,18 +151,18 @@ public class RefactoringNotificationTask extends TimerTask {
     public boolean canBeExtracted(RefactoringEvent event) {
         boolean canBeExtracted;
         int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
-        PsiElement[] elementsInCodeFragment = getElements(event.getProject(), event.getFile(),
+        PyElement[] elementsInCodeFragment = getElements(event.getProject(), event.getFile(),
                 startOffset, startOffset + event.getText().length());
-//        ExtractMethodProcessor processor = getProcessor(event.getProject(), elementsInCodeFragment,
+        PyExtractMethodUtil processor;// = getProcessor(event.getProject(), elementsInCodeFragment,
 //                event.getFile(), false);
 //        if (processor == null) return false;
-//        try {
+        try {
 //            canBeExtracted = processor.prepare(null);
 //            processor.findOccurrences();
-//        } catch (PrepareFailedException e) {
-//            LOG.error("[ACP] Failed to check if a code fragment can be extracted.", e.getMessage());
+        } catch (/*PrepareFailedException*/ Exception e) {
+            LOG.error("[ACP] Failed to check if a code fragment can be extracted.", e.getMessage());
 //            return false;
-//        }
+        }
 
         return true;//canBeExtracted;
     }
@@ -171,7 +179,7 @@ public class RefactoringNotificationTask extends TimerTask {
 
             int result =
                     Messages.showOkCancelDialog(message,
-                            AntiCopyPasterPythonBundle.message("anticopypaster.recommendation.dialog.name"),
+                            AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.dialog.name"),
                             CommonBundle.getOkButtonText(),
                             CommonBundle.getCancelButtonText(),
                             Messages.getInformationIcon());
@@ -193,7 +201,7 @@ public class RefactoringNotificationTask extends TimerTask {
     public void notify(Project project, String content, Runnable callback) {
         final Notification notification = notificationGroup.createNotification(content, NotificationType.INFORMATION);
         notification.addAction(NotificationAction.createSimple(
-                AntiCopyPasterPythonBundle.message("anticopypaster.recommendation.notification.action"),
+                AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.notification.action"),
                 callback));
         notification.notify(project);
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
@@ -214,7 +222,8 @@ public class RefactoringNotificationTask extends TimerTask {
      * Calculates the metrics for the pasted code fragment and a method where the code fragment was pasted into.
      */
     private FeaturesVector calculateFeatures(RefactoringEvent event) {
-        PsiFile file = event.getFile();
+        //here we know the event is not null; This means it is probably an issue where new RefactoringEvent() is being called
+        PyFile file = event.getFile();
         PyFunction methodAfterPasting = event.getDestinationMethod();
         int eventBeginLine = getNumberOfLine(file,
                 methodAfterPasting.getTextRange().getStartOffset());

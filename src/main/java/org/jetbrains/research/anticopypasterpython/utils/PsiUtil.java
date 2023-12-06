@@ -77,7 +77,7 @@ public class PsiUtil {
         return null;
     }
 
-    public static int getNumberOfLine(PsiFile file, int offset) {
+    public static int getNumberOfLine(PyFile file, int offset) {
         FileViewProvider fileViewProvider = file.getViewProvider();
         Document document = fileViewProvider.getDocument();
         return document != null ? document.getLineNumber(offset) + 1 : 0;
@@ -118,7 +118,7 @@ public class PsiUtil {
         return out.toString();
     }
 
-    public static PyFunction findMethodByOffset(PsiFile psiFile, int offset) {
+    public static PyFunction findMethodByOffset(PyFile psiFile, int offset) {
         PsiElement element = psiFile.findElementAt(offset);
 
         return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
@@ -139,8 +139,8 @@ public class PsiUtil {
                         PyRefactoringUtil.getSelectedExpression(project,file,null,null); //IntroduceVariableUtil.getSelectedExpression(project, file, startOffset, endOffset);
 
                 if (expression != null /*&& IntroduceVariableUtil.getErrorMessage(expression) == null*/) {
-
-                    final PyType originalType = null;//CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
+                    TypeEvalContext context = TypeEvalContext.codeAnalysis(project,file);
+                    final PyType originalType = context.getType(expression);// expression.getType(context,TypeEvalContext.Key.INSTANCE);// null;//CommonJavaRefactoringUtil.getTypeByExpressionWithExpectedType(expression);
                     if (originalType != null) {
                         elements = new PyElement[]{expression};
                     }

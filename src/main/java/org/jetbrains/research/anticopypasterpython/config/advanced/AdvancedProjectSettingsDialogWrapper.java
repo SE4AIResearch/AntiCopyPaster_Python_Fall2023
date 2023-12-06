@@ -20,6 +20,7 @@ public class AdvancedProjectSettingsDialogWrapper extends DialogWrapper {
         this.project = project;
 
         setTitle(AntiCopyPasterPythonBundle.message("settings.advanced.title"));
+
         setResizable(true);
 
         init();

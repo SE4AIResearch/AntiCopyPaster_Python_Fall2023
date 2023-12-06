@@ -23,7 +23,8 @@ public class CredentialsDialogWrapper extends DialogWrapper {
         super(true);
         this.project = project;
 
-        setTitle(AntiCopyPasterPythonBundle.message("settings.credentials.title"));
+//        setTitle(AntiCopyPasterPythonBundle.message("settings.credentials.title"));
+        setTitle("settings.credentials.title");
         setResizable(true);
 
         init();

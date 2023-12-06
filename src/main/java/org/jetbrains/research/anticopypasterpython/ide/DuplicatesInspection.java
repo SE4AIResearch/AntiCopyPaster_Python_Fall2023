@@ -37,7 +37,7 @@ public final class DuplicatesInspection {
      * @param code the piece of code to search for.
      * @return the result of duplicates' detection.
      */
-    public InspectionResult resolve(PsiFile file, final String code) {
+    public InspectionResult resolve(PyFile file, final String code) {
         final List<String> tokensOfPastedCode = getTokens(code);
         @NotNull Collection<PyFunction> methods = PsiTreeUtil.findChildrenOfType(file, PyFunction.class);
         final List<DuplicateResult> results = methods.stream()

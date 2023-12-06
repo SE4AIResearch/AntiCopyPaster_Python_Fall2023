@@ -12,6 +12,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.research.anticopypasterpython.metrics.MetricCalculator;
 import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 
+import com.jetbrains.python.psi.PyFile;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -58,20 +60,20 @@ public class MetricsGatherer {
         });
         Collection<VirtualFile> vfCollection = vfCollectionWrapper.vfCollection;
         // Gets a PsiFile for every Java file in the project
-        List<PsiFile> pfList = new ArrayList<>();
+        List<PyFile> pfList = new ArrayList<>();
         for (VirtualFile file : vfCollection) {
             // Makes everything lowercase for consistency, and gets rid of file extension
             String filename = file.getName().toLowerCase().split("[.]")[0];
             if (!filename.startsWith("test") && !filename.endsWith("test")) {
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    pfList.add(PsiManager.getInstance(project).findFile(file));
+                    pfList.add((PyFile) PsiManager.getInstance(project).findFile(file));
                 });
 
             }
         }
 
         // Gets all the PsiMethods, as well as their start and end lines.
-        for (PsiFile psiFile: pfList) {
+        for (PyFile psiFile: pfList) {
             // wrappers are used to get information out of runReadActions.
             // PsiTree's can't be accessed outside a read action, or it
             // can cause race conditions.

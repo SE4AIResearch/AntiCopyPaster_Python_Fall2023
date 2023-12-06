@@ -25,7 +25,7 @@ public class ProjectSettingsConfigurable implements Configurable {
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
     public String getDisplayName() {
-        return "AntiCopyPaster";
+        return "AntiCopyPasterPython";
     }
 
     @Override

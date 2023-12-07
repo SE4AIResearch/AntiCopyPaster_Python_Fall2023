@@ -37,7 +37,7 @@ public final class DuplicatesInspection {
      * @param code the piece of code to search for.
      * @return the result of duplicates' detection.
      */
-    public InspectionResult resolve(PsiFile file, final String code) {
+    public InspectionResult resolve(PyFile file, final String code) {
         final List<String> tokensOfPastedCode = getTokens(code);
         @NotNull Collection<PyFunction> methods = PsiTreeUtil.findChildrenOfType(file, PyFunction.class);
         final List<DuplicateResult> results = methods.stream()
@@ -93,12 +93,15 @@ public final class DuplicatesInspection {
         public DuplicateResult compute() {
             DuplicateResult duplicateResult = null;
             PyStatementList methodBody = psiMethod.getStatementList();
+            System.out.println("methodBody.getText: " +  methodBody.getText());
             if (methodBody != null) {
                 String rawCode =
                         code.replace('\n', ' ').replace('\t', ' ')
                                 .replace('\r', ' ').replaceAll("\\s+", "");
+                System.out.println("rawCode: " +  rawCode);
                 String rawMethodBody = psiMethod.getText().replace('\n', ' ').replace('\t', ' ')
                         .replace('\r', ' ').replaceAll("\\s+", "");
+                System.out.println("rawMethodBody: " + rawCode);
                 boolean matches = StringUtils.contains(rawMethodBody, rawCode);
                 if (matches) {
                     duplicateResult = new DuplicateResult(psiMethod, 1.0);

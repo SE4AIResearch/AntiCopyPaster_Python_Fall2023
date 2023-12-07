@@ -7,12 +7,13 @@ import com.intellij.psi.PsiFile;
 //import com.intellij.psi.PsiMethod;
 
 import com.jetbrains.python.psi.PyFunction;
+import com.jetbrains.python.psi.PyFile;
 
 /**
  * Contains information about the code fragment that is recommended for extraction into a separate method.
  */
 public class RefactoringEvent {
-    private final PsiFile file;
+    private final PyFile file;
     private final PyFunction destinationMethod;
     private final String text;
     private final int matches;
@@ -22,7 +23,7 @@ public class RefactoringEvent {
     private boolean forceExtraction = false;
     private String reasonToExtract;
 
-    public RefactoringEvent(PsiFile file, PyFunction destinationMethod, String text, int matches,
+    public RefactoringEvent(PyFile file, PyFunction destinationMethod, String text, int matches,
                             Project project,
                             Editor editor,
                             int linesOfCode
@@ -34,6 +35,7 @@ public class RefactoringEvent {
         this.project = project;
         this.editor = editor;
         this.linesOfCode = linesOfCode;
+        System.out.println("destinationMethod in RefactoringEvent constructor: "+destinationMethod);
     }
 
     public void setForceExtraction(boolean forceExtraction) {
@@ -52,7 +54,7 @@ public class RefactoringEvent {
         return reasonToExtract;
     }
 
-    public PsiFile getFile() {
+    public PyFile getFile() {
         return file;
     }
 

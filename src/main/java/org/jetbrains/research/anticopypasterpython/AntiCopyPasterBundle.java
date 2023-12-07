@@ -5,11 +5,10 @@ import com.intellij.reference.SoftReference;
 import org.jetbrains.annotations.PropertyKey;
 
 import java.lang.ref.Reference;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public final class AntiCopyPasterBundle {
-    private static final String BUNDLE = "AntiCopyPasterBundle";
+    private static final String BUNDLE = "AntiCopyPasterPythonBundle";
     private static Reference<ResourceBundle> INSTANCE;
 
     private AntiCopyPasterBundle() {

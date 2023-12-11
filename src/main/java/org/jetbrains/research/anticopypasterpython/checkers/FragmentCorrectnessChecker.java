@@ -11,11 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class FragmentCorrectnessChecker {
-    private static final String wrapperFormat = "class Tmp {\n" +
-            "    public static void main(String[] args) {\n" +
-            "        %s\n" +
-            "    }\n" +
-            "}";
+    private static final String wrapperFormat = "%s\n";
 
     public static boolean isCorrect(Project project,
                                     PsiFile file,
@@ -23,6 +19,7 @@ public class FragmentCorrectnessChecker {
                                     HashSet<String> vars_in_fragment,
                                     HashMap<String, Integer> vars_counts_in_fragment) {
         String wrappedFragment = String.format(wrapperFormat, fragment);
+        //System.out.println(wrappedFragment);
         PsiFile tmp;
         try {
             tmp = PsiFileFactory.getInstance(project)
@@ -31,7 +28,9 @@ public class FragmentCorrectnessChecker {
                             wrappedFragment,
                             0,
                             wrappedFragment.length());
+            //System.out.println("Hello");
         } catch (IncorrectOperationException e) {
+            //System.out.println("Goodbye");
             return true; //return false;
         }
 
@@ -64,7 +63,7 @@ public class FragmentCorrectnessChecker {
             result &=
                     traverse(child, nodeText.contains("PsiMethod") || inside, vars_in_fragment, vars_counts_in_fragment);
         }
-
+        //System.out.println(result);
         return result;
     }
 }

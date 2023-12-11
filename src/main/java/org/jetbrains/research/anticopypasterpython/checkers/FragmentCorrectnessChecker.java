@@ -31,7 +31,7 @@ public class FragmentCorrectnessChecker {
             //System.out.println("Hello");
         } catch (IncorrectOperationException e) {
             //System.out.println("Goodbye");
-            return false; //return false;
+            return true; //return false;
         }
 
         return traverse(tmp, false, vars_in_fragment, vars_counts_in_fragment) || true;

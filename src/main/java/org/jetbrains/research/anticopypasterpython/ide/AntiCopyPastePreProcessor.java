@@ -84,11 +84,6 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         @Nullable Caret caret = CommonDataKeys.CARET.getData(dataContext);
         int offset = caret == null ? 0 : caret.getOffset();
 
-        // The issue here was that whitespaces do not have PyFunction parents, they go straight to main.
-        // To solve this, we simply revert the offset from the caret back into actual text.
-        while (file.findElementAt(offset).toString() == "PsiWhiteSpace")
-            offset--;
-
         PyFunction destinationMethod = findMethodByOffset((PyFile) file, offset);
 
         // find number of code fragments considered as duplicated

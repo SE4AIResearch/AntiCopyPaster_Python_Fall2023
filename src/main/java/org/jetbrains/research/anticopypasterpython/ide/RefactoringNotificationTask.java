@@ -46,6 +46,8 @@ import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
 import org.jetbrains.research.anticopypasterpython.utils.PyExtractMethodHandler;
 
+import javax.sound.midi.SysexMessage;
+
 /**
  * Shows a notification about discovered Extract Method refactoring opportunity.
  */
@@ -72,24 +74,28 @@ public class RefactoringNotificationTask extends TimerTask {
 
     private PredictionModel getOrInitModel() {
         PredictionModel model = this.model;
-        System.out.println("Line 67");
+        System.out.println("77: Getting model and checking if null");
         System.out.println(model == null);
-//        if (model == null) {
-//            model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
-//            System.out.println("Line 71");
-//            if(debugMetrics){
-//                UserSettingsModel settingsModel = (UserSettingsModel) model;
-//                try(FileWriter fr = new FileWriter(logFilePath, true)){
-//                    String timestamp =
-//                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
-//                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
-//                            timestamp + "\n");
-//                    System.out.println("Line 76");
-//                } catch(IOException ioe) { ioe.printStackTrace(); }
-//                System.out.println("InitMOdelError");
-//                settingsModel.logThresholds(logFilePath);
-//            }
-//        }
+
+        if (model == null) {
+            model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
+            System.out.println("82: Model null and got new model from UserSettingsModel");
+            if ( debugMetrics ) {
+                UserSettingsModel settingsModel = (UserSettingsModel) model;
+                try(FileWriter fr = new FileWriter(logFilePath, true)){
+                    String timestamp =
+                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
+                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
+                            timestamp + "\n");
+                    System.out.println("90: Written to file");
+                } catch ( IOException ioe ) {
+                    System.out.println("92: InitModelError");
+                    ioe.printStackTrace();
+                }
+                settingsModel.logThresholds(logFilePath);
+            }
+        }
+        
         return model;
     }
 
@@ -133,10 +139,12 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void notify(Project project, String content, Runnable callback) {
+        System.out.println("142: In notify method.");
         final Notification notification = notificationGroup.createNotification(content, NotificationType.INFORMATION);
         notification.addAction(NotificationAction.createSimple(
                 AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.notification.action"),
                 callback));
+        System.out.println("147: Should be throwing up a notification.");
         notification.notify(project);
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
     }
@@ -179,15 +187,17 @@ public class RefactoringNotificationTask extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("87");
+        //System.out.println("186: Running Notification");
         while (!eventsQueue.isEmpty()) {
-            System.out.println("89");
+            System.out.println("Event Queue: " + eventsQueue.peek());
+            System.out.println("189: Processing event in queue");
             final PredictionModel model = getOrInitModel();
-            System.out.println("Line 92");
+            System.out.println("192: Retrieving model.");
+            System.out.println("193: Model - " + model.toString());
             try {
                 final RefactoringEvent event = eventsQueue.poll();
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    System.out.println("94");
+                    System.out.println("94: " + event.toString());
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
                     // This only triggers if there are duplicates found in at least as many
                     // methods as specified by the user in configurations.
@@ -237,16 +247,15 @@ public class RefactoringNotificationTask extends TimerTask {
                     }
                     event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                             "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
-
-                    if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
-                        System.out.println("Notification task 138");
-                        if (true) {
-                            notify(event.getProject(),
-                                    AntiCopyPasterPythonBundle.message(
-                                            "extract.method.refactoring.is.available"),
-                                    getRunnableToShowSuggestionDialog(event)
-                            );
-                        }
+                    System.out.println("251: Made it here");
+                    // Extracting method
+                    if (canBeExtracted(event)) {
+                        System.out.println("Notification task 138: Can extract method.");
+                        notify(event.getProject(),
+                                AntiCopyPasterPythonBundle.message(
+                                        "extract.method.refactoring.is.available"),
+                                getRunnableToShowSuggestionDialog(event)
+                        );
                     }
                 });
             }

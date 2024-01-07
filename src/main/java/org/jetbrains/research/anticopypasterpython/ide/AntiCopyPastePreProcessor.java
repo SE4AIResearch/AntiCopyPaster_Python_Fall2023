@@ -83,7 +83,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         DataContext dataContext = DataManager.getInstance().getDataContext(editor.getContentComponent());
         @Nullable Caret caret = CommonDataKeys.CARET.getData(dataContext);
         int offset = caret == null ? 0 : caret.getOffset();
-        //System.out.println(offset);
+
         PyFunction destinationMethod = findMethodByOffset((PyFile) file, offset);
 
         // find number of code fragments considered as duplicated

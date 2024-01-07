@@ -9,6 +9,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.scope.DelegatingScopeProcessor;
+import com.intellij.psi.scope.PsiScopeProcessor;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.jetbrains.python.codeInsight.codeFragment.PyCodeFragment;
+import com.jetbrains.python.codeInsight.codeFragment.PyCodeFragmentUtil;
+import com.jetbrains.python.codeInsight.controlflow.ScopeOwner;
 import com.jetbrains.python.psi.PyFunction;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.PyFile;
@@ -37,6 +43,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 //import static com.intellij.refactoring.extractMethod.ExtractMethodHandler.getProcessor;
 import static com.jetbrains.python.refactoring.extractmethod.PyExtractMethodHandler.*;
 import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
+
+import org.jetbrains.research.anticopypasterpython.utils.PyExtractMethodHandler;
 
 /**
  * Shows a notification about discovered Extract Method refactoring opportunity.
@@ -85,99 +93,12 @@ public class RefactoringNotificationTask extends TimerTask {
         return model;
     }
 
-    @Override
-    public void run() {
-        System.out.println("87");
-        while (!eventsQueue.isEmpty()) {
-            System.out.println("89");
-            final PredictionModel model = getOrInitModel();
-            System.out.println("Line 92");
-            try {
-                final RefactoringEvent event = eventsQueue.poll();
-                ApplicationManager.getApplication().runReadAction(() -> {
-                    System.out.println("94");
-                    DuplicatesInspection.InspectionResult result = inspection.resolve( event.getFile(), event.getText());
-                    // This only triggers if there are duplicates found in at least as many
-                    // methods as specified by the user in configurations.
-
-                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
-
-//                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
-//                        return;
-//                    }
-                    HashSet<String> variablesInCodeFragment = new HashSet<>();
-                    HashMap<String, Integer> variablesCountsInCodeFragment = new HashMap<>();
-                    System.out.println("Ntofication task 101");
-                    if (!FragmentCorrectnessChecker.isCorrect(event.getProject(), event.getFile(),
-                            event.getText(),
-                            variablesInCodeFragment,
-                            variablesCountsInCodeFragment)) {
-                        System.out.println("Ntofication task 110");
-                        return;
-                    }
-                    System.out.println("event in RefactoringNotificationTask from eventsQueue:"+event.getText());
-                    FeaturesVector featuresVector = calculateFeatures(event);
-                    System.out.println("Features vector: "+featuresVector.toString());
-
-//                    float prediction = model.predict(featuresVector);
-//                    if(debugMetrics){
-//                        UserSettingsModel settingsModel = (UserSettingsModel) model;
-//                        try(FileWriter fr = new FileWriter(logFilePath, true)){
-//                            String timestamp =
-//                                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
-//
-//                            fr.write("\n-----------------------\nNEW COPY/PASTE EVENT: "
-//                                    + timestamp + "\nPASTED CODE:\n"
-//                                    + event.getText());
-//
-////                            if(prediction > predictionThreshold){
-////                                fr.write("\n\nSent Notification: True");
-////                            }else{
-////                                fr.write("\n\nSent Notification: False");
-////                            }
-//                            fr.write("\n\nSent Notification: True");
-//                            fr.write("\nMETRICS\n");
-//                        } catch(IOException ioe) { ioe.printStackTrace(); }
-//                        settingsModel.logMetrics(logFilePath);
-//                    }
-                    event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
-                            "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
-
-                    //if ((event.isForceExtraction() || prediction > predictionThreshold) &&
-                     //       canBeExtracted(event)) {
-                    System.out.println("Ntofication task 138");
-                    if(true){
-                        notify(event.getProject(),
-                                AntiCopyPasterPythonBundle.message(
-                                        "extract.method.refactoring.is.available"),
-                                getRunnableToShowSuggestionDialog(event)
-                        );
-                    }
-                });
-            } catch (Exception e) {
-                LOG.error("[ACP] Can't process an event " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    }
-
     public boolean canBeExtracted(RefactoringEvent event) {
-        boolean canBeExtracted;
-        int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
-        PyElement[] elementsInCodeFragment = getElements(event.getProject(), event.getFile(),
-                startOffset, startOffset + event.getText().length());
-        PyExtractMethodUtil processor;// = getProcessor(event.getProject(), elementsInCodeFragment,
-//                event.getFile(), false);
-//        if (processor == null) return false;
-        try {
-//            canBeExtracted = processor.prepare(null);
-//            processor.findOccurrences();
-        } catch (/*PrepareFailedException*/ Exception e) {
-            LOG.error("[ACP] Failed to check if a code fragment can be extracted.", e.getMessage());
-//            return false;
-        }
+        Project project = event.getProject();
+        Editor editor = event.getEditor();
+        PyFile file = event.getFile();
 
-        return true;//canBeExtracted;
+        return PyExtractMethodHandler.checkExtraction(project, editor, file);
     }
 
     private Runnable getRunnableToShowSuggestionDialog(RefactoringEvent event) {
@@ -254,5 +175,85 @@ public class RefactoringNotificationTask extends TimerTask {
     }
     public Project getProject() {
         return p;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("87");
+        while (!eventsQueue.isEmpty()) {
+            System.out.println("89");
+            final PredictionModel model = getOrInitModel();
+            System.out.println("Line 92");
+            try {
+                final RefactoringEvent event = eventsQueue.poll();
+                ApplicationManager.getApplication().runReadAction(() -> {
+                    System.out.println("94");
+                    DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
+                    // This only triggers if there are duplicates found in at least as many
+                    // methods as specified by the user in configurations.
+
+                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
+
+                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
+                        return;
+                    }
+                    HashSet<String> variablesInCodeFragment = new HashSet<>();
+                    HashMap<String, Integer> variablesCountsInCodeFragment = new HashMap<>();
+                    System.out.println("Notification task 101");
+                    if (!FragmentCorrectnessChecker.isCorrect(event.getProject(), event.getFile(),
+                            event.getText(),
+                            variablesInCodeFragment,
+                            variablesCountsInCodeFragment)) {
+                        System.out.println("Notification task 110");
+                        return;
+                    }
+                    System.out.println("event in RefactoringNotificationTask from eventsQueue:" + event.getText());
+                    FeaturesVector featuresVector = calculateFeatures(event);
+                    System.out.println("Features vector: " + featuresVector.toString());
+
+                    //float prediction = model.predict(featuresVector); BROKEN
+                    float prediction = 999999999;
+                    if (debugMetrics) {
+                        UserSettingsModel settingsModel = (UserSettingsModel) model;
+                        try (FileWriter fr = new FileWriter(logFilePath, true)) {
+                            String timestamp =
+                                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
+
+                            fr.write("\n-----------------------\nNEW COPY/PASTE EVENT: "
+                                    + timestamp + "\nPASTED CODE:\n"
+                                    + event.getText());
+
+                            if (prediction > predictionThreshold) {
+                                fr.write("\n\nSent Notification: True");
+                            } else {
+                                fr.write("\n\nSent Notification: False");
+                            }
+                            fr.write("\n\nSent Notification: True");
+                            fr.write("\nMETRICS\n");
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
+                        //settingsModel.logMetrics(logFilePath); BROKEN
+                    }
+                    event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
+                            "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
+
+                    if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
+                        System.out.println("Notification task 138");
+                        if (true) {
+                            notify(event.getProject(),
+                                    AntiCopyPasterPythonBundle.message(
+                                            "extract.method.refactoring.is.available"),
+                                    getRunnableToShowSuggestionDialog(event)
+                            );
+                        }
+                    }
+                });
+            }
+            catch (Exception e) {
+                LOG.error("[ACP] Can't process an event " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }

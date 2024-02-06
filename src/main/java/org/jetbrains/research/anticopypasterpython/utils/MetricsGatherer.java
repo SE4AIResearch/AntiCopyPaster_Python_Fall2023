@@ -77,6 +77,7 @@ public class MetricsGatherer {
             // wrappers are used to get information out of runReadActions.
             // PsiTree's can't be accessed outside a read action, or it
             // can cause race conditions.
+            System.out.println(psiFile.getName());
             var psiMethodWrapper = new Object() {
                 Collection<PyFunction> psiMethods = null;
             };

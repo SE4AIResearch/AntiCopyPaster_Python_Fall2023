@@ -74,6 +74,7 @@ public class MetricsGatherer {
 
         // Gets all the PsiMethods, as well as their start and end lines.
         for (PyFile psiFile: pfList) {
+            System.out.println(psiFile.getName());
             // wrappers are used to get information out of runReadActions.
             // PsiTree's can't be accessed outside a read action, or it
             // can cause race conditions.
@@ -101,7 +102,9 @@ public class MetricsGatherer {
                 this.methodsMetrics.add(features);
             }
         }
+        System.out.println("broke free");
     }
+
 
     public void setProject(Project project) {
         this.project = project;

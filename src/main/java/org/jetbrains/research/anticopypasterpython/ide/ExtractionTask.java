@@ -46,6 +46,10 @@ public class ExtractionTask extends TimerTask {
                     RefactoringActionHandler handler = provider.getExtractMethodHandler();
                     DataContext dc = SimpleDataContext.getProjectContext(project);
                     if (handler != null) {
+                        System.out.println(project);
+                        System.out.println(editor);
+                        System.out.println(file.getText());
+                        System.out.println(dc);
                         handler.invoke(project, editor, file, dc);
                     }
                 }

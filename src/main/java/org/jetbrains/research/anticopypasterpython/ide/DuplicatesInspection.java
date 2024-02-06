@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.text.StringUtil;
 //import com.intellij.psi.PsiCodeBlock;
+//import com.intellij.psi.PsiMethod;
 import com.jetbrains.python.psi.PyStatementList;
 import com.intellij.psi.PsiFile;
 import com.jetbrains.python.psi.PyFunction;
@@ -40,6 +41,9 @@ public final class DuplicatesInspection {
     public InspectionResult resolve(PyFile file, final String code) {
         final List<String> tokensOfPastedCode = getTokens(code);
         @NotNull Collection<PyFunction> methods = PsiTreeUtil.findChildrenOfType(file, PyFunction.class);
+//        for(PyFunction method : methods) {
+//            System.out.println(method);
+//        }
         final List<DuplicateResult> results = methods.stream()
                 .map(method -> new DuplicateResultComputable(code, method, tokensOfPastedCode))
                 .map(computable -> pool.submit(() -> ApplicationManager.getApplication().runReadAction(computable)))

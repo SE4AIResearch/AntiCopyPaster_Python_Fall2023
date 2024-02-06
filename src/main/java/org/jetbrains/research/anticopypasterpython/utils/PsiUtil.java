@@ -120,9 +120,6 @@ public class PsiUtil {
 
     public static PyFunction findMethodByOffset(PyFile psiFile, int offset) {
         PsiElement element = psiFile.findElementAt(offset);
-<<<<<<< Updated upstream
-        System.out.println(element);
-=======
 
         // The issue here was that whitespaces do not have PyFunction parents, they go straight to main.
         // To solve this, we simply revert the offset from the caret back into actual text.
@@ -131,14 +128,13 @@ public class PsiUtil {
             element = psiFile.findElementAt(offset);
         }
 
-        //System.out.println(element);
->>>>>>> Stashed changes
+        System.out.println(element);
         return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
 
     }
 
     public static PyElement[] getElements(@NotNull Project project, @NotNull PsiFile file,
-                                           int startOffset, int endOffset) {
+                                          int startOffset, int endOffset) {
         PyElement[] elements;
 
         PyExpression expr = (PyExpression) PyRefactoringUtil.findExpressionInRange(file,startOffset,endOffset);//PyUtil.createExpressionFromFragment(file.getText(),file.getContext()); //CodeInsightUtil.findExpressionInRange(file, startOffset, endOffset);

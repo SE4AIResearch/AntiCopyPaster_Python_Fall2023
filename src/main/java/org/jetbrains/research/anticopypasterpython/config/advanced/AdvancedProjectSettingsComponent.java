@@ -5,7 +5,6 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import static org.jetbrains.research.anticopypasterpython.config.ProjectSettingsComponent.createLinkListener;
 import java.util.EnumMap;
@@ -15,37 +14,41 @@ public class AdvancedProjectSettingsComponent {
     private JCheckBox requiredSubmetricCheckBox;
     private JCheckBox keywordDensityPerLineCheckBox;
     private JCheckBox requiredSubmetricCheckBox1;
-    private JCheckBox continueCheckBox;
+    private JCheckBox falseCheckBox;
     private JCheckBox forCheckBox;
-    private JCheckBox newCheckBox;
-    private JCheckBox switchCheckBox;
+    private JCheckBox trueCheckBox;
+    private JCheckBox andCheckBox;
+    private JCheckBox asCheckBox;
+    private JCheckBox classCheckBox;
+    private JCheckBox delCheckBox;
+    private JCheckBox importCheckBox;
+    private JCheckBox nonlocalCheckBox;
+    private JCheckBox passCheckBox;
     private JCheckBox assertCheckBox;
-    private JCheckBox ifCheckBox;
-    private JCheckBox throwCheckBox;
-    private JCheckBox instanceofCheckBox;
-    private JCheckBox intCheckBox;
-    private JCheckBox finalCheckBox;
-    private JCheckBox floatCheckBox;
-    private JCheckBox synchronizedCheckBox;
-    private JCheckBox thisCheckBox;
-    private JCheckBox byteCheckBox;
-    private JCheckBox returnCheckBox;
-    private JCheckBox shortCheckBox;
+    private JCheckBox continueCheckBox;
+    private JCheckBox elifCheckBox;
+    private JCheckBox fromCheckBox;
+    private JCheckBox inCheckBox;
     private JCheckBox finallyCheckBox;
-    private JCheckBox superCheckBox;
-    private JCheckBox whileCheckBox;
-    private JCheckBox longCheckBox;
-    private JCheckBox strictfpCheckBox;
-    private JCheckBox tryCheckBox;
-    private JCheckBox charCheckBox;
-    private JCheckBox catchCheckBox;
-    private JCheckBox transientCheckBox;
-    private JCheckBox caseCheckBox;
+    private JCheckBox raiseCheckBox;
+    private JCheckBox returnCheckBox;
+    private JCheckBox notCheckBox;
+    private JCheckBox orCheckBox;
+    private JCheckBox isCheckBox;
+    private JCheckBox lambdaCheckBox;
+    private JCheckBox ifCheckBox;
+    private JCheckBox globalCheckBox;
+    private JCheckBox exceptCheckBox;
     private JCheckBox elseCheckBox;
-    private JCheckBox doubleCheckBox;
+    private JCheckBox defCheckBox;
     private JCheckBox breakCheckBox;
-    private JCheckBox doCheckBox;
-    private JCheckBox booleanCheckBox;
+    private JCheckBox awaitCheckBox;
+    private JCheckBox asyncCheckBox;
+    private JCheckBox tryCheckBox;
+    private JCheckBox whileCheckBox;
+    private JCheckBox withCheckBox;
+    private JCheckBox yieldCheckBox;
+
     private JCheckBox totalConnectivityInSegmentCheckBox;
     private JCheckBox requiredSubmetricCheckBox2;
     private JCheckBox connectivityDensityPerLineCheckBox;
@@ -161,42 +164,47 @@ public class AdvancedProjectSettingsComponent {
     }
 
     public enum JavaKeywords {
-        CONTINUE, FOR, NEW, SWITCH, ASSERT, SYNCHRONIZED, BOOLEAN, DO, IF, THIS, BREAK, DOUBLE, THROW, BYTE, ELSE,
-        CASE, INSTANCEOF, RETURN, TRANSIENT, CATCH, INT, SHORT, TRY, CHAR, FINAL, FINALLY, LONG, STRICTFP, FLOAT, SUPER, WHILE
+        FALSE, NONE, TRUE, AND, AS, ASSERT, ASYNC, AWAIT, BREAK, CLASS, CONTINUE, DEF, DEL, ELIF, ELSE,
+        EXCEPT, FINALLY, FOR, FROM, GLOBAL, IF, IMPORT, IN, IS, LAMBDA, NONLOCAL, NOT, OR, PASS, RAISE, RETURN,
+        TRY, WHILE, WITH, YIELD
     }
 
     public void setActiveKeywords(EnumMap<JavaKeywords, Boolean> active) {
-        continueCheckBox.setSelected(active.get(JavaKeywords.CONTINUE));
-        forCheckBox.setSelected(active.get(JavaKeywords.FOR));
-        newCheckBox.setSelected(active.get(JavaKeywords.NEW));
-        switchCheckBox.setSelected(active.get(JavaKeywords.SWITCH));
+        falseCheckBox.setSelected(active.get(JavaKeywords.FALSE));
+        forCheckBox.setSelected(active.get(JavaKeywords.NONE));
+        trueCheckBox.setSelected(active.get(JavaKeywords.TRUE));
+        andCheckBox.setSelected(active.get(JavaKeywords.AND));
+        asCheckBox.setSelected(active.get(JavaKeywords.AS));
         assertCheckBox.setSelected(active.get(JavaKeywords.ASSERT));
-        synchronizedCheckBox.setSelected(active.get(JavaKeywords.SYNCHRONIZED));
-        booleanCheckBox.setSelected(active.get(JavaKeywords.BOOLEAN));
-        doCheckBox.setSelected(active.get(JavaKeywords.DO));
-        ifCheckBox.setSelected(active.get(JavaKeywords.IF));
-        thisCheckBox.setSelected(active.get(JavaKeywords.THIS));
+        asyncCheckBox.setSelected(active.get(JavaKeywords.ASYNC));
+        awaitCheckBox.setSelected(active.get(JavaKeywords.AWAIT));
         breakCheckBox.setSelected(active.get(JavaKeywords.BREAK));
-        doubleCheckBox.setSelected(active.get(JavaKeywords.DOUBLE));
-        throwCheckBox.setSelected(active.get(JavaKeywords.THROW));
-        byteCheckBox.setSelected(active.get(JavaKeywords.BYTE));
+        classCheckBox.setSelected(active.get(JavaKeywords.CLASS));
+        continueCheckBox.setSelected(active.get(JavaKeywords.CONTINUE));
+        defCheckBox.setSelected(active.get(JavaKeywords.DEF));
+        delCheckBox.setSelected(active.get(JavaKeywords.DEL));
+        elifCheckBox.setSelected(active.get(JavaKeywords.ELIF));
         elseCheckBox.setSelected(active.get(JavaKeywords.ELSE));
-        caseCheckBox.setSelected(active.get(JavaKeywords.CASE));
-        instanceofCheckBox.setSelected(active.get(JavaKeywords.INSTANCEOF));
-        returnCheckBox.setSelected(active.get(JavaKeywords.RETURN));
-        transientCheckBox.setSelected(active.get(JavaKeywords.TRANSIENT));
-        catchCheckBox.setSelected(active.get(JavaKeywords.CATCH));
-        intCheckBox.setSelected(active.get(JavaKeywords.INT));
-        shortCheckBox.setSelected(active.get(JavaKeywords.SHORT));
-        tryCheckBox.setSelected(active.get(JavaKeywords.TRY));
-        charCheckBox.setSelected(active.get(JavaKeywords.CHAR));
-        finalCheckBox.setSelected(active.get(JavaKeywords.FINAL));
+        exceptCheckBox.setSelected(active.get(JavaKeywords.EXCEPT));
         finallyCheckBox.setSelected(active.get(JavaKeywords.FINALLY));
-        longCheckBox.setSelected(active.get(JavaKeywords.LONG));
-        strictfpCheckBox.setSelected(active.get(JavaKeywords.STRICTFP));
-        floatCheckBox.setSelected(active.get(JavaKeywords.FLOAT));
-        superCheckBox.setSelected(active.get(JavaKeywords.SUPER));
+        forCheckBox.setSelected(active.get(JavaKeywords.FOR));
+        fromCheckBox.setSelected(active.get(JavaKeywords.FROM));
+        globalCheckBox.setSelected(active.get(JavaKeywords.GLOBAL));
+        ifCheckBox.setSelected(active.get(JavaKeywords.IF));
+        importCheckBox.setSelected(active.get(JavaKeywords.IMPORT));
+        inCheckBox.setSelected(active.get(JavaKeywords.IN));
+        isCheckBox.setSelected(active.get(JavaKeywords.IS));
+        lambdaCheckBox.setSelected(active.get(JavaKeywords.LAMBDA));
+        nonlocalCheckBox.setSelected(active.get(JavaKeywords.NONLOCAL));
+        notCheckBox.setSelected(active.get(JavaKeywords.NOT));
+        orCheckBox.setSelected(active.get(JavaKeywords.OR));
+        passCheckBox.setSelected(active.get(JavaKeywords.PASS));
+        raiseCheckBox.setSelected(active.get(JavaKeywords.RAISE));
+        returnCheckBox.setSelected(active.get(JavaKeywords.RETURN));
+        tryCheckBox.setSelected(active.get(JavaKeywords.TRY));
         whileCheckBox.setSelected(active.get(JavaKeywords.WHILE));
+        withCheckBox.setSelected(active.get(JavaKeywords.WITH));
+        yieldCheckBox.setSelected(active.get(JavaKeywords.YIELD));
     }
 
     public void setKeywordTotalSubmetric(boolean enabled, boolean required) {
@@ -289,37 +297,41 @@ public class AdvancedProjectSettingsComponent {
     public EnumMap<JavaKeywords, Boolean> getActiveKeywords() {
         EnumMap<JavaKeywords, Boolean> activeKeywords = new EnumMap<>(JavaKeywords.class);
 
-        activeKeywords.put(JavaKeywords.CONTINUE, continueCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FOR, forCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.NEW, newCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SWITCH, switchCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.FALSE, falseCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.NONE, forCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.TRUE, trueCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.AND, andCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.AS, asCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.ASSERT, assertCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SYNCHRONIZED, synchronizedCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.BOOLEAN, booleanCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.DO, doCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.IF, ifCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.THIS, thisCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.ASYNC, asyncCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.AWAIT, awaitCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.CLASS, classCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.CONTINUE, continueCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.BREAK, breakCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.DOUBLE, doubleCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.THROW, throwCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.BYTE, byteCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.DEF, defCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.DEL, delCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.ELIF, elifCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.ELSE, elseCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.CASE, caseCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.INSTANCEOF, instanceofCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.TRANSIENT, transientCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.CATCH, catchCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.INT, intCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SHORT, shortCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.TRY, tryCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.CHAR, charCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FINAL, finalCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.EXCEPT, exceptCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.FOR, forCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.FROM, fromCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.GLOBAL, globalCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.IF, ifCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.IMPORT, importCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.IN, inCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.IS, isCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.LAMBDA, lambdaCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.NONLOCAL, nonlocalCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.FINALLY, finallyCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.LONG, longCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.STRICTFP, strictfpCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FLOAT, floatCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SUPER, superCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.WHILE, whileCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.NOT, notCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.OR, orCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.PASS, passCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.RAISE, raiseCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
 
         return activeKeywords;
     }

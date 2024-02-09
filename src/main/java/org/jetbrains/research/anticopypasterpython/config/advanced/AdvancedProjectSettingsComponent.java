@@ -15,18 +15,19 @@ public class AdvancedProjectSettingsComponent {
     private JCheckBox keywordDensityPerLineCheckBox;
     private JCheckBox requiredSubmetricCheckBox1;
     private JCheckBox falseCheckBox;
-    private JCheckBox forCheckBox;
+    private JCheckBox noneCheckBox;
     private JCheckBox trueCheckBox;
     private JCheckBox andCheckBox;
     private JCheckBox asCheckBox;
-    private JCheckBox classCheckBox;
+    private JCheckBox breakCheckBox;
     private JCheckBox delCheckBox;
     private JCheckBox importCheckBox;
     private JCheckBox nonlocalCheckBox;
     private JCheckBox passCheckBox;
     private JCheckBox assertCheckBox;
-    private JCheckBox continueCheckBox;
+    private JCheckBox classCheckBox;
     private JCheckBox elifCheckBox;
+    private JCheckBox forCheckBox;
     private JCheckBox fromCheckBox;
     private JCheckBox inCheckBox;
     private JCheckBox finallyCheckBox;
@@ -41,7 +42,7 @@ public class AdvancedProjectSettingsComponent {
     private JCheckBox exceptCheckBox;
     private JCheckBox elseCheckBox;
     private JCheckBox defCheckBox;
-    private JCheckBox breakCheckBox;
+    private JCheckBox continueCheckBox;
     private JCheckBox awaitCheckBox;
     private JCheckBox asyncCheckBox;
     private JCheckBox tryCheckBox;
@@ -171,7 +172,7 @@ public class AdvancedProjectSettingsComponent {
 
     public void setActiveKeywords(EnumMap<JavaKeywords, Boolean> active) {
         falseCheckBox.setSelected(active.get(JavaKeywords.FALSE));
-        forCheckBox.setSelected(active.get(JavaKeywords.NONE));
+        noneCheckBox.setSelected(active.get(JavaKeywords.NONE));
         trueCheckBox.setSelected(active.get(JavaKeywords.TRUE));
         andCheckBox.setSelected(active.get(JavaKeywords.AND));
         asCheckBox.setSelected(active.get(JavaKeywords.AS));
@@ -179,7 +180,7 @@ public class AdvancedProjectSettingsComponent {
         asyncCheckBox.setSelected(active.get(JavaKeywords.ASYNC));
         awaitCheckBox.setSelected(active.get(JavaKeywords.AWAIT));
         breakCheckBox.setSelected(active.get(JavaKeywords.BREAK));
-        classCheckBox.setSelected(active.get(JavaKeywords.CLASS));
+        breakCheckBox.setSelected(active.get(JavaKeywords.CLASS));
         continueCheckBox.setSelected(active.get(JavaKeywords.CONTINUE));
         defCheckBox.setSelected(active.get(JavaKeywords.DEF));
         delCheckBox.setSelected(active.get(JavaKeywords.DEL));
@@ -298,7 +299,7 @@ public class AdvancedProjectSettingsComponent {
         EnumMap<JavaKeywords, Boolean> activeKeywords = new EnumMap<>(JavaKeywords.class);
 
         activeKeywords.put(JavaKeywords.FALSE, falseCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.NONE, forCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.NONE, noneCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.TRUE, trueCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.AND, andCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.AS, asCheckBox.isSelected());
@@ -328,10 +329,10 @@ public class AdvancedProjectSettingsComponent {
         activeKeywords.put(JavaKeywords.PASS, passCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.RAISE, raiseCheckBox.isSelected());
         activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.TRY, tryCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.WHILE, withCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.WITH, withCheckBox.isSelected());
+        activeKeywords.put(JavaKeywords.YIELD, yieldCheckBox.isSelected());
 
         return activeKeywords;
     }

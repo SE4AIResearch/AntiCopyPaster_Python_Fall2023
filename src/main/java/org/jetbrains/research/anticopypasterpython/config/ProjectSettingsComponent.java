@@ -41,6 +41,7 @@ public class ProjectSettingsComponent {
     private JLabel waitTimeHelp;
     private JLabel statisticsButtonHelp;
     private JLabel advancedButtonHelp;
+    private JCheckBox highlight;
 
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
@@ -57,6 +58,7 @@ public class ProjectSettingsComponent {
             boolean displayAndResolveCredentials = credentialsDialog.showAndGet();
             credentialsDialog.saveSettings(displayAndResolveCredentials);
         });
+
         addConditionallyEnabledMetricGroup(keywordsEnabledCheckBox,keywordsSlider,keywordsRequiredCheckBox);
         addConditionallyEnabledMetricGroup(couplingEnabledCheckBox,couplingSlider,couplingRequiredCheckBox);
         addConditionallyEnabledMetricGroup(complexityEnabledCheckBox, complexitySlider, complexityRequiredCheckBox);
@@ -95,6 +97,10 @@ public class ProjectSettingsComponent {
     public int getTimeBuffer() { return (int) timeBufferSelector.getValue(); }
 
     public void setTimeBuffer(int timeBuffer) { timeBufferSelector.setValue(timeBuffer); }
+
+    public boolean getHighlight() { return highlight.isSelected();}
+
+    public void setHighlight(boolean enabled) { highlight.setSelected(enabled);}
 
     public int getKeywordsSensitivity() {
         return keywordsSlider.getValue();
@@ -198,7 +204,7 @@ public class ProjectSettingsComponent {
 
         // Set link and icons for help features
         helpLabel = new JLabel();
-        createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Summer2023/index.html");
+        createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Python_Website_Fall2023/");
         helpLabel.setIcon(AllIcons.Ide.External_link_arrow);
         duplicateMethodsHelp = new JLabel();
         duplicateMethodsHelp.setIcon(AllIcons.General.ContextHelp);

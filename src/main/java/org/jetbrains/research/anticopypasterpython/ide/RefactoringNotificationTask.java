@@ -85,8 +85,8 @@ public class RefactoringNotificationTask extends TimerTask {
                     fr.write("\n-----------------------\nInitial Metric Thresholds: " +
                             timestamp + "\n");
                     //System.out.println("Line 76");
-                } catch(IOException ioe) { ioe.printStackTrace(); }
-                System.out.println("InitMOdelError");
+                } catch(IOException ioe) { ioe.printStackTrace();
+                System.out.println("InitModelError");}
                 settingsModel.logThresholds(logFilePath);
             }
         }

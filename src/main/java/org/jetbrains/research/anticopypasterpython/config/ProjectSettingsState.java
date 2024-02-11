@@ -6,7 +6,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsComponent.JavaKeywords;
+import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsComponent.PythonKeywords;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,9 +31,9 @@ public final class ProjectSettingsState implements PersistentStateComponent<Proj
 
     // Keyword Metric
     public Boolean[] measureKeywordsTotal = {false, false}, measureKeywordsDensity = {true, true};
-    public EnumMap<JavaKeywords, Boolean> activeKeywords = new EnumMap<>(JavaKeywords.class);
+    public EnumMap<PythonKeywords, Boolean> activeKeywords = new EnumMap<>(PythonKeywords.class);
     {
-        for (JavaKeywords keyword : JavaKeywords.values()) {
+        for (PythonKeywords keyword : PythonKeywords.values()) {
             activeKeywords.put(keyword, true);
         }
     }

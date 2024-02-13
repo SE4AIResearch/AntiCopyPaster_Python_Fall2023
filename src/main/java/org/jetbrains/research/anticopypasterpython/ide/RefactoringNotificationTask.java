@@ -28,6 +28,7 @@ import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
 import org.jetbrains.research.anticopypasterpython.models.PredictionModel;
+import org.jetbrains.research.anticopypasterpython.models.TensorflowModel;
 import org.jetbrains.research.anticopypasterpython.models.UserSettingsModel;
 import org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterUsageStatistics;
 import org.jetbrains.research.anticopypasterpython.utils.MetricsGatherer;
@@ -74,21 +75,24 @@ public class RefactoringNotificationTask extends TimerTask {
         PredictionModel model = this.model;
         //System.out.println("Line 67");
         //System.out.println(model == null);
+//        if (model == null) {
+//          model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
+//            //System.out.println("Line 71");
+//           if(debugMetrics){
+//                UserSettingsModel settingsModel = (UserSettingsModel) model;
+//                try(FileWriter fr = new FileWriter(logFilePath, true)){
+//                    String timestamp =
+//                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
+//                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
+//                            timestamp + "\n");
+//                    //System.out.println("Line 76");
+//                } catch(IOException ioe) { ioe.printStackTrace(); }
+//                System.out.println("InitMOdelError");
+//                settingsModel.logThresholds(logFilePath);
+//            }
+//        }
         if (model == null) {
-          model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
-            //System.out.println("Line 71");
-           if(debugMetrics){
-                UserSettingsModel settingsModel = (UserSettingsModel) model;
-                try(FileWriter fr = new FileWriter(logFilePath, true)){
-                    String timestamp =
-                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
-                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
-                            timestamp + "\n");
-                    //System.out.println("Line 76");
-                } catch(IOException ioe) { ioe.printStackTrace(); }
-                System.out.println("InitMOdelError");
-                settingsModel.logThresholds(logFilePath);
-            }
+            model = this.model = new TensorflowModel();
         }
         return model;
     }
@@ -186,15 +190,22 @@ public class RefactoringNotificationTask extends TimerTask {
             //System.out.println("Line 92");
             try {
                 final RefactoringEvent event = eventsQueue.poll();
+//                ApplicationManager.getApplication().runReadAction(() -> {
+//                    //System.out.println("94");
+//                    DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
+//                    // This only triggers if there are duplicates found in at least as many
+//                    // methods as specified by the user in configurations.
+//
+//                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
+//
+//                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
+//                        return;
+//                    }
+
+
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    //System.out.println("94");
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
-                    // This only triggers if there are duplicates found in at least as many
-                    // methods as specified by the user in configurations.
-
-                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
-
-                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
+                    if (result.getDuplicatesCount() < 2) {
                         return;
                     }
                     HashSet<String> variablesInCodeFragment = new HashSet<>();
@@ -214,40 +225,48 @@ public class RefactoringNotificationTask extends TimerTask {
                     float prediction = model.predict(featuresVector);
                     System.out.println(prediction);
                     //float prediction = 999999999;
-                    if (debugMetrics) {
-                        UserSettingsModel settingsModel = (UserSettingsModel) model;
-                        try (FileWriter fr = new FileWriter(logFilePath, true)) {
-                            String timestamp =
-                                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
-
-                            fr.write("\n-----------------------\nNEW COPY/PASTE EVENT: "
-                                    + timestamp + "\nPASTED CODE:\n"
-                                    + event.getText());
-
-                            if (prediction > predictionThreshold) {
-                                fr.write("\n\nSent Notification: True");
-                            } else {
-                                fr.write("\n\nSent Notification: False");
-                            }
-                            fr.write("\n\nSent Notification: True");
-                            fr.write("\nMETRICS\n");
-                        } catch (IOException ioe) {
-                            ioe.printStackTrace();
-                        }
-                        //settingsModel.logMetrics(logFilePath); BROKEN
-                    }
+//                    if (debugMetrics) {
+//                        UserSettingsModel settingsModel = (UserSettingsModel) model;
+//                        try (FileWriter fr = new FileWriter(logFilePath, true)) {
+//                            String timestamp =
+//                                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
+//
+//                            fr.write("\n-----------------------\nNEW COPY/PASTE EVENT: "
+//                                    + timestamp + "\nPASTED CODE:\n"
+//                                    + event.getText());
+//
+//                            if (prediction > predictionThreshold) {
+//                                fr.write("\n\nSent Notification: True");
+//                            } else {
+//                                fr.write("\n\nSent Notification: False");
+//                            }
+//                            fr.write("\n\nSent Notification: True");
+//                            fr.write("\nMETRICS\n");
+//                        } catch (IOException ioe) {
+//                            ioe.printStackTrace();
+//                        }
+//                        //settingsModel.logMetrics(logFilePath); BROKEN
+//                    }
                     event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                             "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
 
-                    if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
-                        //System.out.println("Notification task 138");
-                        if (true) {
-                            notify(event.getProject(),
-                                    AntiCopyPasterPythonBundle.message(
-                                            "extract.method.refactoring.is.available"),
-                                    getRunnableToShowSuggestionDialog(event)
-                            );
-                        }
+//                    if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
+//                        //System.out.println("Notification task 138");
+//                        if (true) {
+//                            notify(event.getProject(),
+//                                    AntiCopyPasterPythonBundle.message(
+//                                            "extract.method.refactoring.is.available"),
+//                                    getRunnableToShowSuggestionDialog(event)
+//                            );
+//                        }
+//                    }
+                    if ((event.isForceExtraction() || prediction > predictionThreshold) &&
+                            canBeExtracted(event)) {
+                        notify(event.getProject(),
+                                AntiCopyPasterPythonBundle.message(
+                                        "extract.method.refactoring.is.available"),
+                                getRunnableToShowSuggestionDialog(event)
+                        );
                     }
                 });
             }

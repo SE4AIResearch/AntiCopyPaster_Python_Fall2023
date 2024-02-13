@@ -1,10 +1,16 @@
 package org.jetbrains.research.anticopypasterpython.ide;
 
 import com.intellij.CommonBundle;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.highlighting.actions.HighlightUsagesAction;
+import com.intellij.codeInsight.intention.impl.preview.IntentionPreviewDiffResult;
 import com.intellij.notification.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.ex.RangeHighlighterEx;
+import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
@@ -12,6 +18,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.scope.DelegatingScopeProcessor;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.ui.HighlightedText;
+import com.intellij.vcs.log.ui.actions.HighlightersActionGroup;
 import com.jetbrains.python.codeInsight.codeFragment.PyCodeFragment;
 import com.jetbrains.python.codeInsight.codeFragment.PyCodeFragmentUtil;
 import com.jetbrains.python.codeInsight.controlflow.ScopeOwner;
@@ -19,10 +27,11 @@ import com.jetbrains.python.psi.PyFunction;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.PyFile;
 
+import com.intellij.codeInsight.highlighting.*;
+
 //import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
 //import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
-import com.jetbrains.python.refactoring.extractmethod.*;
 
 import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
@@ -56,6 +65,8 @@ public class RefactoringNotificationTask extends TimerTask {
     private final ConcurrentLinkedQueue<RefactoringEvent> eventsQueue = new ConcurrentLinkedQueue<>();
     private final NotificationGroup notificationGroup = NotificationGroupManager.getInstance()
             .getNotificationGroup("Extract Method suggestion");
+//    private final HighlightersActionGroup = HighlightManager.
+    public Editor editor;
     private final Timer timer;
     private PredictionModel model;
     private final boolean debugMetrics = true;
@@ -141,6 +152,18 @@ public class RefactoringNotificationTask extends TimerTask {
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
     }
 
+    public void highlight(Project project, RefactoringEvent event, String content, Runnable callback){
+       var a = HighlightManager.getInstance(project);
+       int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
+       int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
+       for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
+           System.out.println(TextAttributesKey.getAllKeys().get(i));
+
+       }
+       a.addOccurrenceHighlight(event.getEditor(),startOffset+100,endOffset+10, TextAttributesKey.getAllKeys().get(0),endOffset,null);
+       System.out.println("highlight manager: "+a);
+    }
+
     private void scheduleExtraction(Project project, PsiFile file, Editor editor, String text) {
         timer.schedule(
                 new ExtractionTask(editor, file, text, project),
@@ -159,15 +182,15 @@ public class RefactoringNotificationTask extends TimerTask {
         //here we know the event is not null; This means it is probably an issue where new RefactoringEvent() is being called
         PyFile file = event.getFile();
         PyFunction methodAfterPasting = event.getDestinationMethod();
-        int eventBeginLine = getNumberOfLine(file,
-                methodAfterPasting.getTextRange().getStartOffset());
-        int eventEndLine = getNumberOfLine(file,
-                methodAfterPasting.getTextRange().getEndOffset());
-        MetricCalculator metricCalculator =
-                new MetricCalculator(methodAfterPasting, event.getText(),
-                        eventBeginLine, eventEndLine);
+        if(methodAfterPasting!=null){
+            int eventBeginLine = getNumberOfLine(file, methodAfterPasting.getTextRange().getStartOffset());
+            int eventEndLine = getNumberOfLine(file, methodAfterPasting.getTextRange().getEndOffset());
+            MetricCalculator metricCalculator = new MetricCalculator(methodAfterPasting, event.getText(), eventBeginLine, eventEndLine);
 
-        return metricCalculator.getFeaturesVector();
+            return metricCalculator.getFeaturesVector();
+        }
+        System.out.println("methodAfterPasting is null (RefactoringNotificationTask) line 161");
+        return null;
     }
 
     public void setProject(Project p) {
@@ -242,6 +265,10 @@ public class RefactoringNotificationTask extends TimerTask {
                     if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
                         //System.out.println("Notification task 138");
                         if (true) {
+                            highlight(event.getProject(),event,AntiCopyPasterPythonBundle.message(
+                                            "extract.method.refactoring.is.available"),
+                                    getRunnableToShowSuggestionDialog(event));
+
                             notify(event.getProject(),
                                     AntiCopyPasterPythonBundle.message(
                                             "extract.method.refactoring.is.available"),

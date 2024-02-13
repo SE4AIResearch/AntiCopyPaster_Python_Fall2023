@@ -72,24 +72,24 @@ public class RefactoringNotificationTask extends TimerTask {
 
     private PredictionModel getOrInitModel() {
         PredictionModel model = this.model;
-        System.out.println("Line 67");
-        System.out.println(model == null);
-//        if (model == null) {
-//            model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
-//            System.out.println("Line 71");
-//            if(debugMetrics){
-//                UserSettingsModel settingsModel = (UserSettingsModel) model;
-//                try(FileWriter fr = new FileWriter(logFilePath, true)){
-//                    String timestamp =
-//                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
-//                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
-//                            timestamp + "\n");
-//                    System.out.println("Line 76");
-//                } catch(IOException ioe) { ioe.printStackTrace(); }
-//                System.out.println("InitMOdelError");
-//                settingsModel.logThresholds(logFilePath);
-//            }
-//        }
+        //System.out.println("Line 67");
+        //System.out.println(model == null);
+        if (model == null) {
+          model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
+            //System.out.println("Line 71");
+           if(debugMetrics){
+                UserSettingsModel settingsModel = (UserSettingsModel) model;
+                try(FileWriter fr = new FileWriter(logFilePath, true)){
+                    String timestamp =
+                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
+                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
+                            timestamp + "\n");
+                    //System.out.println("Line 76");
+                } catch(IOException ioe) { ioe.printStackTrace(); }
+                System.out.println("InitMOdelError");
+                settingsModel.logThresholds(logFilePath);
+            }
+        }
         return model;
     }
 
@@ -179,15 +179,15 @@ public class RefactoringNotificationTask extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("87");
+       // System.out.println("87");
         while (!eventsQueue.isEmpty()) {
-            System.out.println("89");
+           // System.out.println("89");
             final PredictionModel model = getOrInitModel();
-            System.out.println("Line 92");
+            //System.out.println("Line 92");
             try {
                 final RefactoringEvent event = eventsQueue.poll();
                 ApplicationManager.getApplication().runReadAction(() -> {
-                    System.out.println("94");
+                    //System.out.println("94");
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
                     // This only triggers if there are duplicates found in at least as many
                     // methods as specified by the user in configurations.
@@ -207,12 +207,13 @@ public class RefactoringNotificationTask extends TimerTask {
                         System.out.println("Notification task 110");
                         return;
                     }
-                    System.out.println("event in RefactoringNotificationTask from eventsQueue:" + event.getText());
+                    //System.out.println("event in RefactoringNotificationTask from eventsQueue:" + event.getText());
                     FeaturesVector featuresVector = calculateFeatures(event);
-                    System.out.println("Features vector: " + featuresVector.toString());
+                    //System.out.println("Features vector: " + featuresVector.toString());
 
-                    //float prediction = model.predict(featuresVector); BROKEN
-                    float prediction = 999999999;
+                    float prediction = model.predict(featuresVector);
+                    System.out.println(prediction);
+                    //float prediction = 999999999;
                     if (debugMetrics) {
                         UserSettingsModel settingsModel = (UserSettingsModel) model;
                         try (FileWriter fr = new FileWriter(logFilePath, true)) {
@@ -239,7 +240,7 @@ public class RefactoringNotificationTask extends TimerTask {
                             "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
 
                     if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
-                        System.out.println("Notification task 138");
+                        //System.out.println("Notification task 138");
                         if (true) {
                             notify(event.getProject(),
                                     AntiCopyPasterPythonBundle.message(

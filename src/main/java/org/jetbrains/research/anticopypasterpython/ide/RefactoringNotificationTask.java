@@ -5,6 +5,7 @@ import com.intellij.notification.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
@@ -101,6 +102,7 @@ public class RefactoringNotificationTask extends TimerTask {
         return PyExtractMethodHandler.checkExtraction(project, editor, file);
     }
 
+
     private Runnable getRunnableToShowSuggestionDialog(RefactoringEvent event) {
         return () -> {
             String message = event.getReasonToExtract();
@@ -131,6 +133,13 @@ public class RefactoringNotificationTask extends TimerTask {
             }
         };
     }
+
+    private void getHighlight(RefactoringEvent event) {
+            Editor e = event.getEditor();
+            int startOffset = getStartOffset(e, event.getFile(), event.getText());
+            int endOffset= startOffset+event.getText().length();
+            RangeHighlighter highlighter = e.getMarkupModel().addRangeHighlighter(null, startOffset,endOffset,100,HighlighterTargetArea.EXACT_RANGE);
+        }
 
     public void notify(Project project, String content, Runnable callback) {
         final Notification notification = notificationGroup.createNotification(content, NotificationType.INFORMATION);
@@ -241,12 +250,13 @@ public class RefactoringNotificationTask extends TimerTask {
 
                     if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
                         //System.out.println("Notification task 138");
-                        if (true) {
-                            notify(event.getProject(),
-                                    AntiCopyPasterPythonBundle.message(
-                                            "extract.method.refactoring.is.available"),
-                                    getRunnableToShowSuggestionDialog(event)
-                            );
+                        if (settings.highlight) {
+                            getHighlight(event);
+                        }else{notify(event.getProject(),
+                                AntiCopyPasterPythonBundle.message(
+                                        "extract.method.refactoring.is.available"),
+                                getRunnableToShowSuggestionDialog(event)
+                        );
                         }
                     }
                 });

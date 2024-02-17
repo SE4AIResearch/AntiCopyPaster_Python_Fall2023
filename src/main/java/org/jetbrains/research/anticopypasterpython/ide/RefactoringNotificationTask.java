@@ -170,7 +170,7 @@ public class RefactoringNotificationTask extends TimerTask {
        event.getEditor().addEditorMouseListener(new EditorMouseListener() {
             @Override
             public void mouseClicked(@NotNull EditorMouseEvent event) {
-                if (event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+                if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
                     callback.run();
                 }
             }

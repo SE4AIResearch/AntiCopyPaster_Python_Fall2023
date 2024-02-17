@@ -5,6 +5,10 @@ import com.intellij.notification.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.event.CaretAdapter;
+import com.intellij.openapi.editor.event.CaretEvent;
+import com.intellij.openapi.editor.event.EditorMouseEvent;
+import com.intellij.openapi.editor.event.EditorMouseListener;
 import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -25,6 +29,7 @@ import com.jetbrains.python.psi.PyFile;
 
 import com.jetbrains.python.refactoring.extractmethod.*;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
@@ -135,11 +140,51 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     private void getHighlight(RefactoringEvent event) {
-            Editor e = event.getEditor();
-            int startOffset = getStartOffset(e, event.getFile(), event.getText());
-            int endOffset= startOffset+event.getText().length();
-            RangeHighlighter highlighter = e.getMarkupModel().addRangeHighlighter(null, startOffset,endOffset,100,HighlighterTargetArea.EXACT_RANGE);
-        }
+        Editor editor = event.getEditor();
+        String highlightedText = event.getText();
+
+        MarkupModel markupModel = editor.getMarkupModel();
+
+        int startOffset = getStartOffset(editor, event.getFile(), highlightedText);
+        int endOffset = startOffset + highlightedText.length();
+
+        RangeHighlighter highlighter = markupModel.addRangeHighlighter(
+                startOffset,
+                endOffset,
+                HighlighterLayer.SELECTION - 1,
+                new TextAttributes(),
+                HighlighterTargetArea.EXACT_RANGE
+        );
+        String explanation = "This code fragment was identified as a potential candidate for method extraction "
+                + "by the AntiCopyPasterPython plugin. Click to refactor.";
+
+        highlighter.setErrorStripeTooltip(explanation);
+        editor.addEditorMouseListener(new EditorMouseListener() {
+            @Override
+            public void mouseClicked(@NotNull EditorMouseEvent e) {
+                int offset = editor.getCaretModel().getOffset();
+                if (offset >= startOffset && offset <= endOffset) {
+                    scheduleExtraction(event.getProject(), event.getFile(), editor, event.getText());
+                }
+            }
+
+            @Override
+            public void mousePressed(@NotNull EditorMouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(@NotNull EditorMouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(@NotNull EditorMouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(@NotNull EditorMouseEvent e) {
+            }
+        });
+    }
 
     public void notify(Project project, String content, Runnable callback) {
         final Notification notification = notificationGroup.createNotification(content, NotificationType.INFORMATION);

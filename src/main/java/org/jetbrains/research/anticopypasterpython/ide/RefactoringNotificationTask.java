@@ -9,6 +9,9 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.event.EditorMouseEvent;
+import com.intellij.openapi.editor.event.EditorMouseEventArea;
+import com.intellij.openapi.editor.event.EditorMouseListener;
 import com.intellij.openapi.editor.ex.RangeHighlighterEx;
 import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.project.Project;
@@ -33,6 +36,7 @@ import com.intellij.codeInsight.highlighting.*;
 //import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
@@ -160,8 +164,17 @@ public class RefactoringNotificationTask extends TimerTask {
            System.out.println(TextAttributesKey.getAllKeys().get(i));
 
        }
-       a.addOccurrenceHighlight(event.getEditor(),startOffset+100,endOffset+10, TextAttributesKey.getAllKeys().get(0),endOffset,null);
+       a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, TextAttributesKey.getAllKeys().get(0),endOffset,null);
        System.out.println("highlight manager: "+a);
+
+       event.getEditor().addEditorMouseListener(new EditorMouseListener() {
+            @Override
+            public void mouseClicked(@NotNull EditorMouseEvent event) {
+                if (event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+                    callback.run();
+                }
+            }
+        });
     }
 
     private void scheduleExtraction(Project project, PsiFile file, Editor editor, String text) {
@@ -236,7 +249,7 @@ public class RefactoringNotificationTask extends TimerTask {
 
                     float prediction = model.predict(featuresVector);
                     System.out.println(prediction);
-                    //float prediction = 999999999;
+                    prediction = 999999999;
                     if (debugMetrics) {
                         UserSettingsModel settingsModel = (UserSettingsModel) model;
                         try (FileWriter fr = new FileWriter(logFilePath, true)) {
@@ -264,11 +277,11 @@ public class RefactoringNotificationTask extends TimerTask {
 
                     if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
                         //System.out.println("Notification task 138");
-                        if (true) {
-                            highlight(event.getProject(),event,AntiCopyPasterPythonBundle.message(
+                        if (settings.highlight) {
+                            highlight(event.getProject(), event, AntiCopyPasterPythonBundle.message(
                                             "extract.method.refactoring.is.available"),
                                     getRunnableToShowSuggestionDialog(event));
-
+                        }else{
                             notify(event.getProject(),
                                     AntiCopyPasterPythonBundle.message(
                                             "extract.method.refactoring.is.available"),

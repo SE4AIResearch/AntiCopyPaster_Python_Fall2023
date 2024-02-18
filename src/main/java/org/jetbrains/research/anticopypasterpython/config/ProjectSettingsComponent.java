@@ -41,6 +41,8 @@ public class ProjectSettingsComponent {
     private JLabel waitTimeHelp;
     private JLabel statisticsButtonHelp;
     private JLabel advancedButtonHelp;
+    private JCheckBox tensorFlowModel;
+    private JLabel tensorFlowModelHelp;
 
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
@@ -57,6 +59,11 @@ public class ProjectSettingsComponent {
             boolean displayAndResolveCredentials = credentialsDialog.showAndGet();
             credentialsDialog.saveSettings(displayAndResolveCredentials);
         });
+
+        tensorFlowModel.addActionListener(e -> {
+            System.out.println("TensorFlow Enabled: " + tensorFlowModel.isEnabled());
+        });
+
         addConditionallyEnabledMetricGroup(keywordsEnabledCheckBox,keywordsSlider,keywordsRequiredCheckBox);
         addConditionallyEnabledMetricGroup(couplingEnabledCheckBox,couplingSlider,couplingRequiredCheckBox);
         addConditionallyEnabledMetricGroup(complexityEnabledCheckBox, complexitySlider, complexityRequiredCheckBox);
@@ -192,6 +199,8 @@ public class ProjectSettingsComponent {
         complexityRequiredCheckBox.setSelected(required);
     }
 
+    public boolean getTensorFlowModelEnabled(){return tensorFlowModel.isSelected();}
+
     private void createUIComponents() {
         minimumMethodSelector = new JBIntSpinner(2, 0, Integer.MAX_VALUE);
         timeBufferSelector = new JBIntSpinner(10, 1, 300);
@@ -208,6 +217,7 @@ public class ProjectSettingsComponent {
         advancedButtonHelp.setIcon(AllIcons.General.ContextHelp);
         statisticsButtonHelp = new JLabel();
         statisticsButtonHelp.setIcon(AllIcons.General.ContextHelp);
+        tensorFlowModelHelp.setIcon(AllIcons.General.ContextHelp);
     }
 
     public static void createLinkListener(JComponent component, String url) {

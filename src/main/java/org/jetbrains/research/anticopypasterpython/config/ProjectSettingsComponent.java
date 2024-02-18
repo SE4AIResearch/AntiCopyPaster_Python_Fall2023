@@ -201,6 +201,7 @@ public class ProjectSettingsComponent {
     }
 
     public boolean getTensorFlowModelEnabled(){return tensorFlowModel.isSelected();}
+    public void setTensorFlowModelEnabled(boolean enabled) { tensorFlowModel.setSelected(enabled);}
 
     private void createUIComponents() {
         minimumMethodSelector = new JBIntSpinner(2, 0, Integer.MAX_VALUE);

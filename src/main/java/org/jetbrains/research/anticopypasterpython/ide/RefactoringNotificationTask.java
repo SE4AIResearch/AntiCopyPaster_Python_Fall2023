@@ -74,19 +74,25 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     private PredictionModel getOrInitModel() {
-        boolean tensorFlowModel = true; // IMPORT FROM EDITOR SETTINGS LATER, PASS AS ARGUMENT
+        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
+        boolean tensorFlowModel = settings.tensorFlowEnabled;
         PredictionModel model = this.model;
 
         // It makes sense to decouple thresholds between the settings model and tensor model.
         if (tensorFlowModel) {
             predictionThreshold = tensorflowPredictionThreshold;
 
-            if (model == null) {
+            if (model != null && model instanceof UserSettingsModel)
+                model = null;
+
+            if (model == null)
                 model = this.model = new TensorflowModel();
-            }
         }
         else {
             predictionThreshold = usersettingsPredictionThreshold;
+
+            if (model != null && model instanceof TensorflowModel)
+                model = null;
 
             if (model == null) {
                 model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
@@ -98,12 +104,14 @@ public class RefactoringNotificationTask extends TimerTask {
                         fr.write("\n-----------------------\nInitial Metric Thresholds: " +
                                 timestamp + "\n");
                     } catch(IOException ioe) { ioe.printStackTrace(); }
-                    System.out.println("InitMOdelError");
+                    System.out.println("InitModelError");
                     settingsModel.logThresholds(logFilePath);
                 }
             }
         }
 
+        System.out.println("Model is tensorflow: " + (model instanceof TensorflowModel));
+        System.out.println(model);
         return model;
     }
 

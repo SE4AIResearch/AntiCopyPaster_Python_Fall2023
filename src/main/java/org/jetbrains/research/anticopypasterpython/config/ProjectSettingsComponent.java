@@ -62,7 +62,7 @@ public class ProjectSettingsComponent {
         });
 
         tensorFlowModel.addActionListener(e -> {
-            System.out.println("TensorFlow Enabled: " + tensorFlowModel.isEnabled());
+            System.out.println("TensorFlow Enabled: " + tensorFlowModel.isSelected());
         });
 
         addConditionallyEnabledMetricGroup(keywordsEnabledCheckBox,keywordsSlider,keywordsRequiredCheckBox);

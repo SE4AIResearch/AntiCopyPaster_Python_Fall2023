@@ -43,6 +43,7 @@ public class ProjectSettingsComponent {
     private JLabel advancedButtonHelp;
     private JCheckBox tensorFlowModel;
     private JLabel tensorFlowModelHelp;
+    private JLabel modelPreferencesPanel;
 
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
@@ -217,7 +218,6 @@ public class ProjectSettingsComponent {
         advancedButtonHelp.setIcon(AllIcons.General.ContextHelp);
         statisticsButtonHelp = new JLabel();
         statisticsButtonHelp.setIcon(AllIcons.General.ContextHelp);
-        tensorFlowModelHelp.setIcon(AllIcons.General.ContextHelp);
     }
 
     public static void createLinkListener(JComponent component, String url) {

@@ -12,6 +12,7 @@ public class RefactoringEventTest {
 
     @BeforeEach
     public void beforeTest() {
+        System.out.println("This was called");
         refactoringEvent = new RefactoringEvent(null, null, null, 0, null, null, 0);
     }
 

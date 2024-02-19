@@ -1,10 +1,19 @@
 package org.jetbrains.research.anticopypasterpython.ide;
 
 import com.intellij.CommonBundle;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.highlighting.actions.HighlightUsagesAction;
+import com.intellij.codeInsight.intention.impl.preview.IntentionPreviewDiffResult;
 import com.intellij.notification.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.event.EditorMouseEvent;
+import com.intellij.openapi.editor.event.EditorMouseEventArea;
+import com.intellij.openapi.editor.event.EditorMouseListener;
+import com.intellij.openapi.editor.ex.RangeHighlighterEx;
+import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
@@ -12,6 +21,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.scope.DelegatingScopeProcessor;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.ui.HighlightedText;
+import com.intellij.vcs.log.ui.actions.HighlightersActionGroup;
 import com.jetbrains.python.codeInsight.codeFragment.PyCodeFragment;
 import com.jetbrains.python.codeInsight.codeFragment.PyCodeFragmentUtil;
 import com.jetbrains.python.codeInsight.controlflow.ScopeOwner;
@@ -19,11 +30,13 @@ import com.jetbrains.python.psi.PyFunction;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.PyFile;
 
+import com.intellij.codeInsight.highlighting.*;
+
 //import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
 //import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
-import com.jetbrains.python.refactoring.extractmethod.*;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
@@ -56,6 +69,8 @@ public class RefactoringNotificationTask extends TimerTask {
     private final ConcurrentLinkedQueue<RefactoringEvent> eventsQueue = new ConcurrentLinkedQueue<>();
     private final NotificationGroup notificationGroup = NotificationGroupManager.getInstance()
             .getNotificationGroup("Extract Method suggestion");
+//    private final HighlightersActionGroup = HighlightManager.
+    public Editor editor;
     private final Timer timer;
     private PredictionModel model;
     private final boolean debugMetrics = true;
@@ -85,8 +100,8 @@ public class RefactoringNotificationTask extends TimerTask {
                     fr.write("\n-----------------------\nInitial Metric Thresholds: " +
                             timestamp + "\n");
                     //System.out.println("Line 76");
-                } catch(IOException ioe) { ioe.printStackTrace(); }
-                System.out.println("InitMOdelError");
+                } catch(IOException ioe) { ioe.printStackTrace();
+                System.out.println("InitModelError");}
                 settingsModel.logThresholds(logFilePath);
             }
         }
@@ -127,7 +142,9 @@ public class RefactoringNotificationTask extends TimerTask {
 
                 AntiCopyPasterUsageStatistics.getInstance(event.getProject()).extractMethodApplied();
             } else {
+                System.out.println("Cancel clicked");
                 AntiCopyPasterUsageStatistics.getInstance(event.getProject()).extractMethodRejected();
+                highlight(event.getProject(),event,false,null);
             }
         };
     }
@@ -139,6 +156,44 @@ public class RefactoringNotificationTask extends TimerTask {
                 callback));
         notification.notify(project);
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
+    }
+
+    public void highlight(Project project, RefactoringEvent event, boolean isHighlighting, Runnable callback){
+       HighlightManager hm = HighlightManager.getInstance(project);
+       int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
+       int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
+       for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
+//           System.out.println(i+": "+TextAttributesKey.getAllKeys().get(i));
+       }
+        Collection<RangeHighlighter> hc;
+
+        RangeHighlighter rh;
+//           rh.
+//           hc.add(rh);
+        List<TextAttributesKey> textHighlight = TextAttributesKey.getAllKeys();
+        TextAttributesKey tak = textHighlight.get(0);        //some green thing.         583 is rainbow but doesn't do anything???
+       if(isHighlighting){
+
+
+           hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, tak,endOffset,null);
+       }
+       else{
+           System.out.println("Not highlighting");
+//           event.
+           hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, null,endOffset,null);
+           return;
+
+       }
+       System.out.println("highlight manager: "+hm);
+
+       event.getEditor().addEditorMouseListener(new EditorMouseListener() {
+            @Override
+            public void mouseClicked(@NotNull EditorMouseEvent event) {
+                if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+                    callback.run();
+                }
+            }
+        });
     }
 
     private void scheduleExtraction(Project project, PsiFile file, Editor editor, String text) {
@@ -159,15 +214,15 @@ public class RefactoringNotificationTask extends TimerTask {
         //here we know the event is not null; This means it is probably an issue where new RefactoringEvent() is being called
         PyFile file = event.getFile();
         PyFunction methodAfterPasting = event.getDestinationMethod();
-        int eventBeginLine = getNumberOfLine(file,
-                methodAfterPasting.getTextRange().getStartOffset());
-        int eventEndLine = getNumberOfLine(file,
-                methodAfterPasting.getTextRange().getEndOffset());
-        MetricCalculator metricCalculator =
-                new MetricCalculator(methodAfterPasting, event.getText(),
-                        eventBeginLine, eventEndLine);
+        if(methodAfterPasting!=null){
+            int eventBeginLine = getNumberOfLine(file, methodAfterPasting.getTextRange().getStartOffset());
+            int eventEndLine = getNumberOfLine(file, methodAfterPasting.getTextRange().getEndOffset());
+            MetricCalculator metricCalculator = new MetricCalculator(methodAfterPasting, event.getText(), eventBeginLine, eventEndLine);
 
-        return metricCalculator.getFeaturesVector();
+            return metricCalculator.getFeaturesVector();
+        }
+        System.out.println("methodAfterPasting is null (RefactoringNotificationTask) line 161");
+        return null;
     }
 
     public void setProject(Project p) {
@@ -213,7 +268,7 @@ public class RefactoringNotificationTask extends TimerTask {
 
                     float prediction = model.predict(featuresVector);
                     System.out.println(prediction);
-                    //float prediction = 999999999;
+                    prediction = 999999999;
                     if (debugMetrics) {
                         UserSettingsModel settingsModel = (UserSettingsModel) model;
                         try (FileWriter fr = new FileWriter(logFilePath, true)) {
@@ -241,7 +296,10 @@ public class RefactoringNotificationTask extends TimerTask {
 
                     if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
                         //System.out.println("Notification task 138");
-                        if (true) {
+                        if (settings.highlight) {
+                            highlight(event.getProject(), event, true,
+                                    getRunnableToShowSuggestionDialog(event));
+                        }else{
                             notify(event.getProject(),
                                     AntiCopyPasterPythonBundle.message(
                                             "extract.method.refactoring.is.available"),

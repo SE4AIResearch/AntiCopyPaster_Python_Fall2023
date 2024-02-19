@@ -208,22 +208,14 @@ public class RefactoringNotificationTask extends TimerTask {
             //System.out.println("Line 92");
             try {
                 final RefactoringEvent event = eventsQueue.poll();
-//                ApplicationManager.getApplication().runReadAction(() -> {
-//                    //System.out.println("94");
-//                    DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
-//                    // This only triggers if there are duplicates found in at least as many
-//                    // methods as specified by the user in configurations.
-//
-//                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
-//
-//                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
-//                        return;
-//                    }
-
-
                 ApplicationManager.getApplication().runReadAction(() -> {
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
-                    if (result.getDuplicatesCount() < 2) {
+                    // This only triggers if there are duplicates found in at least as many
+                    // methods as specified by the user in configurations.
+
+                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
+
+                    if (!settings.tensorFlowEnabled && result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
                         return;
                     }
                     HashSet<String> variablesInCodeFragment = new HashSet<>();

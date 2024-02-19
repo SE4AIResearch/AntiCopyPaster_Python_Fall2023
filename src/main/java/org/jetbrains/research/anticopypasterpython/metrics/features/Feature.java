@@ -28,6 +28,7 @@ public enum Feature {
     KeywordFalseCountPerLine("KeywordFalseCountPerLine", 17),
     KeywordNoneTotalCount("KeywordNoneTotalCount", 18),
     KeywordNoneCountPerLine("KeywordNoneCountPerLine", 19),
+    KeywordTrueTotalCount("KeywordTrueTotalCount", 20),
     KeywordTrueCountPerLine("KeywordTrueCountPerLine", 21),
     KeywordAndTotalCount("KeywordAndTotalCount", 22),
     KeywordAndCountPerLine("KeywordAndCountPerLine", 23),

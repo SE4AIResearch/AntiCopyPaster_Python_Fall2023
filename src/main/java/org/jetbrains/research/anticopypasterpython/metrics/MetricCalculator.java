@@ -33,7 +33,7 @@ public class MetricCalculator {
         this.statementsStr = code;
         this.beginLine = beginLine;
         this.endLine = endLine;
-        this.featuresVector = new FeaturesVector(78); // TODO: Make dimension changeable outside
+        this.featuresVector = new FeaturesVector(86); // TODO: Make dimension changeable outside
         computeFeatureVector();
     }
 

@@ -141,13 +141,13 @@ public class AdvancedProjectSettingsComponent {
         selectAllButton.setIcon(AllIcons.Actions.Selectall);
         selectNoneButton.setIcon(AllIcons.Actions.Unselectall);
         selectAllButton.addActionListener(e -> {
-            EnumMap<JavaKeywords, Boolean> allTrueMap = new EnumMap<>(JavaKeywords.class);
-            for (JavaKeywords keyword : JavaKeywords.values()) { allTrueMap.put(keyword, true); }
+            EnumMap<PythonKeywords, Boolean> allTrueMap = new EnumMap<>(PythonKeywords.class);
+            for (PythonKeywords keyword : PythonKeywords.values()) { allTrueMap.put(keyword, true); }
             setActiveKeywords(allTrueMap);
         });
         selectNoneButton.addActionListener(e -> {
-            EnumMap<JavaKeywords, Boolean> allFalseMap = new EnumMap<>(JavaKeywords.class);
-            for (JavaKeywords keyword : JavaKeywords.values()) { allFalseMap.put(keyword, false); }
+            EnumMap<PythonKeywords, Boolean> allFalseMap = new EnumMap<>(PythonKeywords.class);
+            for (PythonKeywords keyword : PythonKeywords.values()) { allFalseMap.put(keyword, false); }
             setActiveKeywords(allFalseMap);
         });
 
@@ -160,43 +160,43 @@ public class AdvancedProjectSettingsComponent {
         enabledKeywordsHelp.setIcon(AllIcons.General.ContextHelp);
     }
 
-    public enum JavaKeywords {
+    public enum PythonKeywords {
         CONTINUE, FOR, NEW, SWITCH, ASSERT, SYNCHRONIZED, BOOLEAN, DO, IF, THIS, BREAK, DOUBLE, THROW, BYTE, ELSE,
         CASE, INSTANCEOF, RETURN, TRANSIENT, CATCH, INT, SHORT, TRY, CHAR, FINAL, FINALLY, LONG, STRICTFP, FLOAT, SUPER, WHILE
     }
 
-    public void setActiveKeywords(EnumMap<JavaKeywords, Boolean> active) {
-        continueCheckBox.setSelected(active.get(JavaKeywords.CONTINUE));
-        forCheckBox.setSelected(active.get(JavaKeywords.FOR));
-        newCheckBox.setSelected(active.get(JavaKeywords.NEW));
-        switchCheckBox.setSelected(active.get(JavaKeywords.SWITCH));
-        assertCheckBox.setSelected(active.get(JavaKeywords.ASSERT));
-        synchronizedCheckBox.setSelected(active.get(JavaKeywords.SYNCHRONIZED));
-        booleanCheckBox.setSelected(active.get(JavaKeywords.BOOLEAN));
-        doCheckBox.setSelected(active.get(JavaKeywords.DO));
-        ifCheckBox.setSelected(active.get(JavaKeywords.IF));
-        thisCheckBox.setSelected(active.get(JavaKeywords.THIS));
-        breakCheckBox.setSelected(active.get(JavaKeywords.BREAK));
-        doubleCheckBox.setSelected(active.get(JavaKeywords.DOUBLE));
-        throwCheckBox.setSelected(active.get(JavaKeywords.THROW));
-        byteCheckBox.setSelected(active.get(JavaKeywords.BYTE));
-        elseCheckBox.setSelected(active.get(JavaKeywords.ELSE));
-        caseCheckBox.setSelected(active.get(JavaKeywords.CASE));
-        instanceofCheckBox.setSelected(active.get(JavaKeywords.INSTANCEOF));
-        returnCheckBox.setSelected(active.get(JavaKeywords.RETURN));
-        transientCheckBox.setSelected(active.get(JavaKeywords.TRANSIENT));
-        catchCheckBox.setSelected(active.get(JavaKeywords.CATCH));
-        intCheckBox.setSelected(active.get(JavaKeywords.INT));
-        shortCheckBox.setSelected(active.get(JavaKeywords.SHORT));
-        tryCheckBox.setSelected(active.get(JavaKeywords.TRY));
-        charCheckBox.setSelected(active.get(JavaKeywords.CHAR));
-        finalCheckBox.setSelected(active.get(JavaKeywords.FINAL));
-        finallyCheckBox.setSelected(active.get(JavaKeywords.FINALLY));
-        longCheckBox.setSelected(active.get(JavaKeywords.LONG));
-        strictfpCheckBox.setSelected(active.get(JavaKeywords.STRICTFP));
-        floatCheckBox.setSelected(active.get(JavaKeywords.FLOAT));
-        superCheckBox.setSelected(active.get(JavaKeywords.SUPER));
-        whileCheckBox.setSelected(active.get(JavaKeywords.WHILE));
+    public void setActiveKeywords(EnumMap<PythonKeywords, Boolean> active) {
+        continueCheckBox.setSelected(active.get(PythonKeywords.CONTINUE));
+        forCheckBox.setSelected(active.get(PythonKeywords.FOR));
+        newCheckBox.setSelected(active.get(PythonKeywords.NEW));
+        switchCheckBox.setSelected(active.get(PythonKeywords.SWITCH));
+        assertCheckBox.setSelected(active.get(PythonKeywords.ASSERT));
+        synchronizedCheckBox.setSelected(active.get(PythonKeywords.SYNCHRONIZED));
+        booleanCheckBox.setSelected(active.get(PythonKeywords.BOOLEAN));
+        doCheckBox.setSelected(active.get(PythonKeywords.DO));
+        ifCheckBox.setSelected(active.get(PythonKeywords.IF));
+        thisCheckBox.setSelected(active.get(PythonKeywords.THIS));
+        breakCheckBox.setSelected(active.get(PythonKeywords.BREAK));
+        doubleCheckBox.setSelected(active.get(PythonKeywords.DOUBLE));
+        throwCheckBox.setSelected(active.get(PythonKeywords.THROW));
+        byteCheckBox.setSelected(active.get(PythonKeywords.BYTE));
+        elseCheckBox.setSelected(active.get(PythonKeywords.ELSE));
+        caseCheckBox.setSelected(active.get(PythonKeywords.CASE));
+        instanceofCheckBox.setSelected(active.get(PythonKeywords.INSTANCEOF));
+        returnCheckBox.setSelected(active.get(PythonKeywords.RETURN));
+        transientCheckBox.setSelected(active.get(PythonKeywords.TRANSIENT));
+        catchCheckBox.setSelected(active.get(PythonKeywords.CATCH));
+        intCheckBox.setSelected(active.get(PythonKeywords.INT));
+        shortCheckBox.setSelected(active.get(PythonKeywords.SHORT));
+        tryCheckBox.setSelected(active.get(PythonKeywords.TRY));
+        charCheckBox.setSelected(active.get(PythonKeywords.CHAR));
+        finalCheckBox.setSelected(active.get(PythonKeywords.FINAL));
+        finallyCheckBox.setSelected(active.get(PythonKeywords.FINALLY));
+        longCheckBox.setSelected(active.get(PythonKeywords.LONG));
+        strictfpCheckBox.setSelected(active.get(PythonKeywords.STRICTFP));
+        floatCheckBox.setSelected(active.get(PythonKeywords.FLOAT));
+        superCheckBox.setSelected(active.get(PythonKeywords.SUPER));
+        whileCheckBox.setSelected(active.get(PythonKeywords.WHILE));
     }
 
     public void setKeywordTotalSubmetric(boolean enabled, boolean required) {
@@ -286,40 +286,40 @@ public class AdvancedProjectSettingsComponent {
 
     public Boolean[] getKeywordTotalSubmetricInfo() { return new Boolean[] {totalKeywordCountInCheckBox.isSelected(), requiredSubmetricCheckBox.isSelected()}; }
     public Boolean[] getKeywordDensitySubmetricInfo() { return new Boolean[] {keywordDensityPerLineCheckBox.isSelected(), requiredSubmetricCheckBox1.isSelected()}; }
-    public EnumMap<JavaKeywords, Boolean> getActiveKeywords() {
-        EnumMap<JavaKeywords, Boolean> activeKeywords = new EnumMap<>(JavaKeywords.class);
+    public EnumMap<PythonKeywords, Boolean> getActiveKeywords() {
+        EnumMap<PythonKeywords, Boolean> activeKeywords = new EnumMap<>(PythonKeywords.class);
 
-        activeKeywords.put(JavaKeywords.CONTINUE, continueCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FOR, forCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.NEW, newCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SWITCH, switchCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.ASSERT, assertCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SYNCHRONIZED, synchronizedCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.BOOLEAN, booleanCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.DO, doCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.IF, ifCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.THIS, thisCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.BREAK, breakCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.DOUBLE, doubleCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.THROW, throwCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.BYTE, byteCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.ELSE, elseCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.CASE, caseCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.INSTANCEOF, instanceofCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.RETURN, returnCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.TRANSIENT, transientCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.CATCH, catchCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.INT, intCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SHORT, shortCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.TRY, tryCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.CHAR, charCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FINAL, finalCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FINALLY, finallyCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.LONG, longCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.STRICTFP, strictfpCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.FLOAT, floatCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.SUPER, superCheckBox.isSelected());
-        activeKeywords.put(JavaKeywords.WHILE, whileCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.CONTINUE, continueCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.FOR, forCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.NEW, newCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.SWITCH, switchCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.ASSERT, assertCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.SYNCHRONIZED, synchronizedCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.BOOLEAN, booleanCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.DO, doCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.IF, ifCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.THIS, thisCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.BREAK, breakCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.DOUBLE, doubleCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.THROW, throwCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.BYTE, byteCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.ELSE, elseCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.CASE, caseCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.INSTANCEOF, instanceofCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.RETURN, returnCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.TRANSIENT, transientCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.CATCH, catchCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.INT, intCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.SHORT, shortCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.TRY, tryCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.CHAR, charCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.FINAL, finalCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.FINALLY, finallyCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.LONG, longCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.STRICTFP, strictfpCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.FLOAT, floatCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.SUPER, superCheckBox.isSelected());
+        activeKeywords.put(PythonKeywords.WHILE, whileCheckBox.isSelected());
 
         return activeKeywords;
     }

@@ -6,7 +6,7 @@ import org.jetbrains.research.anticopypasterpython.metrics.features.Feature;
 import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVector;
 
 import java.util.List;
-import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsComponent.JavaKeywords;
+import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsComponent.PythonKeywords;
 
 public class KeywordsMetrics extends Flag{
 
@@ -23,7 +23,7 @@ public class KeywordsMetrics extends Flag{
     protected void setSelectedMetrics(){
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         int metricNum = 16;
-        for(JavaKeywords keyword : JavaKeywords.values()) {
+        for(PythonKeywords keyword : PythonKeywords.values()) {
             if (settings.activeKeywords.get(keyword)) {
                 // Keyword is selected to be counted by the plugin.
                 // Even indices indicate the total count of the current keyword.

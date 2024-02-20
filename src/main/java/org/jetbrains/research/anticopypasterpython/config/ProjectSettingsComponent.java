@@ -41,9 +41,6 @@ public class ProjectSettingsComponent {
     private JLabel waitTimeHelp;
     private JLabel statisticsButtonHelp;
     private JLabel advancedButtonHelp;
-    private JCheckBox tensorFlowModel;
-    private JLabel tensorFlowModelHelp;
-    private JLabel modelPreferencesPanel;
     private JCheckBox highlight;
 
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
@@ -61,9 +58,7 @@ public class ProjectSettingsComponent {
             boolean displayAndResolveCredentials = credentialsDialog.showAndGet();
             credentialsDialog.saveSettings(displayAndResolveCredentials);
         });
-        tensorFlowModel.addActionListener(e -> {
-            System.out.println("TensorFlow Enabled: " + tensorFlowModel.isSelected());
-        });
+
         addConditionallyEnabledMetricGroup(keywordsEnabledCheckBox,keywordsSlider,keywordsRequiredCheckBox);
         addConditionallyEnabledMetricGroup(couplingEnabledCheckBox,couplingSlider,couplingRequiredCheckBox);
         addConditionallyEnabledMetricGroup(complexityEnabledCheckBox, complexitySlider, complexityRequiredCheckBox);
@@ -202,9 +197,6 @@ public class ProjectSettingsComponent {
     public void setComplexityRequired(boolean required) {
         complexityRequiredCheckBox.setSelected(required);
     }
-
-    public boolean getTensorFlowModelEnabled(){return tensorFlowModel.isSelected();}
-    public void setTensorFlowModelEnabled(boolean enabled) { tensorFlowModel.setSelected(enabled);}
 
     private void createUIComponents() {
         minimumMethodSelector = new JBIntSpinner(2, 0, Integer.MAX_VALUE);

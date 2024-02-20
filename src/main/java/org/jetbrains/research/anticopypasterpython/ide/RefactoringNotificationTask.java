@@ -41,7 +41,6 @@ import org.jetbrains.research.anticopypasterpython.AntiCopyPasterPythonBundle;
 import org.jetbrains.research.anticopypasterpython.checkers.FragmentCorrectnessChecker;
 import org.jetbrains.research.anticopypasterpython.config.ProjectSettingsState;
 import org.jetbrains.research.anticopypasterpython.models.PredictionModel;
-import org.jetbrains.research.anticopypasterpython.models.TensorflowModel;
 import org.jetbrains.research.anticopypasterpython.models.UserSettingsModel;
 import org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterUsageStatistics;
 import org.jetbrains.research.anticopypasterpython.utils.MetricsGatherer;
@@ -65,9 +64,7 @@ import org.jetbrains.research.anticopypasterpython.utils.PyExtractMethodHandler;
  */
 public class RefactoringNotificationTask extends TimerTask {
     private static final Logger LOG = Logger.getInstance(RefactoringNotificationTask.class);
-    private static float tensorflowPredictionThreshold = 0.00005f; // certainty threshold for TensorFlow model
-    private static float usersettingsPredictionThreshold = 0.5f; // certainty threshold for UserSettings model
-    private static float predictionThreshold = usersettingsPredictionThreshold; // Prediction threshold at runtime.
+    private static final float predictionThreshold = 0.5f; // certainty threshold for models
     private final DuplicatesInspection inspection;
     private final ConcurrentLinkedQueue<RefactoringEvent> eventsQueue = new ConcurrentLinkedQueue<>();
     private final NotificationGroup notificationGroup = NotificationGroupManager.getInstance()
@@ -89,43 +86,25 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     private PredictionModel getOrInitModel() {
-        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
-        boolean tensorFlowModel = settings.tensorFlowEnabled;
         PredictionModel model = this.model;
-        // It makes sense to decouple thresholds between the settings model and tensor model.
-        if (tensorFlowModel) {
-            predictionThreshold = tensorflowPredictionThreshold;
-
-            if (model != null && model instanceof UserSettingsModel)
-                model = null;
-
-            if (model == null)
-                model = this.model = new TensorflowModel();
-        }
-        else {
-            predictionThreshold = usersettingsPredictionThreshold;
-
-            if (model != null && model instanceof TensorflowModel)
-                model = null;
-
-            if (model == null) {
-                model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
-                if(debugMetrics){
-                    UserSettingsModel settingsModel = (UserSettingsModel) model;
-                    try(FileWriter fr = new FileWriter(logFilePath, true)){
-                        String timestamp =
-                                new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
-                        fr.write("\n-----------------------\nInitial Metric Thresholds: " +
-                                timestamp + "\n");
-                    } catch(IOException ioe) { ioe.printStackTrace(); }
-                    System.out.println("InitModelError");
-                    settingsModel.logThresholds(logFilePath);
-                }
+        //System.out.println("Line 67");
+        //System.out.println(model == null);
+        if (model == null) {
+          model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
+            //System.out.println("Line 71");
+           if(debugMetrics){
+                UserSettingsModel settingsModel = (UserSettingsModel) model;
+                try(FileWriter fr = new FileWriter(logFilePath, true)){
+                    String timestamp =
+                            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
+                    fr.write("\n-----------------------\nInitial Metric Thresholds: " +
+                            timestamp + "\n");
+                    //System.out.println("Line 76");
+                } catch(IOException ioe) { ioe.printStackTrace();
+                System.out.println("InitModelError");}
+                settingsModel.logThresholds(logFilePath);
             }
         }
-
-        System.out.println("Model is tensorflow: " + (model instanceof TensorflowModel));
-        System.out.println(model);
         return model;
     }
 
@@ -255,21 +234,22 @@ public class RefactoringNotificationTask extends TimerTask {
 
     @Override
     public void run() {
-        // System.out.println("87");
+       // System.out.println("87");
         while (!eventsQueue.isEmpty()) {
-            // System.out.println("89");
+           // System.out.println("89");
             final PredictionModel model = getOrInitModel();
             //System.out.println("Line 92");
             try {
                 final RefactoringEvent event = eventsQueue.poll();
                 ApplicationManager.getApplication().runReadAction(() -> {
+                    //System.out.println("94");
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
                     // This only triggers if there are duplicates found in at least as many
                     // methods as specified by the user in configurations.
 
                     ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
 
-                    if (!settings.tensorFlowEnabled && result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
+                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
                         return;
                     }
                     HashSet<String> variablesInCodeFragment = new HashSet<>();
@@ -287,8 +267,8 @@ public class RefactoringNotificationTask extends TimerTask {
                     //System.out.println("Features vector: " + featuresVector.toString());
 
                     float prediction = model.predict(featuresVector);
-                    System.out.println("Prediction: " + prediction);
-                    System.out.println("Threshold: " + predictionThreshold);
+                    System.out.println(prediction);
+                    //prediction = 999999999;
                     if (debugMetrics) {
                         UserSettingsModel settingsModel = (UserSettingsModel) model;
                         try (FileWriter fr = new FileWriter(logFilePath, true)) {
@@ -315,7 +295,7 @@ public class RefactoringNotificationTask extends TimerTask {
                             "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
 
                     if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
-                        System.out.println("EXTRACTION");
+                        //System.out.println("Notification task 138");
                         if (settings.highlight) {
                             highlight(event.getProject(), event, true,
                                     getRunnableToShowSuggestionDialog(event));

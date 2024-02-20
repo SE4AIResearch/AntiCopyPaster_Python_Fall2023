@@ -275,7 +275,7 @@ public class RefactoringNotificationTask extends TimerTask {
                             String timestamp =
                                     new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
 
-                            fr.write("\n-----------------------\nNEW COPY/PASTE EVENT: "
+                            fr.write("\n-----------------------\nTRUE COPY/PASTE EVENT: "
                                     + timestamp + "\nPASTED CODE:\n"
                                     + event.getText());
 

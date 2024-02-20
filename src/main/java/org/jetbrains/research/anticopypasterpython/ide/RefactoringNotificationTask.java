@@ -283,17 +283,19 @@ public class RefactoringNotificationTask extends TimerTask {
 //                        }
 //                        //settingsModel.logMetrics(logFilePath); BROKEN
 //                    }
-                    event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
-                            "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
 
                     System.out.println(settings.highlight);
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
                         if (settings.highlight) {
+                            event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
+                                    "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
                             highlight(event.getProject(), event, AntiCopyPasterPythonBundle.message(
                                             "extract.method.refactoring.is.available"),
                                     getRunnableToShowSuggestionDialog(event));
                         } else {
+                            event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
+                                    "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
                             notify(event.getProject(),
                                     AntiCopyPasterPythonBundle.message(
                                             "extract.method.refactoring.is.available"),

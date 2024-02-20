@@ -37,7 +37,6 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
     private final DuplicatesInspection inspection = new DuplicatesInspection();
     private final Timer timer = new Timer(true);
     private final ArrayList<RefactoringNotificationTask> refactoringNotificationTask = new ArrayList<>();
-    private int test = 0;
     private static final Logger LOG = Logger.getInstance(AntiCopyPastePreProcessor.class);
 
     /**
@@ -59,10 +58,6 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
     public String preprocessOnPaste(Project project, PsiFile file, Editor editor, String text, RawText rawText) {
         HashSet<String> variablesInCodeFragment = new HashSet<>();
         HashMap<String, Integer> variablesCountsInCodeFragment = new HashMap<>();
-        //System.out.println("preprocessonpaste Text: " +  text); // Text of copy and paste
-        //System.out.println("Triggers: " +  test);
-        test++;
-        //System.out.println(rawText);
         RefactoringNotificationTask rnt = getRefactoringTask(project);
 
         if (rnt == null) {
@@ -94,7 +89,6 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         System.out.println(result.getDuplicatesCount());
         //number of lines in fragment
         int linesOfCode = getCountOfCodeLines(text);
-        //System.out.println("destinationMethod right before it is added to rnt:"+destinationMethod);
         rnt.addEvent(
                 new RefactoringEvent((PyFile) file, destinationMethod, text, result.getDuplicatesCount(),
                         project, editor, linesOfCode));

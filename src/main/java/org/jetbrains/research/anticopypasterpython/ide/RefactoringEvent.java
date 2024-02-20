@@ -35,7 +35,6 @@ public class RefactoringEvent {
         this.project = project;
         this.editor = editor;
         this.linesOfCode = linesOfCode;
-       // System.out.println("destinationMethod in RefactoringEvent constructor: "+destinationMethod);
     }
 
     public void setForceExtraction(boolean forceExtraction) {

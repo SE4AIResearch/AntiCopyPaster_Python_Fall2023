@@ -1,18 +1,18 @@
-# AntiCopyPaster
+# AntiCopyPasterPython
 
-AntiCopyPaster is a plugin for IntelliJ IDEA that tracks the copying and pasting carried out by the developer and
+AntiCopyPasterPython is a plugin for  Pycharm that tracks the copying and pasting carried out by the developer and
 suggests extracting duplicates into a new method as soon as they are introduced in the code.
 
-> **Warning**: Please note that AntiCopyPaster is a prototype and a work in progress. We appreciate any feedback
+> **Warning**: Please note that AntiCopyPasterPython is a prototype and a work in progress. We appreciate any feedback
 > on both the concept itself and its implementation.
 
 ## How To Install
 
-AntiCopyPaster requires IntelliJ IDEA version 2023.2 to work. To install the plugin:
+AntiCopyPasterPython requires Pycharm version 2023.2.3 to work. To install the plugin:
 
 1. Download the pre-built version of the plugin from 
    [here](https://sourceforge.net/projects/anti-copy-paster/files/latest/download).
-2. Open IntelliJ IDEA and go to `File`/`Settings`/`Plugins`.
+2. Open Pycharm and go to `File`/`Settings`/`Plugins`.
 3. Select the gear icon, and choose `Install Plugin from Disk...`.
 4. Choose the downloaded ZIP archive.
 5. Click `Apply`.

@@ -32,8 +32,6 @@ import com.jetbrains.python.psi.PyFunction;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.PyFile;
 
-//import com.intellij.refactoring.extractMethod.ExtractMethodProcessor;
-//import com.intellij.refactoring.extractMethod.PrepareFailedException;
 
 import com.jetbrains.python.refactoring.extractmethod.*;
 
@@ -54,7 +52,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-//import static com.intellij.refactoring.extractMethod.ExtractMethodHandler.getProcessor;
 import static com.jetbrains.python.refactoring.extractmethod.PyExtractMethodHandler.*;
 import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
@@ -237,24 +234,10 @@ public class RefactoringNotificationTask extends TimerTask {
 
     @Override
     public void run() {
-        // System.out.println("87");
         while (!eventsQueue.isEmpty()) {
-            // System.out.println("89");
             final PredictionModel model = getOrInitModel();
-            //System.out.println("Line 92");
             try {
                 final RefactoringEvent event = eventsQueue.poll();
-//                ApplicationManager.getApplication().runReadAction(() -> {
-//                    //System.out.println("94");
-//                    DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
-//                    // This only triggers if there are duplicates found in at least as many
-//                    // methods as specified by the user in configurations.
-//
-//                    ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
-//
-//                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
-//                        return;
-//                    }
 
                 ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
                 ApplicationManager.getApplication().runReadAction(() -> {
@@ -272,9 +255,7 @@ public class RefactoringNotificationTask extends TimerTask {
                         System.out.println("Notification task 110");
                         return;
                     }
-                    //System.out.println("event in RefactoringNotificationTask from eventsQueue:" + event.getText());
                     FeaturesVector featuresVector = calculateFeatures(event);
-                    //System.out.println("Features vector: " + featuresVector.toString());
 
                     float prediction = model.predict(featuresVector);
                     System.out.println("Prediction: " + prediction);
@@ -305,16 +286,6 @@ public class RefactoringNotificationTask extends TimerTask {
                     event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                             "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
 
-//                    if ((event.isForceExtraction() || prediction > predictionThreshold) && canBeExtracted(event)) {
-//                        //System.out.println("Notification task 138");
-//                        if (true) {
-//                            notify(event.getProject(),
-//                                    AntiCopyPasterPythonBundle.message(
-//                                            "extract.method.refactoring.is.available"),
-//                                    getRunnableToShowSuggestionDialog(event)
-//                            );
-//                        }
-//                    }
                     System.out.println(settings.highlight);
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {

@@ -93,18 +93,14 @@ public final class DuplicatesInspection {
         public DuplicateResult compute() {
             DuplicateResult duplicateResult = null;
             PyStatementList methodBody = psiMethod.getStatementList();
-            //System.out.println("methodBody.getText: " +  methodBody.getText());
             if (methodBody != null) {
                 String rawCode =
                         code.replace('\n', ' ').replace('\t', ' ')
                                 .replace('\r', ' ').replaceAll("\\s+", "");
-               // System.out.println("rawCode: " +  rawCode);
                 String rawMethodBody = psiMethod.getText().replace('\n', ' ').replace('\t', ' ')
                         .replace('\r', ' ').replaceAll("\\s+", "");
-              //  System.out.println("rawMethodBody: " + rawCode);
                 boolean matches = StringUtils.contains(rawMethodBody, rawCode);
                 if (matches) {
-                    //System.out.println("hello");
                     duplicateResult = new DuplicateResult(psiMethod, 1.0);
                 } else {
                     List<String> tokensOfMethod = getTokens(methodBody.getText());

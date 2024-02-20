@@ -45,7 +45,6 @@ public class ProjectSettingsConfigurable implements Configurable {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         boolean modified = settingsComponent.getMinimumDuplicateMethods() != settings.minimumDuplicateMethods;
         modified |= settingsComponent.getTimeBuffer() != settings.timeBuffer;
-        modified |= settingsComponent.getHighlight() != settings.highlight;
         modified |= settingsComponent.getKeywordsSensitivity() != settings.keywordsSensitivity;
         modified |= settingsComponent.getKeywordsEnabled() != settings.keywordsEnabled;
         modified |= settingsComponent.getKeywordsRequired() != settings.keywordsRequired;
@@ -58,6 +57,8 @@ public class ProjectSettingsConfigurable implements Configurable {
         modified |= settingsComponent.getComplexitySensitivity() != settings.complexitySensitivity;
         modified |= settingsComponent.getComplexityEnabled() != settings.complexityEnabled;
         modified |= settingsComponent.getComplexityRequired() != settings.complexityRequired;
+        modified |= settingsComponent.getTensorFlowModelEnabled() != settings.tensorFlowEnabled;
+        modified |= settingsComponent.getHighlight() != settings.highlight;
         return modified;
     }
 
@@ -67,7 +68,6 @@ public class ProjectSettingsConfigurable implements Configurable {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         settings.minimumDuplicateMethods = settingsComponent.getMinimumDuplicateMethods();
         settings.timeBuffer = settingsComponent.getTimeBuffer();
-        settings.highlight = settingsComponent.getHighlight();
         settings.keywordsSensitivity = settingsComponent.getKeywordsSensitivity();
         settings.keywordsEnabled = settingsComponent.getKeywordsEnabled();
         settings.keywordsRequired = settingsComponent.getKeywordsRequired();
@@ -80,6 +80,8 @@ public class ProjectSettingsConfigurable implements Configurable {
         settings.complexitySensitivity = settingsComponent.getComplexitySensitivity();
         settings.complexityEnabled = settingsComponent.getComplexityEnabled();
         settings.complexityRequired = settingsComponent.getComplexityRequired();
+        settings.tensorFlowEnabled = settingsComponent.getTensorFlowModelEnabled();
+        settings.highlight = settingsComponent.getHighlight();
     }
 
     // Pull from saved state to preset dialog state upon opening
@@ -88,7 +90,6 @@ public class ProjectSettingsConfigurable implements Configurable {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         settingsComponent.setMinimumDuplicateMethods(settings.minimumDuplicateMethods);
         settingsComponent.setTimeBuffer(settings.timeBuffer);
-        settingsComponent.setHighlight(settings.highlight);
         settingsComponent.setKeywordsSensitivity(settings.keywordsSensitivity);
         settingsComponent.setKeywordsEnabled(settings.keywordsEnabled);
         settingsComponent.setKeywordsRequired(settings.keywordsRequired);
@@ -101,6 +102,8 @@ public class ProjectSettingsConfigurable implements Configurable {
         settingsComponent.setComplexitySensitivity(settings.complexitySensitivity);
         settingsComponent.setComplexityEnabled(settings.complexityEnabled);
         settingsComponent.setComplexityRequired(settings.complexityRequired);
+        settingsComponent.setTensorFlowModelEnabled(settings.tensorFlowEnabled);
+        settingsComponent.setHighlight(settings.highlight);
     }
 
     @Override

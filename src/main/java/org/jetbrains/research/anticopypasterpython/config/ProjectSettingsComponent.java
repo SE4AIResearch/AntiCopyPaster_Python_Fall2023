@@ -41,8 +41,11 @@ public class ProjectSettingsComponent {
     private JLabel waitTimeHelp;
     private JLabel statisticsButtonHelp;
     private JLabel advancedButtonHelp;
-    private JCheckBox highlight;
+    private JCheckBox tensorFlowModel;
+    private JLabel tensorFlowModelHelp;
+    private JLabel modelPreferencesPanel;
 
+    private JCheckBox highlight;
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
     public ProjectSettingsComponent(Project project) {
@@ -57,6 +60,10 @@ public class ProjectSettingsComponent {
             CredentialsDialogWrapper credentialsDialog = new CredentialsDialogWrapper(project);
             boolean displayAndResolveCredentials = credentialsDialog.showAndGet();
             credentialsDialog.saveSettings(displayAndResolveCredentials);
+        });
+
+        tensorFlowModel.addActionListener(e -> {
+            System.out.println("TensorFlow Enabled: " + tensorFlowModel.isSelected());
         });
 
         addConditionallyEnabledMetricGroup(keywordsEnabledCheckBox,keywordsSlider,keywordsRequiredCheckBox);
@@ -98,14 +105,13 @@ public class ProjectSettingsComponent {
 
     public void setTimeBuffer(int timeBuffer) { timeBufferSelector.setValue(timeBuffer); }
 
-    public boolean getHighlight() { return highlight.isSelected();}
-
-    public void setHighlight(boolean enabled) { highlight.setSelected(enabled);}
-
     public int getKeywordsSensitivity() {
         return keywordsSlider.getValue();
     }
 
+    public boolean getHighlight() { return highlight.isSelected();}
+
+    public void setHighlight(boolean enabled) { highlight.setSelected(enabled);}
     public void setKeywordsSensitivity(int sensitivity) {
         keywordsSlider.setValue(sensitivity);
     }
@@ -197,6 +203,9 @@ public class ProjectSettingsComponent {
     public void setComplexityRequired(boolean required) {
         complexityRequiredCheckBox.setSelected(required);
     }
+
+    public boolean getTensorFlowModelEnabled(){return tensorFlowModel.isSelected();}
+    public void setTensorFlowModelEnabled(boolean enabled) { tensorFlowModel.setSelected(enabled);}
 
     private void createUIComponents() {
         minimumMethodSelector = new JBIntSpinner(2, 0, Integer.MAX_VALUE);

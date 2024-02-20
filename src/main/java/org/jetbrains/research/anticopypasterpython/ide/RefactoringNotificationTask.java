@@ -134,10 +134,11 @@ public class RefactoringNotificationTask extends TimerTask {
         var a = HighlightManager.getInstance(project);
         int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
         int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
-        for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
-            System.out.println(TextAttributesKey.getAllKeys().get(i));
-
-        }
+        System.out.println(startOffset);
+        System.out.println(endOffset);
+       // for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
+           // System.out.println(TextAttributesKey.getAllKeys().get(i));
+       // }
         a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, TextAttributesKey.getAllKeys().get(0), 001,null);
         System.out.println("highlight manager: "+a);
 
@@ -217,15 +218,14 @@ public class RefactoringNotificationTask extends TimerTask {
         //here we know the event is not null; This means it is probably an issue where new RefactoringEvent() is being called
         PyFile file = event.getFile();
         PyFunction methodAfterPasting = event.getDestinationMethod();
-        int eventBeginLine = getNumberOfLine(file,
-                methodAfterPasting.getTextRange().getStartOffset());
-        int eventEndLine = getNumberOfLine(file,
-methodAfterPasting.getTextRange().getEndOffset());
-        MetricCalculator metricCalculator =
-                new MetricCalculator(methodAfterPasting, event.getText(),
-                        eventBeginLine, eventEndLine);
+        if(methodAfterPasting!=null){
+            int eventBeginLine = getNumberOfLine(file, methodAfterPasting.getTextRange().getStartOffset());
+            int eventEndLine = getNumberOfLine(file, methodAfterPasting.getTextRange().getEndOffset());
+            MetricCalculator metricCalculator = new MetricCalculator(methodAfterPasting, event.getText(), eventBeginLine, eventEndLine);
 
-        return metricCalculator.getFeaturesVector();
+            return metricCalculator.getFeaturesVector();
+        }
+        return null;
     }
 
     public void setProject(Project p) {
@@ -315,6 +315,7 @@ methodAfterPasting.getTextRange().getEndOffset());
 //                            );
 //                        }
 //                    }
+                    System.out.println(settings.highlight);
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
                         if (settings.highlight) {

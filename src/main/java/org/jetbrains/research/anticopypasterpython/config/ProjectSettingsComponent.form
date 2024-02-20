@@ -782,7 +782,7 @@
             <properties>
               <enabled value="true"/>
               <selected value="false"/>
-              <text value="Replace notifications with highlights"/>
+              <text value="Replace notifications with highlights. (Requires IDE restart to take effect)"/>
             </properties>
           </component>
         </children>

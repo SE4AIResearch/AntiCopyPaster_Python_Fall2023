@@ -20,8 +20,9 @@ import java.util.EnumMap;
 public final class ProjectSettingsState implements PersistentStateComponent<ProjectSettingsState> {
 
     // PRIMARY SETTINGS STATES
-    public int minimumDuplicateMethods = 2;
-    public int timeBuffer = 10;
+    public int minimumDuplicateMethods = 0;
+    public int timeBuffer = 1;
+    public boolean highlight = false;
     public boolean keywordsEnabled = true, couplingEnabled = true, sizeEnabled = true, complexityEnabled = true,
             keywordsRequired = true, couplingRequired = true, sizeRequired = true, complexityRequired = true;
     public int keywordsSensitivity = 50, couplingSensitivity = 50, sizeSensitivity = 50, complexitySensitivity = 50;

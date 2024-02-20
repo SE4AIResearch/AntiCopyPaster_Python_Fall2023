@@ -1,6 +1,19 @@
 package org.jetbrains.research.anticopypasterpython.ide;
 
 import com.intellij.CommonBundle;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.highlighting.actions.HighlightUsagesAction;
+import com.intellij.codeInsight.intention.impl.preview.IntentionPreviewDiffResult;
+import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.event.EditorMouseEvent;
+import com.intellij.openapi.editor.event.EditorMouseEventArea;
+import com.intellij.openapi.editor.event.EditorMouseListener;
+import com.intellij.openapi.editor.ex.RangeHighlighterEx;
+import com.intellij.openapi.editor.markup.*;
+import com.intellij.ui.HighlightedText;
+import com.intellij.vcs.log.ui.actions.HighlightersActionGroup;
+import com.intellij.codeInsight.highlighting.*;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.notification.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -65,6 +78,8 @@ public class RefactoringNotificationTask extends TimerTask {
     private String logFilePath;
     private Project p;
 
+    public Editor editor;
+
 
     public RefactoringNotificationTask(DuplicatesInspection inspection, Timer timer, Project p) {
         this.inspection = inspection;
@@ -113,6 +128,27 @@ public class RefactoringNotificationTask extends TimerTask {
         System.out.println("Model is tensorflow: " + (model instanceof TensorflowModel));
         System.out.println(model);
         return model;
+    }
+
+    public void highlight(Project project, RefactoringEvent event, String content, Runnable callback){
+        var a = HighlightManager.getInstance(project);
+        int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
+        int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
+        for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
+            System.out.println(TextAttributesKey.getAllKeys().get(i));
+
+        }
+        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, TextAttributesKey.getAllKeys().get(0), 001,null);
+        System.out.println("highlight manager: "+a);
+
+        event.getEditor().addEditorMouseListener(new EditorMouseListener() {
+            @Override
+            public void mouseClicked(@NotNull EditorMouseEvent event) {
+                if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+                    callback.run();
+                }
+            }
+        });
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {
@@ -184,7 +220,7 @@ public class RefactoringNotificationTask extends TimerTask {
         int eventBeginLine = getNumberOfLine(file,
                 methodAfterPasting.getTextRange().getStartOffset());
         int eventEndLine = getNumberOfLine(file,
-                methodAfterPasting.getTextRange().getEndOffset());
+methodAfterPasting.getTextRange().getEndOffset());
         MetricCalculator metricCalculator =
                 new MetricCalculator(methodAfterPasting, event.getText(),
                         eventBeginLine, eventEndLine);
@@ -220,10 +256,10 @@ public class RefactoringNotificationTask extends TimerTask {
 //                        return;
 //                    }
 
-
+                ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
                 ApplicationManager.getApplication().runReadAction(() -> {
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
-                    if (result.getDuplicatesCount() < 2) {
+                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
                         return;
                     }
                     HashSet<String> variablesInCodeFragment = new HashSet<>();
@@ -243,7 +279,7 @@ public class RefactoringNotificationTask extends TimerTask {
                     float prediction = model.predict(featuresVector);
                     System.out.println("Prediction: " + prediction);
                     System.out.println("Threshold: " + predictionThreshold);
-                    //float prediction = 999999999;
+                    prediction = 999999999;
 //                    if (debugMetrics) {
 //                        UserSettingsModel settingsModel = (UserSettingsModel) model;
 //                        try (FileWriter fr = new FileWriter(logFilePath, true)) {
@@ -281,12 +317,17 @@ public class RefactoringNotificationTask extends TimerTask {
 //                    }
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
-                        System.out.println("EXTRACTION");
-                        notify(event.getProject(),
-                                AntiCopyPasterPythonBundle.message(
-                                        "extract.method.refactoring.is.available"),
-                                getRunnableToShowSuggestionDialog(event)
-                        );
+                        if (settings.highlight) {
+                            highlight(event.getProject(), event, AntiCopyPasterPythonBundle.message(
+                                            "extract.method.refactoring.is.available"),
+                                    getRunnableToShowSuggestionDialog(event));
+                        } else {
+                            notify(event.getProject(),
+                                    AntiCopyPasterPythonBundle.message(
+                                            "extract.method.refactoring.is.available"),
+                                    getRunnableToShowSuggestionDialog(event)
+                            );
+                        }
                     }
                 });
             }

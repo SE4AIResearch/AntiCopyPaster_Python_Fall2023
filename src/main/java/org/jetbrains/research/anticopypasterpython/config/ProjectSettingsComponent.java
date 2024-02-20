@@ -45,6 +45,7 @@ public class ProjectSettingsComponent {
     private JLabel tensorFlowModelHelp;
     private JLabel modelPreferencesPanel;
 
+    private JCheckBox highlight;
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
     public ProjectSettingsComponent(Project project) {
@@ -108,6 +109,9 @@ public class ProjectSettingsComponent {
         return keywordsSlider.getValue();
     }
 
+    public boolean getHighlight() { return highlight.isSelected();}
+
+    public void setHighlight(boolean enabled) { highlight.setSelected(enabled);}
     public void setKeywordsSensitivity(int sensitivity) {
         keywordsSlider.setValue(sensitivity);
     }
@@ -209,7 +213,7 @@ public class ProjectSettingsComponent {
 
         // Set link and icons for help features
         helpLabel = new JLabel();
-        createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Summer2023/index.html");
+        createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Python_Website_Fall2023/");
         helpLabel.setIcon(AllIcons.Ide.External_link_arrow);
         duplicateMethodsHelp = new JLabel();
         duplicateMethodsHelp.setIcon(AllIcons.General.ContextHelp);

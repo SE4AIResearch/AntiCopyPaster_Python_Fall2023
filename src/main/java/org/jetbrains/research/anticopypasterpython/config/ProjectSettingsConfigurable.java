@@ -58,6 +58,7 @@ public class ProjectSettingsConfigurable implements Configurable {
         modified |= settingsComponent.getComplexityEnabled() != settings.complexityEnabled;
         modified |= settingsComponent.getComplexityRequired() != settings.complexityRequired;
         modified |= settingsComponent.getTensorFlowModelEnabled() != settings.tensorFlowEnabled;
+        modified |= settingsComponent.getHighlight() != settings.highlight;
         return modified;
     }
 
@@ -80,6 +81,7 @@ public class ProjectSettingsConfigurable implements Configurable {
         settings.complexityEnabled = settingsComponent.getComplexityEnabled();
         settings.complexityRequired = settingsComponent.getComplexityRequired();
         settings.tensorFlowEnabled = settingsComponent.getTensorFlowModelEnabled();
+        settings.highlight = settingsComponent.getHighlight();
     }
 
     // Pull from saved state to preset dialog state upon opening
@@ -101,6 +103,7 @@ public class ProjectSettingsConfigurable implements Configurable {
         settingsComponent.setComplexityEnabled(settings.complexityEnabled);
         settingsComponent.setComplexityRequired(settings.complexityRequired);
         settingsComponent.setTensorFlowModelEnabled(settings.tensorFlowEnabled);
+        settingsComponent.setHighlight(settings.highlight);
     }
 
     @Override

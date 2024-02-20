@@ -31,6 +31,9 @@ public final class ProjectSettingsState implements PersistentStateComponent<Proj
     // ADVANCED SETTINGS STATES
     // Each boolean array of two elements follow this scheme {boolean submetric_enabled, boolean submetric_required}
 
+    // TENSORFLOW MODEL
+    public boolean tensorFlowEnabled = false;
+
     // Keyword Metric
     public Boolean[] measureKeywordsTotal = {false, false}, measureKeywordsDensity = {true, true};
     public EnumMap<JavaKeywords, Boolean> activeKeywords = new EnumMap<>(JavaKeywords.class);

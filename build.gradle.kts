@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.jetbrains.research.anticopypaster"
-version = "2023.2-2.0"
+version = "2022.3-1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -17,10 +17,12 @@ repositories {
     mavenCentral()
 }
 
+val extractMethodProjectName = "org.jetbrains.research.extractMethod"
+
 dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("org.pmml4s:pmml4s_3:1.0.1")
+    implementation("org.apache.commons:commons-lang3:3.0")
+    implementation("org.pmml4s:pmml4s_2.13:0.9.10")
     implementation("org.mongodb:mongodb-driver-sync:4.10.1")
     /**
      * This file is commented out as it uses the TensorFlow API. By removing that dependency,
@@ -28,8 +30,12 @@ dependencies {
      * compile. It's been left here to allow for adding a feature to swap between models
      * in the future.
      */
-    // implementation("org.tensorflow:tensorflow:1.15.0")
-
+    implementation("org.tensorflow:tensorflow:1.15.0")
+    implementation("$extractMethodProjectName:extract-method-metrics") {
+        version {
+            branch = "master"
+        }
+    }
     // Test dependencies
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.3")

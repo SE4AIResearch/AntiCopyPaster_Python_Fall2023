@@ -45,6 +45,7 @@ public class ProjectSettingsConfigurable implements Configurable {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         boolean modified = settingsComponent.getMinimumDuplicateMethods() != settings.minimumDuplicateMethods;
         modified |= settingsComponent.getTimeBuffer() != settings.timeBuffer;
+        modified |= settingsComponent.getHighlight() != settings.highlight;
         modified |= settingsComponent.getKeywordsSensitivity() != settings.keywordsSensitivity;
         modified |= settingsComponent.getKeywordsEnabled() != settings.keywordsEnabled;
         modified |= settingsComponent.getKeywordsRequired() != settings.keywordsRequired;
@@ -67,6 +68,7 @@ public class ProjectSettingsConfigurable implements Configurable {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         settings.minimumDuplicateMethods = settingsComponent.getMinimumDuplicateMethods();
         settings.timeBuffer = settingsComponent.getTimeBuffer();
+        settings.highlight = settingsComponent.getHighlight();
         settings.keywordsSensitivity = settingsComponent.getKeywordsSensitivity();
         settings.keywordsEnabled = settingsComponent.getKeywordsEnabled();
         settings.keywordsRequired = settingsComponent.getKeywordsRequired();
@@ -88,6 +90,7 @@ public class ProjectSettingsConfigurable implements Configurable {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
         settingsComponent.setMinimumDuplicateMethods(settings.minimumDuplicateMethods);
         settingsComponent.setTimeBuffer(settings.timeBuffer);
+        settingsComponent.setHighlight(settings.highlight);
         settingsComponent.setKeywordsSensitivity(settings.keywordsSensitivity);
         settingsComponent.setKeywordsEnabled(settings.keywordsEnabled);
         settingsComponent.setKeywordsRequired(settings.keywordsRequired);

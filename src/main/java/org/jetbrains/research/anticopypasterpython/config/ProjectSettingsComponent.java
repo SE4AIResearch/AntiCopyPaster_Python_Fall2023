@@ -6,7 +6,6 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 
-import com.intellij.ui.JBIntSpinner;
 import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsDialogWrapper;
 import org.jetbrains.research.anticopypasterpython.config.credentials.CredentialsDialogWrapper;
 
@@ -33,8 +32,8 @@ public class ProjectSettingsComponent {
     private JCheckBox complexityEnabledCheckBox;
     private JCheckBox complexityRequiredCheckBox;
     private JButton advancedSettingsButton;
-    private JSpinner minimumMethodSelector;
-    private JSpinner timeBufferSelector;
+    private JSlider minimumMethodSelector;
+    private JSlider timeBufferSelector;
     private JButton statisticsCollectionButton;
     private JLabel helpLabel;
     private JLabel duplicateMethodsHelp;
@@ -46,6 +45,7 @@ public class ProjectSettingsComponent {
     private JLabel modelPreferencesPanel;
 
     private JCheckBox highlight;
+    private JTextPane modifyingGeneralPreferencesRequiresTextPane;
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
     public ProjectSettingsComponent(Project project) {
@@ -208,9 +208,6 @@ public class ProjectSettingsComponent {
     public void setTensorFlowModelEnabled(boolean enabled) { tensorFlowModel.setSelected(enabled);}
 
     private void createUIComponents() {
-        minimumMethodSelector = new JBIntSpinner(2, 0, Integer.MAX_VALUE);
-        timeBufferSelector = new JBIntSpinner(10, 1, 300);
-
         // Set link and icons for help features
         helpLabel = new JLabel();
         createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Python_Website_Fall2023/");

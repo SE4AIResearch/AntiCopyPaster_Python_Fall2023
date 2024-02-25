@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 /**
  * This class is used to gather metrics from every method within the currently
  * open IntelliJ Project, provided on declaration.
@@ -74,6 +75,7 @@ public class MetricsGatherer {
 
         // Gets all the PsiMethods, as well as their start and end lines.
         for (PyFile psiFile: pfList) {
+
             // wrappers are used to get information out of runReadActions.
             // PsiTree's can't be accessed outside a read action, or it
             // can cause race conditions.

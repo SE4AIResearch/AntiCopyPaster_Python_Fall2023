@@ -242,17 +242,16 @@ public class RefactoringNotificationTask extends TimerTask {
                 ProjectSettingsState settings = ProjectSettingsState.getInstance(event.getProject());
                 ApplicationManager.getApplication().runReadAction(() -> {
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
-                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
+                    //System.out.println(settings.minimumDuplicateMethods);
+                    if (result.getDuplicatesCount() <= settings.minimumDuplicateMethods) {
                         return;
                     }
                     HashSet<String> variablesInCodeFragment = new HashSet<>();
                     HashMap<String, Integer> variablesCountsInCodeFragment = new HashMap<>();
-                    System.out.println("Notification task 101");
                     if (!FragmentCorrectnessChecker.isCorrect(event.getProject(), event.getFile(),
                             event.getText(),
                             variablesInCodeFragment,
                             variablesCountsInCodeFragment)) {
-                        System.out.println("Notification task 110");
                         return;
                     }
                     FeaturesVector featuresVector = calculateFeatures(event);
@@ -284,7 +283,7 @@ public class RefactoringNotificationTask extends TimerTask {
 //                        //settingsModel.logMetrics(logFilePath); BROKEN
 //                    }
 
-                    System.out.println(settings.highlight);
+                    //System.out.println(settings.highlight);
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
                         if (settings.highlight) {

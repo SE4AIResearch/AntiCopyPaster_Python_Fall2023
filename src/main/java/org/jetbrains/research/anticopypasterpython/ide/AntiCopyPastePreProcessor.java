@@ -109,12 +109,14 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         return null;
     }
 
+
     /**
      * Sets the regular checking for Extract Method refactoring opportunities.
      */
     private void setCheckingForRefactoringOpportunities(RefactoringNotificationTask task, Project project) {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
-        int scheduleDelayInMs = settings.timeBuffer * 1000;
+        int scheduleDelayInMs = (settings.timeBuffer + 2) * 1000;
+        System.out.println(scheduleDelayInMs);
 
         try {
             timer.schedule(task, scheduleDelayInMs, scheduleDelayInMs);

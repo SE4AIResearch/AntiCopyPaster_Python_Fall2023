@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.jetbrains.research.anticopypasterpython"
-version = "2022.3-1.0"
+version = "2023.3-1.0"
 
 repositories {
     maven("https://plugins.gradle.org/m2/")

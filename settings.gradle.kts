@@ -1,6 +1,6 @@
 import java.net.URI
 
-rootProject.name = "AntiCopyPaster"
+rootProject.name = "AntiCopyPasterPython"
 
 val extractMethodExperimentsRepository = "https://github.com/JetBrains-Research/extract-method-experiments.git"
 val extractMethodExperimentsProjectName = "org.jetbrains.research.extractMethod"

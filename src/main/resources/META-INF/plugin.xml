@@ -2,7 +2,7 @@
     <id>org.jetbrains.research.anticopypasterpython</id>
     <name>AntiCopyPasterPython</name>
     <vendor>JetBrains</vendor>
-    <version>2022.3-1.0</version>
+    <version>2023.3-1.0</version>
 
     <description><![CDATA[
     Tracks the copying and pasting actions and suggests extracting duplicates into a new method. Based on imbalanced-pruned experiment.
@@ -22,7 +22,7 @@
                 parentId="tools"
                 instance="org.jetbrains.research.anticopypasterpython.config.ProjectSettingsConfigurable"
                 id="org.jetbrains.research.anticopypasterpython.config.ProjectSettingsConfigurable"
-                displayName="AntiCopyPaster"/>
+                displayName="AntiCopyPasterPython"/>
         <postStartupActivity
                 implementation="org.jetbrains.research.anticopypasterpython.statistics.AntiCopyPasterTelemetry"/>
     </extensions>

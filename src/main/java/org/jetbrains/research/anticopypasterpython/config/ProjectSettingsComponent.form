@@ -560,39 +560,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="cea90" class="javax.swing.JTextPane" default-binding="true">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <editable value="false"/>
-              <text resource-bundle="AntiCopyPasterPythonBundle" key="settings.methodDuplicatesDescription"/>
-            </properties>
-          </component>
-          <component id="98697" class="javax.swing.JLabel" binding="duplicateMethodsHelp" custom-create="true">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value=""/>
-              <toolTipText resource-bundle="AntiCopyPasterPythonBundle" key="settings.tooltip.methodDuplicates"/>
-            </properties>
-          </component>
-          <component id="d31d9" class="javax.swing.JSlider" binding="minimumMethodSelector">
-            <constraints>
-              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="2" use-parent-layout="false">
-                <preferred-size width="50" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <majorTickSpacing value="1"/>
-              <maximum value="10"/>
-              <paintLabels value="true"/>
-              <paintTicks value="true"/>
-              <snapToTicks value="true"/>
-              <value value="5"/>
-            </properties>
-          </component>
           <component id="cd179" class="javax.swing.JCheckBox" binding="highlight">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -601,32 +568,6 @@
               <enabled value="true"/>
               <selected value="false"/>
               <text value="Replace notifications with highlights."/>
-            </properties>
-          </component>
-          <component id="7df0c" class="javax.swing.JSlider" binding="timeBufferSelector">
-            <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="2" use-parent-layout="false">
-                <preferred-size width="50" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <majorTickSpacing value="10"/>
-              <maximum value="61"/>
-              <minimum value="1"/>
-              <minorTickSpacing value="1"/>
-              <paintLabels value="true"/>
-              <paintTicks value="true"/>
-              <snapToTicks value="true"/>
-              <value value="31"/>
-            </properties>
-          </component>
-          <component id="bb1cf" class="javax.swing.JLabel" binding="waitTimeHelp" custom-create="true">
-            <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value=""/>
-              <toolTipText resource-bundle="AntiCopyPasterPythonBundle" key="settings.tooltip.promptDelay"/>
             </properties>
           </component>
           <component id="1b2c7" class="javax.swing.JTextPane" default-binding="true">
@@ -648,6 +589,66 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
+          <component id="cea90" class="javax.swing.JTextPane" default-binding="true">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <editable value="false"/>
+              <text resource-bundle="AntiCopyPasterPythonBundle" key="settings.methodDuplicatesDescription"/>
+            </properties>
+          </component>
+          <component id="7df0c" class="javax.swing.JSlider" binding="timeBufferSelector">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="2" use-parent-layout="false">
+                <preferred-size width="50" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <majorTickSpacing value="10"/>
+              <maximum value="61"/>
+              <minimum value="1"/>
+              <minorTickSpacing value="1"/>
+              <paintLabels value="true"/>
+              <paintTicks value="true"/>
+              <snapToTicks value="true"/>
+              <value value="31"/>
+            </properties>
+          </component>
+          <component id="d31d9" class="javax.swing.JSlider" binding="minimumMethodSelector">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="2" use-parent-layout="false">
+                <preferred-size width="50" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <majorTickSpacing value="1"/>
+              <maximum value="10"/>
+              <paintLabels value="true"/>
+              <paintTicks value="true"/>
+              <snapToTicks value="true"/>
+              <value value="5"/>
+            </properties>
+          </component>
+          <component id="98697" class="javax.swing.JLabel" binding="duplicateMethodsHelp" custom-create="true">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <enabled value="true"/>
+              <text value=""/>
+              <toolTipText resource-bundle="AntiCopyPasterPythonBundle" key="settings.tooltip.methodDuplicates"/>
+            </properties>
+          </component>
+          <component id="bb1cf" class="javax.swing.JLabel" binding="waitTimeHelp" custom-create="true">
+            <constraints>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value=""/>
+              <toolTipText resource-bundle="AntiCopyPasterPythonBundle" key="settings.tooltip.promptDelay"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="dcb9b" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

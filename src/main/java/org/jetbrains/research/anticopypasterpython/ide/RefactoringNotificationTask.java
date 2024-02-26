@@ -4,6 +4,7 @@ import com.intellij.CommonBundle;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.highlighting.actions.HighlightUsagesAction;
 import com.intellij.codeInsight.intention.impl.preview.IntentionPreviewDiffResult;
+import com.intellij.openapi.editor.colors.EditorColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 import com.intellij.openapi.editor.event.EditorMouseEventArea;
@@ -130,16 +131,14 @@ public class RefactoringNotificationTask extends TimerTask {
         return model;
     }
 
-    public void highlight(Project project, RefactoringEvent event, String content, Runnable callback){
+    public void highlight(Project project, RefactoringEvent event, Runnable callback){
         var a = HighlightManager.getInstance(project);
         int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
         int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
         System.out.println(startOffset);
         System.out.println(endOffset);
-       // for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
-           // System.out.println(TextAttributesKey.getAllKeys().get(i));
-       // }
-        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, TextAttributesKey.getAllKeys().get(0), 001,null);
+        TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
+        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
         System.out.println("highlight manager: "+a);
 
         event.getEditor().addEditorMouseListener(new EditorMouseListener() {
@@ -319,8 +318,7 @@ public class RefactoringNotificationTask extends TimerTask {
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
                         if (settings.highlight) {
-                            highlight(event.getProject(), event, AntiCopyPasterPythonBundle.message(
-                                            "extract.method.refactoring.is.available"),
+                            highlight(event.getProject(), event,
                                     getRunnableToShowSuggestionDialog(event));
                         } else {
                             notify(event.getProject(),

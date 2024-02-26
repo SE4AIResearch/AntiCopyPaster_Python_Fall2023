@@ -56,6 +56,7 @@ import static com.jetbrains.python.refactoring.extractmethod.PyExtractMethodHand
 import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
 import org.jetbrains.research.anticopypasterpython.utils.PyExtractMethodHandler;
+import com.intellij.openapi.editor.colors.EditorColors;
 
 /**
  * Shows a notification about discovered Extract Method refactoring opportunity.
@@ -127,16 +128,14 @@ public class RefactoringNotificationTask extends TimerTask {
         return model;
     }
 
-    public void highlight(Project project, RefactoringEvent event, String content, Runnable callback){
+    public void highlight(Project project, RefactoringEvent event, Runnable callback){
         var a = HighlightManager.getInstance(project);
         int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
         int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
         System.out.println(startOffset);
         System.out.println(endOffset);
-       // for(int i=0;i<TextAttributesKey.getAllKeys().size();i++){
-           // System.out.println(TextAttributesKey.getAllKeys().get(i));
-       // }
-        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, TextAttributesKey.getAllKeys().get(0), 001,null);
+        TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
+        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
         System.out.println("highlight manager: "+a);
 
         event.getEditor().addEditorMouseListener(new EditorMouseListener() {
@@ -289,8 +288,7 @@ public class RefactoringNotificationTask extends TimerTask {
                         if (settings.highlight) {
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                                     "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
-                            highlight(event.getProject(), event, AntiCopyPasterPythonBundle.message(
-                                            "extract.method.refactoring.is.available"),
+                            highlight(event.getProject(), event,
                                     getRunnableToShowSuggestionDialog(event));
                         } else {
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(

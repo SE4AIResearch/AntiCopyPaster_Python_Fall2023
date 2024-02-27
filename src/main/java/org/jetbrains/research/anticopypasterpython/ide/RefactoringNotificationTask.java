@@ -76,6 +76,8 @@ public class RefactoringNotificationTask extends TimerTask {
     private String logFilePath;
     private Project p;
 
+    public boolean didAlreadyHighlight;
+
     public Editor editor;
 
 
@@ -84,6 +86,7 @@ public class RefactoringNotificationTask extends TimerTask {
         this.timer = timer;
         this.p = p;
         this.logFilePath = p.getBasePath() + "/.idea/anticopypaster-refactoringSuggestionsLog.log";
+        didAlreadyHighlight=false;
     }
 
     private PredictionModel getOrInitModel() {
@@ -129,23 +132,30 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        var a = HighlightManager.getInstance(project);
+        HighlightManager hm = HighlightManager.getInstance(project);
         int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
         int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
-        System.out.println(startOffset);
-        System.out.println(endOffset);
+        System.out.println("start offset:"+startOffset);
+        System.out.println("end offset:"+endOffset);
         TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
-        System.out.println("highlight manager: "+a);
+        hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
+        System.out.println("highlight manager: "+hm);
 
-        event.getEditor().addEditorMouseListener(new EditorMouseListener() {
-            @Override
-            public void mouseClicked(@NotNull EditorMouseEvent event) {
-                if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
-                    callback.run();
+        if(didAlreadyHighlight==false){     //prevents us from adding multiple mouse listeners and thus, triggering the popup multiple times
+            EditorMouseListener mouseListener = new EditorMouseListener() {
+                @Override
+                public void mouseClicked(@NotNull EditorMouseEvent event) {
+                    if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+                        System.out.println("Mouse clicked twice");
+                        callback.run();
+                    }
                 }
-            }
-        });
+            };
+            event.getEditor().addEditorMouseListener(mouseListener);
+            System.out.println("Added mouse listener");
+            didAlreadyHighlight=true;
+        }
+
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {
@@ -158,6 +168,7 @@ public class RefactoringNotificationTask extends TimerTask {
 
     private Runnable getRunnableToShowSuggestionDialog(RefactoringEvent event) {
         return () -> {
+            System.out.println("showing popup for refactoring task");
             String message = event.getReasonToExtract();
             if (message.isEmpty()) {
 //                message = AntiCopyPasterPythonBundle.message("extract.method.to.simplify.logic.of.enclosing.method");

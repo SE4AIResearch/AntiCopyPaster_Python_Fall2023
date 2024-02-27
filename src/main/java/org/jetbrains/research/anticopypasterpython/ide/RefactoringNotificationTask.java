@@ -138,16 +138,20 @@ public class RefactoringNotificationTask extends TimerTask {
         System.out.println("start offset:"+startOffset);
         System.out.println("end offset:"+endOffset);
         TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-        hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
+        Collection<RangeHighlighter> collection = new ArrayList<>();
+        hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
         System.out.println("highlight manager: "+hm);
 
-        if(didAlreadyHighlight==false){     //prevents us from adding multiple mouse listeners and thus, triggering the popup multiple times
+        if(!didAlreadyHighlight){     //prevents us from adding multiple mouse listeners and thus, triggering the popup multiple times
             EditorMouseListener mouseListener = new EditorMouseListener() {
                 @Override
                 public void mouseClicked(@NotNull EditorMouseEvent event) {
                     if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
                         System.out.println("Mouse clicked twice");
                         callback.run();
+                        for (RangeHighlighter highlighter : collection) {
+                            hm.removeSegmentHighlighter(event.getEditor(), highlighter);
+                        }
                     }
                 }
             };

@@ -104,15 +104,22 @@ public class MetricCalculator {
     }
 
     private void keywordFeatures() {
+//        List<String> allKeywords = Arrays.asList(
+//                "continue", "for", "new", "switch",
+//                "assert", "synchronized", "boolean", "do",
+//                "if", "this", "break", "double",
+//                "throw", "byte", "else", "case",
+//                "instanceof", "return", "transient",
+//                "catch", "int", "short", "try",
+//                "char", "final", "finally", "long",
+//                "strictfp", "float", "super", "while"); // 31 keywords, id from 20 to 81
+
         List<String> allKeywords = Arrays.asList(
-                "continue", "for", "new", "switch",
-                "assert", "synchronized", "boolean", "do",
-                "if", "this", "break", "double",
-                "throw", "byte", "else", "case",
-                "instanceof", "return", "transient",
-                "catch", "int", "short", "try",
-                "char", "final", "finally", "long",
-                "strictfp", "float", "super", "while"); // 31 keywords, id from 20 to 81
+                "False", "None", "True", "and", "as", "assert", "async", "await", "break", "class",
+                "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global",
+                "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return"
+                //"try", "while", "with", "yield"
+        );
 
         HashMap<String, Integer> counts = new HashMap<>();
         for (String key : allKeywords) {

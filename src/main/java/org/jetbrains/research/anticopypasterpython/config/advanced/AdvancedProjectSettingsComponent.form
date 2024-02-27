@@ -141,238 +141,238 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="423c2" class="javax.swing.JCheckBox" binding="continueCheckBox" default-binding="true">
+                  <component id="423c2" class="javax.swing.JCheckBox" binding="falseCheckBox">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="continue"/>
+                      <text value="False"/>
                     </properties>
                   </component>
-                  <component id="b44d" class="javax.swing.JCheckBox" binding="forCheckBox" default-binding="true">
+                  <component id="b44d" class="javax.swing.JCheckBox" binding="noneCheckBox">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="for"/>
+                      <text value="None"/>
                     </properties>
                   </component>
-                  <component id="7e289" class="javax.swing.JCheckBox" binding="newCheckBox" default-binding="true">
+                  <component id="7e289" class="javax.swing.JCheckBox" binding="trueCheckBox">
                     <constraints>
                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="new"/>
+                      <text value="True"/>
                     </properties>
                   </component>
-                  <component id="c1211" class="javax.swing.JCheckBox" binding="switchCheckBox" default-binding="true">
+                  <component id="c1211" class="javax.swing.JCheckBox" binding="andCheckBox">
                     <constraints>
                       <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="switch"/>
+                      <text value="and"/>
                     </properties>
                   </component>
-                  <component id="c05c" class="javax.swing.JCheckBox" binding="assertCheckBox" default-binding="true">
+                  <component id="c05c" class="javax.swing.JCheckBox" binding="asCheckBox">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="assert"/>
+                      <text value="as"/>
                     </properties>
                   </component>
-                  <component id="dc098" class="javax.swing.JCheckBox" binding="ifCheckBox" default-binding="true">
+                  <component id="dc098" class="javax.swing.JCheckBox" binding="breakCheckBox">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="if"/>
+                      <text value="break"/>
                     </properties>
                   </component>
-                  <component id="a2eeb" class="javax.swing.JCheckBox" binding="throwCheckBox" default-binding="true">
+                  <component id="a2eeb" class="javax.swing.JCheckBox" binding="delCheckBox">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="throw"/>
+                      <text value="del"/>
                     </properties>
                   </component>
-                  <component id="3a64d" class="javax.swing.JCheckBox" binding="instanceofCheckBox" default-binding="true">
+                  <component id="3a64d" class="javax.swing.JCheckBox" binding="finallyCheckBox">
                     <constraints>
                       <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="instanceof"/>
-                    </properties>
-                  </component>
-                  <component id="b05a6" class="javax.swing.JCheckBox" binding="intCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="int"/>
-                    </properties>
-                  </component>
-                  <component id="1b0cf" class="javax.swing.JCheckBox" binding="finalCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="final"/>
-                    </properties>
-                  </component>
-                  <component id="3fdac" class="javax.swing.JCheckBox" binding="floatCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="float"/>
-                    </properties>
-                  </component>
-                  <component id="896a3" class="javax.swing.JCheckBox" binding="synchronizedCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="synchronized"/>
-                    </properties>
-                  </component>
-                  <component id="69ffc" class="javax.swing.JCheckBox" binding="thisCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="this"/>
-                    </properties>
-                  </component>
-                  <component id="7a012" class="javax.swing.JCheckBox" binding="byteCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="byte"/>
-                    </properties>
-                  </component>
-                  <component id="70c15" class="javax.swing.JCheckBox" binding="returnCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="return"/>
-                    </properties>
-                  </component>
-                  <component id="6238e" class="javax.swing.JCheckBox" binding="shortCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <selected value="true"/>
-                      <text value="short"/>
-                    </properties>
-                  </component>
-                  <component id="a90b7" class="javax.swing.JCheckBox" binding="finallyCheckBox" default-binding="true">
-                    <constraints>
-                      <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
                       <text value="finally"/>
                     </properties>
                   </component>
-                  <component id="1af59" class="javax.swing.JCheckBox" binding="superCheckBox" default-binding="true">
+                  <component id="b05a6" class="javax.swing.JCheckBox" binding="ifCheckBox">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="if"/>
+                    </properties>
+                  </component>
+                  <component id="1b0cf" class="javax.swing.JCheckBox" binding="lambdaCheckBox">
+                    <constraints>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="lambda"/>
+                    </properties>
+                  </component>
+                  <component id="3fdac" class="javax.swing.JCheckBox" binding="passCheckBox">
+                    <constraints>
+                      <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="pass"/>
+                    </properties>
+                  </component>
+                  <component id="896a3" class="javax.swing.JCheckBox" binding="assertCheckBox">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="assert"/>
+                    </properties>
+                  </component>
+                  <component id="69ffc" class="javax.swing.JCheckBox" binding="classCheckBox">
+                    <constraints>
+                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="class"/>
+                    </properties>
+                  </component>
+                  <component id="7a012" class="javax.swing.JCheckBox" binding="elifCheckBox">
+                    <constraints>
+                      <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="elif"/>
+                    </properties>
+                  </component>
+                  <component id="70c15" class="javax.swing.JCheckBox" binding="forCheckBox">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="for"/>
+                    </properties>
+                  </component>
+                  <component id="6238e" class="javax.swing.JCheckBox" binding="importCheckBox">
+                    <constraints>
+                      <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="import"/>
+                    </properties>
+                  </component>
+                  <component id="a90b7" class="javax.swing.JCheckBox" binding="nonlocalCheckBox">
+                    <constraints>
+                      <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="nonlocal"/>
+                    </properties>
+                  </component>
+                  <component id="1af59" class="javax.swing.JCheckBox" binding="raiseCheckBox">
                     <constraints>
                       <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="super"/>
+                      <text value="raise"/>
                     </properties>
                   </component>
-                  <component id="abaa0" class="javax.swing.JCheckBox" binding="whileCheckBox" default-binding="true">
+                  <component id="abaa0" class="javax.swing.JCheckBox" binding="returnCheckBox">
                     <constraints>
                       <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="while"/>
+                      <text value="return"/>
                     </properties>
                   </component>
-                  <component id="61173" class="javax.swing.JCheckBox" binding="longCheckBox" default-binding="true">
+                  <component id="61173" class="javax.swing.JCheckBox" binding="notCheckBox">
                     <constraints>
                       <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="long"/>
+                      <text value="not"/>
                     </properties>
                   </component>
-                  <component id="9a378" class="javax.swing.JCheckBox" binding="strictfpCheckBox" default-binding="true">
+                  <component id="9a378" class="javax.swing.JCheckBox" binding="orCheckBox">
                     <constraints>
                       <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="strictfp"/>
+                      <text value="or"/>
                     </properties>
                   </component>
-                  <component id="c0e42" class="javax.swing.JCheckBox" binding="tryCheckBox" default-binding="true">
+                  <component id="c0e42" class="javax.swing.JCheckBox" binding="inCheckBox">
                     <constraints>
                       <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="try"/>
+                      <text value="in"/>
                     </properties>
                   </component>
-                  <component id="3d5e3" class="javax.swing.JCheckBox" binding="charCheckBox" default-binding="true">
+                  <component id="3d5e3" class="javax.swing.JCheckBox" binding="isCheckBox">
                     <constraints>
                       <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="char"/>
+                      <text value="is"/>
                     </properties>
                   </component>
-                  <component id="72879" class="javax.swing.JCheckBox" binding="catchCheckBox" default-binding="true">
+                  <component id="72879" class="javax.swing.JCheckBox" binding="globalCheckBox">
                     <constraints>
                       <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="catch"/>
+                      <text value="global"/>
                     </properties>
                   </component>
-                  <component id="30eac" class="javax.swing.JCheckBox" binding="transientCheckBox" default-binding="true">
+                  <component id="30eac" class="javax.swing.JCheckBox" binding="fromCheckBox">
                     <constraints>
                       <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="transient"/>
+                      <text value="from"/>
                     </properties>
                   </component>
-                  <component id="2b1b5" class="javax.swing.JCheckBox" binding="caseCheckBox" default-binding="true">
+                  <component id="2b1b5" class="javax.swing.JCheckBox" binding="exceptCheckBox">
                     <constraints>
                       <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="case"/>
+                      <text value="except"/>
                     </properties>
                   </component>
                   <component id="9c249" class="javax.swing.JCheckBox" binding="elseCheckBox" default-binding="true">
@@ -384,40 +384,40 @@
                       <text value="else"/>
                     </properties>
                   </component>
-                  <component id="c55ec" class="javax.swing.JCheckBox" binding="doubleCheckBox" default-binding="true">
+                  <component id="c55ec" class="javax.swing.JCheckBox" binding="defCheckBox">
                     <constraints>
                       <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="double"/>
+                      <text value="def"/>
                     </properties>
                   </component>
-                  <component id="81d7b" class="javax.swing.JCheckBox" binding="breakCheckBox" default-binding="true">
+                  <component id="81d7b" class="javax.swing.JCheckBox" binding="continueCheckBox">
                     <constraints>
                       <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="break"/>
+                      <text value="continue"/>
                     </properties>
                   </component>
-                  <component id="29917" class="javax.swing.JCheckBox" binding="doCheckBox" default-binding="true">
+                  <component id="29917" class="javax.swing.JCheckBox" binding="awaitCheckBox">
                     <constraints>
                       <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="do"/>
+                      <text value="await"/>
                     </properties>
                   </component>
-                  <component id="2fb87" class="javax.swing.JCheckBox" binding="booleanCheckBox" default-binding="true">
+                  <component id="2fb87" class="javax.swing.JCheckBox" binding="asyncCheckBox">
                     <constraints>
                       <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <selected value="true"/>
-                      <text value="boolean"/>
+                      <text value="async"/>
                     </properties>
                   </component>
                 </children>

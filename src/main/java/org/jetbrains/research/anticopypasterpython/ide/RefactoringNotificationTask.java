@@ -129,14 +129,14 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        var a = HighlightManager.getInstance(project);
+        HighlightManager hm = HighlightManager.getInstance(project);
         int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
         int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
         System.out.println(startOffset);
         System.out.println(endOffset);
         TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-        a.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
-        System.out.println("highlight manager: "+a);
+        hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,null);
+        System.out.println("highlight manager: "+hm);
 
         event.getEditor().addEditorMouseListener(new EditorMouseListener() {
             @Override
@@ -158,6 +158,7 @@ public class RefactoringNotificationTask extends TimerTask {
 
     private Runnable getRunnableToShowSuggestionDialog(RefactoringEvent event) {
         return () -> {
+            System.out.println("showing popup for refactoring task");
             String message = event.getReasonToExtract();
             if (message.isEmpty()) {
 //                message = AntiCopyPasterPythonBundle.message("extract.method.to.simplify.logic.of.enclosing.method");

@@ -128,7 +128,7 @@ public class PsiUtil {
             element = psiFile.findElementAt(offset);
         }
 
-        System.out.println(element);
+        System.out.println("findMethodByOffset element at offset "+offset+":"+element);
         return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
 
     }

@@ -61,6 +61,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         RefactoringNotificationTask rnt = getRefactoringTask(project);
 
         if (rnt == null) {
+            System.out.println("preprocess on paste: rnt is null. Setting it to something else.");
             rnt = new RefactoringNotificationTask(inspection, timer, project);
             refactoringNotificationTask.add(rnt);
             setCheckingForRefactoringOpportunities(rnt, project);
@@ -86,7 +87,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         if (result.getDuplicatesCount() == 0) {
             return text;
         }
-        System.out.println(result.getDuplicatesCount());
+        System.out.println("result: duplicate lines count:"+result.getDuplicatesCount());
         //number of lines in fragment
         int linesOfCode = getCountOfCodeLines(text);
         rnt.addEvent(

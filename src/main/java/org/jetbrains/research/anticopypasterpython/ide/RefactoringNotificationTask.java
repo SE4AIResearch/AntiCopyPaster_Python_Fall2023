@@ -132,17 +132,18 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        HighlightManager hm = HighlightManager.getInstance(project);
-        int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
-        int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
-        System.out.println("start offset:"+startOffset);
-        System.out.println("end offset:"+endOffset);
-        TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-        Collection<RangeHighlighter> collection = new ArrayList<>();
-        hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
-        System.out.println("highlight manager: "+hm);
+        if(!didAlreadyHighlight){     //prevents us from adding multiple highlights
+            HighlightManager hm = HighlightManager.getInstance(project);
+            int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
+            int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
+            System.out.println("start offset:"+startOffset);
+            System.out.println("end offset:"+endOffset);
+            TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
+            Collection<RangeHighlighter> collection = new ArrayList<>();
+            collection.clear();
+            hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
+            System.out.println("highlight manager: "+hm);
 
-        if(!didAlreadyHighlight){     //prevents us from adding multiple mouse listeners and thus, triggering the popup multiple times
             EditorMouseListener mouseListener = new EditorMouseListener() {
                 @Override
                 public void mouseClicked(@NotNull EditorMouseEvent event) {
@@ -157,9 +158,12 @@ public class RefactoringNotificationTask extends TimerTask {
             };
             event.getEditor().addEditorMouseListener(mouseListener);
             System.out.println("Added mouse listener");
-            didAlreadyHighlight=true;
+//            didAlreadyHighlight=true;
         }
-
+        else{
+            System.out.println("Already highlighted");
+            didAlreadyHighlight=false;
+        }
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {

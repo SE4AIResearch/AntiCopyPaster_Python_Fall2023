@@ -1,10 +1,15 @@
 plugins {
+    java
     id("org.jetbrains.intellij") version "1.15.0"
     id("com.adarshr.test-logger") version "3.2.0"
 }
 
 group = "org.jetbrains.research.anticopypasterpython"
 version = "2023.3-1.0"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     maven("https://plugins.gradle.org/m2/")

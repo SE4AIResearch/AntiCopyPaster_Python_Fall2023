@@ -140,7 +140,7 @@ public class RefactoringNotificationTask extends TimerTask {
             System.out.println("end offset:"+endOffset);
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
             Collection<RangeHighlighter> collection = new ArrayList<>();
-            collection.clear();
+//            collection.clear();
             hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
             System.out.println("highlight manager: "+hm);
 

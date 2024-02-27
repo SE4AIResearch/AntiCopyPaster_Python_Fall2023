@@ -132,7 +132,7 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        if(!didAlreadyHighlight){     //prevents us from adding multiple highlights
+        if(true || !didAlreadyHighlight){     //prevents us from adding multiple highlights?????
             HighlightManager hm = HighlightManager.getInstance(project);
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
             int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();

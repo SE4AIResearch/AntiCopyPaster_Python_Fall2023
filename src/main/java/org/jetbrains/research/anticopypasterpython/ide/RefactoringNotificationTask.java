@@ -80,6 +80,8 @@ public class RefactoringNotificationTask extends TimerTask {
 
     public Editor editor;
 
+    Collection<RangeHighlighter> collection = new ArrayList<>();
+
 
     public RefactoringNotificationTask(DuplicatesInspection inspection, Timer timer, Project p) {
         this.inspection = inspection;
@@ -132,33 +134,36 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        if(true || !didAlreadyHighlight){     //prevents us from adding multiple highlights?????
+        if(!didAlreadyHighlight){     //prevents us from adding multiple highlights?????
             HighlightManager hm = HighlightManager.getInstance(project);
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
             int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
-            System.out.println("start offset:"+startOffset);
-            System.out.println("end offset:"+endOffset);
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-            Collection<RangeHighlighter> collection = new ArrayList<>();
-//            collection.clear();
-            hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
-            System.out.println("highlight manager: "+hm);
 
-            EditorMouseListener mouseListener = new EditorMouseListener() {
-                @Override
-                public void mouseClicked(@NotNull EditorMouseEvent event) {
-                    if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
-                        System.out.println("Mouse clicked twice");
-                        callback.run();
-                        for (RangeHighlighter highlighter : collection) {
-                            hm.removeSegmentHighlighter(event.getEditor(), highlighter);
-                        }
-                    }
-                }
-            };
-            event.getEditor().addEditorMouseListener(mouseListener);
-            System.out.println("Added mouse listener");
-//            didAlreadyHighlight=true;
+//          collection.clear();
+            hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
+            final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
+                    "extract.method.refactoring.is.available"), NotificationType.INFORMATION);
+            notification.addAction(NotificationAction.createSimple(
+                    AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.notification.action"),
+                    callback));
+            notification.notify(project);
+            AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
+//            EditorMouseListener mouseListener = new EditorMouseListener() {
+//                @Override
+//                public void mouseClicked(@NotNull EditorMouseEvent event) {
+//                    if (event.getMouseEvent().getClickCount() == 1 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+//                        System.out.println("Mouse clicked once");
+//
+//                        for (RangeHighlighter highlighter : collection) {
+//                            hm.removeSegmentHighlighter(event.getEditor(), highlighter);
+//                        }
+//                    }
+//                }
+//            };
+//            event.getEditor().addEditorMouseListener(mouseListener);
+//            System.out.println("Added mouse listener");
+            didAlreadyHighlight=true;
         }
         else{
             System.out.println("Already highlighted");
@@ -202,6 +207,10 @@ public class RefactoringNotificationTask extends TimerTask {
                 AntiCopyPasterUsageStatistics.getInstance(event.getProject()).extractMethodApplied();
             } else {
                 AntiCopyPasterUsageStatistics.getInstance(event.getProject()).extractMethodRejected();
+            }
+            HighlightManager hm = HighlightManager.getInstance(event.getProject());
+            for (RangeHighlighter highlighter : collection) {
+                hm.removeSegmentHighlighter(event.getEditor(), highlighter);
             }
         };
     }
@@ -277,7 +286,7 @@ public class RefactoringNotificationTask extends TimerTask {
                     float prediction = model.predict(featuresVector);
                     System.out.println("Prediction: " + prediction);
                     System.out.println("Threshold: " + predictionThreshold);
-                    //prediction = 999999999;
+                    prediction = 999999999;
 //                    if (debugMetrics) {
 //                        UserSettingsModel settingsModel = (UserSettingsModel) model;
 //                        try (FileWriter fr = new FileWriter(logFilePath, true)) {

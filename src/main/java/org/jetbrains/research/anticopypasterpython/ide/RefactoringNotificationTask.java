@@ -286,7 +286,7 @@ public class RefactoringNotificationTask extends TimerTask {
                     float prediction = model.predict(featuresVector);
                     System.out.println("Prediction: " + prediction);
                     System.out.println("Threshold: " + predictionThreshold);
-                    prediction = 999999999;
+//                    prediction = 999999999;
 //                    if (debugMetrics) {
 //                        UserSettingsModel settingsModel = (UserSettingsModel) model;
 //                        try (FileWriter fr = new FileWriter(logFilePath, true)) {

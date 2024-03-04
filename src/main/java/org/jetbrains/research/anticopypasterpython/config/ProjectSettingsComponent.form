@@ -567,7 +567,7 @@
             <properties>
               <enabled value="true"/>
               <selected value="false"/>
-              <text value="Replace notifications with highlights."/>
+              <text value="Supplement notifications with highlights."/>
             </properties>
           </component>
           <component id="1b2c7" class="javax.swing.JTextPane" default-binding="true">

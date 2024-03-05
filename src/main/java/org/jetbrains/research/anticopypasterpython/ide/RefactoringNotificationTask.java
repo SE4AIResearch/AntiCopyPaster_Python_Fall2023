@@ -134,12 +134,12 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        if(!didAlreadyHighlight){     //prevents us from adding multiple highlights?????
+        //if(!didAlreadyHighlight){     //prevents us from adding multiple highlights?????
             HighlightManager hm = HighlightManager.getInstance(project);
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
             int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-
+//            System.out.println("Event text: "+event.getText());
 //          collection.clear();
             hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
             final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
@@ -163,12 +163,12 @@ public class RefactoringNotificationTask extends TimerTask {
 //            };
 //            event.getEditor().addEditorMouseListener(mouseListener);
 //            System.out.println("Added mouse listener");
-            didAlreadyHighlight=true;
-        }
-        else{
-            System.out.println("Already highlighted");
-            didAlreadyHighlight=false;
-        }
+//            didAlreadyHighlight=true;
+//        }
+//        else{
+//            System.out.println("Already highlighted");
+//            didAlreadyHighlight=false;
+//        }
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {
@@ -188,6 +188,9 @@ public class RefactoringNotificationTask extends TimerTask {
             }
 
             int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
+            if(startOffset==-1){    //fixes the -1 startoffset error
+                startOffset=event.getText().length();
+            }
             event.getEditor().getSelectionModel().setSelection(startOffset, startOffset + event.getText().length());
 
             int result =

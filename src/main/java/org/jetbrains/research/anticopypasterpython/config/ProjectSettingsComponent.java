@@ -42,10 +42,9 @@ public class ProjectSettingsComponent {
     private JLabel advancedButtonHelp;
     private JCheckBox tensorFlowModel;
     private JLabel tensorFlowModelHelp;
-    private JLabel modelPreferencesPanel;
 
     private JCheckBox highlight;
-    private JTextPane modifyingGeneralPreferencesRequiresTextPane;
+    private JLabel generalPrefHelp;
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
     public ProjectSettingsComponent(Project project) {
@@ -216,6 +215,10 @@ public class ProjectSettingsComponent {
         duplicateMethodsHelp.setIcon(AllIcons.General.ContextHelp);
         waitTimeHelp = new JLabel();
         waitTimeHelp.setIcon(AllIcons.General.ContextHelp);
+        generalPrefHelp = new JLabel();
+        generalPrefHelp.setIcon(AllIcons.General.ContextHelp);
+        tensorFlowModelHelp = new JLabel();
+        tensorFlowModelHelp.setIcon(AllIcons.General.ContextHelp);
         advancedButtonHelp = new JLabel();
         advancedButtonHelp.setIcon(AllIcons.General.ContextHelp);
         statisticsButtonHelp = new JLabel();

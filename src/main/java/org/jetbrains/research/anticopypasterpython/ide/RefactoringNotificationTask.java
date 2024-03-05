@@ -139,7 +139,7 @@ public class RefactoringNotificationTask extends TimerTask {
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
             int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-            System.out.println("Event text: "+event.getText());
+//            System.out.println("Event text: "+event.getText());
 //          collection.clear();
             hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
             final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
@@ -188,6 +188,9 @@ public class RefactoringNotificationTask extends TimerTask {
             }
 
             int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
+            if(startOffset==-1){    //fixes the -1 startoffset error
+                startOffset=event.getText().length();
+            }
             event.getEditor().getSelectionModel().setSelection(startOffset, startOffset + event.getText().length());
 
             int result =

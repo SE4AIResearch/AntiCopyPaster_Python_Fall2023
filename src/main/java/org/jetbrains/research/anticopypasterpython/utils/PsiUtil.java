@@ -123,7 +123,7 @@ public class PsiUtil {
 //        System.out.println("starting offset:"+offset);
         // The issue here was that whitespaces do not have PyFunction parents, they go straight to main.
         // To solve this, we simply revert the offset from the caret back into actual text.
-        while (element.toString() == "PsiWhiteSpace") {
+        while (element!=null && element.toString() == "PsiWhiteSpace") {
             offset--;
             element = psiFile.findElementAt(offset);
         }

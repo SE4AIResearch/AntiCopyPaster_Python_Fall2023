@@ -22,6 +22,8 @@ public final class ProjectSettingsState implements PersistentStateComponent<Proj
     // PRIMARY SETTINGS STATES
     public int minimumDuplicateMethods = 0;
     public int timeBuffer = 1;
+
+    public int highlightTimer = 10;
     public boolean highlight = false;
     public boolean keywordsEnabled = true, couplingEnabled = true, sizeEnabled = true, complexityEnabled = true,
             keywordsRequired = true, couplingRequired = true, sizeRequired = true, complexityRequired = true;

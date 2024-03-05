@@ -169,6 +169,10 @@ public class RefactoringNotificationTask extends TimerTask {
 //            System.out.println("Already highlighted");
 //            didAlreadyHighlight=false;
 //        }
+        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
+        if(settings.highlightTimer != 0) {
+            scheduleRemoveHighlight(project, collection, event, settings.highlightTimer);
+        }
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {
@@ -226,6 +230,15 @@ public class RefactoringNotificationTask extends TimerTask {
         notification.notify(project);
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
     }
+
+    private void scheduleRemoveHighlight(Project project,Collection<RangeHighlighter> Collection,RefactoringEvent event, int timer1 ) {
+        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
+        timer.schedule(
+                new HighlightTask(project, collection, event),
+                timer1 * 1000
+        );
+    }
+
 
     private void scheduleExtraction(Project project, PsiFile file, Editor editor, String text) {
         timer.schedule(

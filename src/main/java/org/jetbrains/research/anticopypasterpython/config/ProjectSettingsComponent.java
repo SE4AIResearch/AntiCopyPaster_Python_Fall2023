@@ -32,8 +32,8 @@ public class ProjectSettingsComponent {
     private JCheckBox complexityEnabledCheckBox;
     private JCheckBox complexityRequiredCheckBox;
     private JButton advancedSettingsButton;
-    private JSlider minimumMethodSelector;
-    private JSlider timeBufferSelector;
+    private JSpinner minimumMethodSelector;
+    private JSpinner timeBufferSelector;
     private JButton statisticsCollectionButton;
     private JLabel helpLabel;
     private JLabel duplicateMethodsHelp;
@@ -45,6 +45,8 @@ public class ProjectSettingsComponent {
 
     private JCheckBox highlight;
     private JLabel generalPrefHelp;
+    private JSpinner spinner1;
+    private JLabel highlightTimer;
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
     public ProjectSettingsComponent(Project project) {
@@ -96,13 +98,17 @@ public class ProjectSettingsComponent {
         return minimumMethodSelector;
     }
 
-    public int getMinimumDuplicateMethods() { return (int) minimumMethodSelector.getValue(); }
+    public int getMinimumDuplicateMethods() {if((int)minimumMethodSelector.getValue() < 0){return 0;} else{return (int) minimumMethodSelector.getValue();} }
 
-    public void setMinimumDuplicateMethods(int minimumMethods) { minimumMethodSelector.setValue(minimumMethods); }
+    public void setMinimumDuplicateMethods(int minimumMethods) { if(minimumMethods < 0){minimumMethods = 0;} minimumMethodSelector.setValue(minimumMethods); }
 
-    public int getTimeBuffer() { return (int) timeBufferSelector.getValue(); }
+    public int getSpinner() {if((int)spinner1.getValue() < 0){return 0;} else{return (int) spinner1.getValue();} }
 
-    public void setTimeBuffer(int timeBuffer) { timeBufferSelector.setValue(timeBuffer); }
+    public void setSpinner(int highlightDelay) { if(highlightDelay < 0){highlightDelay = 0;} spinner1.setValue(highlightDelay); }
+
+    public int getTimeBuffer() { if((int)timeBufferSelector.getValue() < 0){return 0;} else{return (int) timeBufferSelector.getValue();} }
+
+    public void setTimeBuffer(int timeBuffer){ if(timeBuffer < 0){timeBuffer = 0;} timeBufferSelector.setValue(timeBuffer); }
 
     public int getKeywordsSensitivity() {
         return keywordsSlider.getValue();
@@ -213,6 +219,8 @@ public class ProjectSettingsComponent {
         helpLabel.setIcon(AllIcons.Ide.External_link_arrow);
         duplicateMethodsHelp = new JLabel();
         duplicateMethodsHelp.setIcon(AllIcons.General.ContextHelp);
+        highlightTimer = new JLabel();
+        highlightTimer.setIcon(AllIcons.General.ContextHelp);
         waitTimeHelp = new JLabel();
         waitTimeHelp.setIcon(AllIcons.General.ContextHelp);
         generalPrefHelp = new JLabel();

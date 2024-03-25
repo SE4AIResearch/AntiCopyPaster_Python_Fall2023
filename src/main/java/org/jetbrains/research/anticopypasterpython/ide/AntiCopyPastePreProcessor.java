@@ -39,6 +39,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
     private final ArrayList<RefactoringNotificationTask> refactoringNotificationTask = new ArrayList<>();
     private static final Logger LOG = Logger.getInstance(AntiCopyPastePreProcessor.class);
 
+    private static int placeholderTimer = -1;
     /**
      * Triggers on each copy action.
      */
@@ -60,11 +61,15 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         HashMap<String, Integer> variablesCountsInCodeFragment = new HashMap<>();
         RefactoringNotificationTask rnt = getRefactoringTask(project);
 
-        if (rnt == null) {
-            System.out.println("preprocess on paste: rnt is null. Setting it to something else.");
-            rnt = new RefactoringNotificationTask(inspection, timer, project);
-            refactoringNotificationTask.add(rnt);
-            setCheckingForRefactoringOpportunities(rnt, project);
+        ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
+        if (placeholderTimer != (settings.timeBuffer + 2) * 1000)
+        {
+            if (rnt == null || placeholderTimer != (settings.timeBuffer + 2) * 1000)  {
+                System.out.println("preprocess on paste: rnt is null. Setting it to something else.");
+                rnt = new RefactoringNotificationTask(inspection, timer, project);
+                refactoringNotificationTask.add(rnt);
+                setCheckingForRefactoringOpportunities(rnt, project);
+            }
         }
 
         AntiCopyPasterUsageStatistics.getInstance(project).onPaste();
@@ -101,7 +106,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
      * Finds the RefactoringNotificationTask in the refactoringNotificationTask ArrayList that is associated with the
      * given project. Returns the RefactoringNotificationTask if it exists, and null if it does not.
      * */
-     private RefactoringNotificationTask getRefactoringTask(Project project) {
+    private RefactoringNotificationTask getRefactoringTask(Project project) {
         for (RefactoringNotificationTask t:refactoringNotificationTask) {
             if (t.getProject() == project) {
                 return t;

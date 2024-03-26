@@ -152,7 +152,7 @@ public class AdvancedProjectSettingsComponent {
 
         // Initialize main help interface
         helpLabel = new JLabel();
-        createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Summer2023/pages/metric.html");
+        createLinkListener(helpLabel, "https://se4airesearch.github.io/AntiCopyPaster_Python_Website_Fall2023/pages/metric.html");
         helpLabel.setIcon(AllIcons.Ide.External_link_arrow);
 
         enabledKeywordsHelp = new JLabel();

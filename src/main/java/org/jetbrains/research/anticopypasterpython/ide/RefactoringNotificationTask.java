@@ -80,6 +80,8 @@ public class RefactoringNotificationTask extends TimerTask {
 
     public Editor editor;
 
+    Collection<RangeHighlighter> collection = new ArrayList<>();
+
 
     public RefactoringNotificationTask(DuplicatesInspection inspection, Timer timer, Project p) {
         this.inspection = inspection;
@@ -132,34 +134,45 @@ public class RefactoringNotificationTask extends TimerTask {
     }
 
     public void highlight(Project project, RefactoringEvent event, Runnable callback){
-        HighlightManager hm = HighlightManager.getInstance(project);
-        int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
-        int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
-        System.out.println("start offset:"+startOffset);
-        System.out.println("end offset:"+endOffset);
-        TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
-        Collection<RangeHighlighter> collection = new ArrayList<>();
-        hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
-        System.out.println("highlight manager: "+hm);
-
-        if(!didAlreadyHighlight){     //prevents us from adding multiple mouse listeners and thus, triggering the popup multiple times
-            EditorMouseListener mouseListener = new EditorMouseListener() {
-                @Override
-                public void mouseClicked(@NotNull EditorMouseEvent event) {
-                    if (event.getMouseEvent().getClickCount() == 2 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
-                        System.out.println("Mouse clicked twice");
-                        callback.run();
-                        for (RangeHighlighter highlighter : collection) {
-                            hm.removeSegmentHighlighter(event.getEditor(), highlighter);
-                        }
-                    }
-                }
-            };
-            event.getEditor().addEditorMouseListener(mouseListener);
-            System.out.println("Added mouse listener");
-            didAlreadyHighlight=true;
+        //if(!didAlreadyHighlight){     //prevents us from adding multiple highlights?????
+            HighlightManager hm = HighlightManager.getInstance(project);
+            int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
+            int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
+            TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
+//            System.out.println("Event text: "+event.getText());
+//          collection.clear();
+            hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
+            final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
+                    "extract.method.refactoring.is.available"), NotificationType.INFORMATION);
+            notification.addAction(NotificationAction.createSimple(
+                    AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.notification.action"),
+                    callback));
+            notification.notify(project);
+            AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
+//            EditorMouseListener mouseListener = new EditorMouseListener() {
+//                @Override
+//                public void mouseClicked(@NotNull EditorMouseEvent event) {
+//                    if (event.getMouseEvent().getClickCount() == 1 & event.getOffset() >= startOffset && event.getOffset() <= endOffset) {
+//                        System.out.println("Mouse clicked once");
+//
+//                        for (RangeHighlighter highlighter : collection) {
+//                            hm.removeSegmentHighlighter(event.getEditor(), highlighter);
+//                        }
+//                    }
+//                }
+//            };
+//            event.getEditor().addEditorMouseListener(mouseListener);
+//            System.out.println("Added mouse listener");
+//            didAlreadyHighlight=true;
+//        }
+//        else{
+//            System.out.println("Already highlighted");
+//            didAlreadyHighlight=false;
+//        }
+        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
+        if(settings.highlightTimer != 0) {
+            scheduleRemoveHighlight(project, collection, event, settings.highlightTimer);
         }
-
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {
@@ -179,6 +192,9 @@ public class RefactoringNotificationTask extends TimerTask {
             }
 
             int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
+            if(startOffset==-1){    //fixes the -1 startoffset error
+                startOffset=event.getText().length();
+            }
             event.getEditor().getSelectionModel().setSelection(startOffset, startOffset + event.getText().length());
 
             int result =
@@ -199,6 +215,10 @@ public class RefactoringNotificationTask extends TimerTask {
             } else {
                 AntiCopyPasterUsageStatistics.getInstance(event.getProject()).extractMethodRejected();
             }
+            HighlightManager hm = HighlightManager.getInstance(event.getProject());
+            for (RangeHighlighter highlighter : collection) {
+                hm.removeSegmentHighlighter(event.getEditor(), highlighter);
+            }
         };
     }
 
@@ -210,6 +230,15 @@ public class RefactoringNotificationTask extends TimerTask {
         notification.notify(project);
         AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
     }
+
+    private void scheduleRemoveHighlight(Project project,Collection<RangeHighlighter> Collection,RefactoringEvent event, int timer1 ) {
+        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
+        timer.schedule(
+                new HighlightTask(project, collection, event),
+                timer1 * 1000
+        );
+    }
+
 
     private void scheduleExtraction(Project project, PsiFile file, Editor editor, String text) {
         timer.schedule(
@@ -273,7 +302,7 @@ public class RefactoringNotificationTask extends TimerTask {
                     float prediction = model.predict(featuresVector);
                     System.out.println("Prediction: " + prediction);
                     System.out.println("Threshold: " + predictionThreshold);
-                    //prediction = 999999999;
+//                    prediction = 999999999;
 //                    if (debugMetrics) {
 //                        UserSettingsModel settingsModel = (UserSettingsModel) model;
 //                        try (FileWriter fr = new FileWriter(logFilePath, true)) {

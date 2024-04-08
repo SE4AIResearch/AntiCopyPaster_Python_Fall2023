@@ -8,7 +8,7 @@ suggests extracting duplicates into a new method as soon as they are introduced 
 
 ## How To Install
 
-AntiCopyPasterPython requires Pycharm version 2023.2.3 to work. To install the plugin:
+AntiCopyPasterPython requires Pycharm version 2023.3 or later to work. To install the plugin:
 
 1. Download the pre-built version of the plugin from 
    [here](https://sourceforge.net/projects/anti-copy-paster/files/latest/download).
@@ -32,7 +32,7 @@ one at a time (or all at once).
 
 ### Metric Categories
 
-AntiCopyPaster analyzes code fragments by considering four main categories of heuristics:
+AntiCopyPasterPython analyzes code fragments by considering four main categories of heuristics:
 
 * Keywords: The number and/or frequency of Java language keywords (ex. `class`, `static`, `void`, etc.) in a fragment.
 * Coupling: The number and/or frequency of references made by the fragment to variables defined outside the fragment.

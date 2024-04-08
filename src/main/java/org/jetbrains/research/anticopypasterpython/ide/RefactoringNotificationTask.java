@@ -32,6 +32,7 @@ import com.jetbrains.python.psi.PyFunction;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.PyFile;
 
+import java.util.concurrent.TimeUnit;
 
 import com.jetbrains.python.refactoring.extractmethod.*;
 
@@ -286,7 +287,10 @@ public class RefactoringNotificationTask extends TimerTask {
                 ApplicationManager.getApplication().runReadAction(() -> {
                     DuplicatesInspection.InspectionResult result = inspection.resolve(event.getFile(), event.getText());
                     //System.out.println(settings.minimumDuplicateMethods);
-                    if (result.getDuplicatesCount() <= settings.minimumDuplicateMethods) {
+                    //System.out.println(result.getDuplicatesCount());
+                    System.out.println(result.getDuplicatesCount() < settings.minimumDuplicateMethods);
+                    if (result.getDuplicatesCount() < settings.minimumDuplicateMethods) {
+                        System.out.println("don't trigger");
                         return;
                     }
                     HashSet<String> variablesInCodeFragment = new HashSet<>();
@@ -329,6 +333,11 @@ public class RefactoringNotificationTask extends TimerTask {
                     //System.out.println(settings.highlight);
                     if ((event.isForceExtraction() || prediction > predictionThreshold) &&
                             canBeExtracted(event)) {
+                        try {
+                            TimeUnit.SECONDS.sleep((int)settings.timeBuffer);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         if (settings.highlight) {
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                                     "extract.method.to.simplify.logic.of.enclosing.method")); // dummy

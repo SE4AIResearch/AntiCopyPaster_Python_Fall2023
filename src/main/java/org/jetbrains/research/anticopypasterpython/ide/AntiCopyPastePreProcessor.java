@@ -116,9 +116,8 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
      */
     private void setCheckingForRefactoringOpportunities(RefactoringNotificationTask task, Project project) {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
-        int scheduleDelayInMs = (settings.timeBuffer + 2) * 1000;
+        int scheduleDelayInMs = 1000;
         System.out.println(scheduleDelayInMs);
-
         try {
             timer.schedule(task, scheduleDelayInMs, scheduleDelayInMs);
         } catch (Exception ex) {

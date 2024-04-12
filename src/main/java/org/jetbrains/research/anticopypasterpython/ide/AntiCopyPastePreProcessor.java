@@ -46,6 +46,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
     @Override
     public String preprocessOnCopy(PsiFile file, int[] startOffsets, int[] endOffsets, String text) {
         AntiCopyPasterUsageStatistics.getInstance(file.getProject()).onCopy();
+        //System.out.println("preprocess on copy text: "+text);
         return null;
     }
 
@@ -75,26 +76,42 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
                 variablesCountsInCodeFragment)) {
             return text;
         }
-
         DataContext dataContext = DataManager.getInstance().getDataContext(editor.getContentComponent());
         @Nullable Caret caret = CommonDataKeys.CARET.getData(dataContext);
         int offset = caret == null ? 0 : caret.getOffset();
+//        System.out.println("Caret selected text: "+caret.getSelectedText());
+        System.out.println("pasted(?) text: "+text);
+        String newText = text;
+//        System.out.println("file last child: "+file.getLastChild().getText());
+        if(text.stripLeading().startsWith("def")){
+//            int indexOfNewline = text.indexOf("\n");
+//            newText = text.substring(indexOfNewline);
+        }
 
-        PyFunction destinationMethod = findMethodByOffset((PyFile) file, offset);
-
+//        System.out.println("new text: "+newText);
+        System.out.println("offset in preprocessor: "+offset);
+//        offset=offset+text.length();
+        //when headers are selected, findMethodByOffset gets the method above where you pasted. This is wrong.
+        System.out.println("file text: "+file.getText());
+        findMethodByOffset(file, offset);
+        PyFunction destinationMethod = findMethodByOffset(file, offset);
+        System.out.println("pre processor dest method text:"+destinationMethod.getText().toString());
         // find number of code fragments considered as duplicated
-        DuplicatesInspection.InspectionResult result = inspection.resolve((PyFile) file, text);
+        DuplicatesInspection.InspectionResult result = inspection.resolve((PyFile) file, newText);
         if (result.getDuplicatesCount() == 0) {
-            return text;
+            return newText;
         }
         System.out.println("result: duplicate lines count:"+result.getDuplicatesCount());
+//        System.out.println("text to be returned: "+text);
         //number of lines in fragment
-        int linesOfCode = getCountOfCodeLines(text);
+        int linesOfCode = getCountOfCodeLines(newText);
         rnt.addEvent(
-                new RefactoringEvent((PyFile) file, destinationMethod, text, result.getDuplicatesCount(),
+                new RefactoringEvent((PyFile) file, destinationMethod, newText, result.getDuplicatesCount(),
                         project, editor, linesOfCode));
 
-        return text;
+        System.out.println("text before return: "+file.getText());
+
+        return newText;
     }
 
     /**

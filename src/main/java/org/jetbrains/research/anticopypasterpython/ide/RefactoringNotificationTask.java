@@ -134,7 +134,7 @@ public class RefactoringNotificationTask extends TimerTask {
         return model;
     }
 
-    public void highlight(Project project, RefactoringEvent event, Runnable callback){
+    public void highlight(Project project, RefactoringEvent event, Runnable callback, boolean doHighlight){
         //if(!didAlreadyHighlight){     //prevents us from adding multiple highlights?????
             HighlightManager hm = HighlightManager.getInstance(project);
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
@@ -142,7 +142,9 @@ public class RefactoringNotificationTask extends TimerTask {
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
 //            System.out.println("Event text: "+event.getText());
 //          collection.clear();
-            hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
+            if(doHighlight) {
+                hm.addOccurrenceHighlight(event.getEditor(), startOffset, endOffset, betterColor, 001, collection);
+            }
             final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
                     "extract.method.refactoring.is.available"), NotificationType.INFORMATION);
             notification.addAction(NotificationAction.createSimple(
@@ -339,10 +341,12 @@ public class RefactoringNotificationTask extends TimerTask {
                             throw new RuntimeException(e);
                         }
                         if (settings.highlight) {
+                            System.out.println("rnt event text:" + event.getText());
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                                     "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
-                            highlight(event.getProject(), event,
-                                    getRunnableToShowSuggestionDialog(event));
+                            //since highlights are borked when method headers are included, we just won't highlight
+                            highlight(event.getProject(), event,                    // don't highlight if pasted segment starts with def
+                                    getRunnableToShowSuggestionDialog(event),!event.getText().stripLeading().startsWith("def"));
                         } else {
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                                     "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
@@ -353,6 +357,8 @@ public class RefactoringNotificationTask extends TimerTask {
                             );
                         }
                     }
+                    //refactoringevent -> destination method is the issue.
+                    System.out.println("Event dest method text: "+event.getDestinationMethod().getText());
                 });
             }
             catch (Exception e) {

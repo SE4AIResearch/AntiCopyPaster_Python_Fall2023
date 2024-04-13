@@ -81,12 +81,14 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         int offset = caret == null ? 0 : caret.getOffset();
 
         PyFunction destinationMethod = findMethodByOffset((PyFile) file, offset);
+        if (destinationMethod == null)
+            return text;
 
         // find number of code fragments considered as duplicated
         DuplicatesInspection.InspectionResult result = inspection.resolve((PyFile) file, text);
-        if (result.getDuplicatesCount() == 0) {
+        if (result.getDuplicatesCount() == 0)
             return text;
-        }
+
         System.out.println("result: duplicate lines count:"+result.getDuplicatesCount());
         //number of lines in fragment
         int linesOfCode = getCountOfCodeLines(text);

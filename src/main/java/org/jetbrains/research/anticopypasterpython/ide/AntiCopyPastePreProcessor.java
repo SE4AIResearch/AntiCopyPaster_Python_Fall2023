@@ -93,14 +93,15 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
 //        offset=offset+text.length();
         //when headers are selected, findMethodByOffset gets the method above where you pasted. This is wrong.
         System.out.println("file text: "+file.getText());
-        findMethodByOffset(file, offset);
+        //findMethodByOffset(file, offset);
         PyFunction destinationMethod = findMethodByOffset(file, offset);
+        if (destinationMethod == null)
+            return newText;
         System.out.println("pre processor dest method text:"+destinationMethod.getText().toString());
         // find number of code fragments considered as duplicated
         DuplicatesInspection.InspectionResult result = inspection.resolve((PyFile) file, newText);
-        if (result.getDuplicatesCount() == 0) {
+        if (result.getDuplicatesCount() == 0)
             return newText;
-        }
         System.out.println("result: duplicate lines count:"+result.getDuplicatesCount());
 //        System.out.println("text to be returned: "+text);
         //number of lines in fragment

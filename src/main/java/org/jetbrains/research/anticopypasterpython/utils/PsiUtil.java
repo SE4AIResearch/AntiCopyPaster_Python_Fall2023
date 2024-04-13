@@ -124,6 +124,8 @@ public class PsiUtil {
         // The issue here was that whitespaces do not have PyFunction parents, they go straight to main.
         // To solve this, we simply revert the offset from the caret back into actual text.
         while (element!=null && element.toString() == "PsiWhiteSpace") {
+            if (offset == 0)
+                return null;
             offset--;
             element = psiFile.findElementAt(offset);
         }

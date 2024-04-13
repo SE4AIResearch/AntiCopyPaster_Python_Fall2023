@@ -96,6 +96,7 @@ public class RefactoringNotificationTask extends TimerTask {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
         boolean tensorFlowModel = settings.tensorFlowEnabled;
         PredictionModel model = this.model;
+        System.out.println(model);
 
         // It makes sense to decouple thresholds between the settings model and tensor model.
         if (tensorFlowModel) {
@@ -104,8 +105,10 @@ public class RefactoringNotificationTask extends TimerTask {
             if (model != null && model instanceof UserSettingsModel)
                 model = null;
 
-            if (model == null)
-                model = this.model = new TensorflowModel();
+            if (model == null) {
+                this.model = new TensorflowModel();
+                model = this.model;
+            }
         }
         else {
             predictionThreshold = usersettingsPredictionThreshold;
@@ -114,7 +117,8 @@ public class RefactoringNotificationTask extends TimerTask {
                 model = null;
 
             if (model == null) {
-                model = this.model = new UserSettingsModel(new MetricsGatherer(p), p);
+                this.model = new UserSettingsModel(new MetricsGatherer(p), p);
+                model = this.model;
                 if(debugMetrics){
                     UserSettingsModel settingsModel = (UserSettingsModel) model;
                     try(FileWriter fr = new FileWriter(logFilePath, true)){
@@ -302,6 +306,7 @@ public class RefactoringNotificationTask extends TimerTask {
                         return;
                     }
                     FeaturesVector featuresVector = calculateFeatures(event);
+                    System.out.println(featuresVector);
 
                     float prediction = model.predict(featuresVector);
                     System.out.println("Prediction: " + prediction);

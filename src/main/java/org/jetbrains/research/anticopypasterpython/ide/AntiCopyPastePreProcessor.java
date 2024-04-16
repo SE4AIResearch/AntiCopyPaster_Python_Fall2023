@@ -80,7 +80,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         @Nullable Caret caret = CommonDataKeys.CARET.getData(dataContext);
         int offset = caret == null ? 0 : caret.getOffset();
 //        System.out.println("Caret selected text: "+caret.getSelectedText());
-        System.out.println("pasted(?) text: "+text);
+//        System.out.println("pasted(?) text: "+text);
         String newText = text;
 //        System.out.println("file last child: "+file.getLastChild().getText());
         if(text.stripLeading().startsWith("def")){
@@ -89,13 +89,13 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         }
 
 //        System.out.println("new text: "+newText);
-        System.out.println("offset in preprocessor: "+offset);
+//        System.out.println("offset in preprocessor: "+offset);
 //        offset=offset+text.length();
         //when headers are selected, findMethodByOffset gets the method above where you pasted. This is wrong.
-        System.out.println("file text: "+file.getText());
+//        System.out.println("file text: "+file.getText());
         findMethodByOffset(file, offset);
         PyFunction destinationMethod = findMethodByOffset(file, offset);
-        System.out.println("pre processor dest method text:"+destinationMethod.getText().toString());
+//        System.out.println("pre processor dest method text:"+destinationMethod.getText().toString());
         // find number of code fragments considered as duplicated
         DuplicatesInspection.InspectionResult result = inspection.resolve((PyFile) file, newText);
         if (result.getDuplicatesCount() == 0) {
@@ -109,7 +109,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
                 new RefactoringEvent((PyFile) file, destinationMethod, newText, result.getDuplicatesCount(),
                         project, editor, linesOfCode));
 
-        System.out.println("text before return: "+file.getText());
+//        System.out.println("text before return: "+file.getText());
 
         return newText;
     }

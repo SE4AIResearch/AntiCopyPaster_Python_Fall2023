@@ -25,7 +25,7 @@ import com.jetbrains.python.psi.types.PyType;
 
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import com.jetbrains.python.PythonFileType;
-import com.jetbrains.python.codeInsight.*;
+//import com.jetbrains.python.codeInsight.*;
 //import com.jetbrains.python.findUsages.*;
 import com.jetbrains.python.refactoring.introduce.*;
 
@@ -121,32 +121,24 @@ public class PsiUtil {
     public static PyFunction findMethodByOffset(PsiFile psiFile, int offset) {
 
         PsiElement element = psiFile.findElementAt(offset);
-//        System.out.println("starting offset:"+offset);
 
-        String text = psiFile.getText();
-//        String newText = text;
-//        if(text.stripLeading().startsWith("def")){
-//            int indexOfNewline = text.indexOf("\n");
-//            newText = text.substring(indexOfNewline);
-//        }
         // The issue here was that whitespaces do not have PyFunction parents, they go straight to main.
         // To solve this, we simply revert the offset from the caret back into actual text.
         //backtrack to the nearest element that isn't white space
         while (element!=null && element.toString() == "PsiWhiteSpace") {
             offset--;
             element = psiFile.findElementAt(offset);
-//            element.add()
         }
 
-        System.out.println("findMethodByOffset element at offset "+offset+":"+element.toString());
+//        System.out.println("findMethodByOffset element at offset "+offset+":"+element.toString());
 
         PyFunction toReturn = (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
-        System.out.println("thing to return from findMethodByOffset: "+toReturn.getText().toString());
+//        System.out.println("thing to return from findMethodByOffset: "+toReturn.getText().toString());
         return toReturn;
 
     }
 
-    public static PsiElement[] getElements(@NotNull Project project, @NotNull PsiFile file,
+    public static PyElement[] getElements(@NotNull Project project, @NotNull PsiFile file,
                                            int startOffset, int endOffset) {
         PyElement[] elements;
 

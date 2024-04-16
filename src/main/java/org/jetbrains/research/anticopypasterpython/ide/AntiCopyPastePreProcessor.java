@@ -46,7 +46,6 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
     @Override
     public String preprocessOnCopy(PsiFile file, int[] startOffsets, int[] endOffsets, String text) {
         AntiCopyPasterUsageStatistics.getInstance(file.getProject()).onCopy();
-        //System.out.println("preprocess on copy text: "+text);
         return null;
     }
 
@@ -99,7 +98,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         // find number of code fragments considered as duplicated
         DuplicatesInspection.InspectionResult result = inspection.resolve((PyFile) file, newText);
         if (result.getDuplicatesCount() == 0) {
-            return newText;
+            return text;
         }
         System.out.println("result: duplicate lines count:"+result.getDuplicatesCount());
 //        System.out.println("text to be returned: "+text);

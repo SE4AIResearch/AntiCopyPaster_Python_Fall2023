@@ -118,11 +118,13 @@ public class PsiUtil {
         return out.toString();
     }
 
-    public static PyFunction findMethodByOffset(PyFile psiFile, int offset) {
+    public static PyFunction findMethodByOffset(PsiFile psiFile, int offset) {
+
         PsiElement element = psiFile.findElementAt(offset);
-//        System.out.println("starting offset:"+offset);
+
         // The issue here was that whitespaces do not have PyFunction parents, they go straight to main.
         // To solve this, we simply revert the offset from the caret back into actual text.
+        //backtrack to the nearest element that isn't white space
         while (element!=null && element.toString() == "PsiWhiteSpace") {
             if (offset == 0)
                 return null;
@@ -130,8 +132,11 @@ public class PsiUtil {
             element = psiFile.findElementAt(offset);
         }
 
-        System.out.println("findMethodByOffset element at offset "+offset+":"+element);
-        return (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
+//        System.out.println("findMethodByOffset element at offset "+offset+":"+element.toString());
+
+        PyFunction toReturn = (PyFunction) PsiTreeUtil.findFirstParent(element, p -> p instanceof PyFunction);
+//        System.out.println("thing to return from findMethodByOffset: "+toReturn.getText().toString());
+        return toReturn;
 
     }
 

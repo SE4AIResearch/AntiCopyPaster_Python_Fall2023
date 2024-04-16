@@ -143,10 +143,16 @@ public class RefactoringNotificationTask extends TimerTask {
             HighlightManager hm = HighlightManager.getInstance(project);
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
             int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
+
+            int startOffset2 = getStartOffset(event.getEditor(),event.getFile(), event.getText());
+            if(startOffset2 < 0){
+                startOffset2 = event.getText().length();
+            }
+            int endOffset2 = startOffset2+event.getText().length();
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
 //            System.out.println("Event text: "+event.getText());
 //          collection.clear();
-            hm.addOccurrenceHighlight(event.getEditor(),startOffset,endOffset, betterColor, 001,collection);
+            hm.addOccurrenceHighlight(event.getEditor(), startOffset2, endOffset2, betterColor, 001, collection);
             final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
                     "extract.method.refactoring.is.available"), NotificationType.INFORMATION);
             notification.addAction(NotificationAction.createSimple(

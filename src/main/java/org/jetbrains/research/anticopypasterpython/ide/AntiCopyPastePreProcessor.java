@@ -75,7 +75,6 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
                 variablesCountsInCodeFragment)) {
             return text;
         }
-
         DataContext dataContext = DataManager.getInstance().getDataContext(editor.getContentComponent());
         @Nullable Caret caret = CommonDataKeys.CARET.getData(dataContext);
         int offset = caret == null ? 0 : caret.getOffset();
@@ -102,6 +101,7 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         rnt.addEvent(
                 new RefactoringEvent((PyFile) file, destinationMethod, text1, result.getDuplicatesCount(),
                         project, editor, linesOfCode));
+
 
         return text;
     }

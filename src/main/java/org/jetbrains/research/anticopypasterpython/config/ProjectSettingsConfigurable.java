@@ -43,7 +43,7 @@ public class ProjectSettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
-        boolean modified = settingsComponent.getMinimumDuplicateMethods() != settings.minimumDuplicateMethods;
+        boolean modified = (settingsComponent.getMinimumDuplicateMethods() != settings.minimumDuplicateMethods);
         modified |= settingsComponent.getTimeBuffer() != settings.timeBuffer;
         modified |= settingsComponent.getSpinner() != settings.highlightTimer;
         modified |= settingsComponent.getKeywordsSensitivity() != settings.keywordsSensitivity;

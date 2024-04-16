@@ -90,10 +90,17 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
             return text;
 
         System.out.println("result: duplicate lines count:"+result.getDuplicatesCount());
+        String text1 = text;
+        int startIndex = text.indexOf("def");
+        int endIndex = text.indexOf("):");
+        if(startIndex != -1  && endIndex != -1)
+        {
+            text1= text.substring(endIndex+2);
+        }
         //number of lines in fragment
         int linesOfCode = getCountOfCodeLines(text);
         rnt.addEvent(
-                new RefactoringEvent((PyFile) file, destinationMethod, text, result.getDuplicatesCount(),
+                new RefactoringEvent((PyFile) file, destinationMethod, text1, result.getDuplicatesCount(),
                         project, editor, linesOfCode));
 
         return text;

@@ -126,6 +126,8 @@ public class PsiUtil {
         // To solve this, we simply revert the offset from the caret back into actual text.
         //backtrack to the nearest element that isn't white space
         while (element!=null && element.toString() == "PsiWhiteSpace") {
+            if (offset == 0)
+                return null;
             offset--;
             element = psiFile.findElementAt(offset);
         }

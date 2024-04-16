@@ -13,7 +13,6 @@ import com.intellij.openapi.editor.markup.*;
 import com.intellij.ui.HighlightedText;
 import com.intellij.vcs.log.ui.actions.HighlightersActionGroup;
 import com.intellij.codeInsight.highlighting.*;
-import kotlinx.html.P;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.notification.*;
 import com.intellij.openapi.application.ApplicationManager;
@@ -135,7 +134,7 @@ public class RefactoringNotificationTask extends TimerTask {
         return model;
     }
 
-    public void highlight(Project project, RefactoringEvent event, Runnable callback, boolean doHighlight){
+    public void highlight(Project project, RefactoringEvent event, Runnable callback){
         //if(!didAlreadyHighlight){     //prevents us from adding multiple highlights?????
             HighlightManager hm = HighlightManager.getInstance(project);
             int startOffset = event.getDestinationMethod().getTextRange().getStartOffset();
@@ -149,10 +148,7 @@ public class RefactoringNotificationTask extends TimerTask {
             TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
 //            System.out.println("Event text: "+event.getText());
 //          collection.clear();
-            if(doHighlight) {
-//                System.out.println("Highlighting");
-                hm.addOccurrenceHighlight(event.getEditor(), startOffset2, endOffset2, betterColor, 001, collection);
-            }
+            hm.addOccurrenceHighlight(event.getEditor(), startOffset2, endOffset2, betterColor, 001, collection);
             final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
                     "extract.method.refactoring.is.available"), NotificationType.INFORMATION);
             notification.addAction(NotificationAction.createSimple(
@@ -349,12 +345,10 @@ public class RefactoringNotificationTask extends TimerTask {
                             throw new RuntimeException(e);
                         }
                         if (settings.highlight) {
-                            System.out.println("rnt event text:" + event.getText());
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                                     "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
-                            //since highlights are borked when method headers are included, we just won't highlight
-                            highlight(event.getProject(), event,                    // don't highlight if pasted segment starts with def
-                                    getRunnableToShowSuggestionDialog(event),true || !event.getText().stripLeading().startsWith("def"));
+                            highlight(event.getProject(), event,
+                                    getRunnableToShowSuggestionDialog(event));
                         } else {
                             event.setReasonToExtract(AntiCopyPasterPythonBundle.message(
                                     "extract.method.to.simplify.logic.of.enclosing.method")); // dummy
@@ -365,8 +359,6 @@ public class RefactoringNotificationTask extends TimerTask {
                             );
                         }
                     }
-                    //refactoringevent -> destination method is the issue.
-                    System.out.println("Event dest method text: "+event.getDestinationMethod().getText());
                 });
             }
             catch (Exception e) {

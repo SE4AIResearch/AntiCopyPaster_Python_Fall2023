@@ -98,6 +98,9 @@ public abstract class Flag{
      */
     public boolean isFlagTriggered(FeaturesVector featuresVector) {
         int sensitivity = getSensitivity();
+        System.out.println("Sensitivity:\n");
+        System.out.println(sensitivity);
+        System.out.println("");
         if (sensitivity != cachedSensitivity) {
             cachedSensitivity = sensitivity;
             calculateThreshold();
@@ -105,7 +108,9 @@ public abstract class Flag{
         lastCalculatedMetric = getMetric(featuresVector);
         boolean flagTripped = false;
         for (int i = 0; i < numFeatures; i++) {
-            if (lastCalculatedMetric[i] > thresholds[i]) {
+            System.out.println(lastCalculatedMetric[i]);
+            System.out.println(thresholds[i]);
+            if (lastCalculatedMetric[i] >= thresholds[i]) {
                 flagTripped = true;
             } else {
                 for (Feature requiredMetric : requiredMetrics) {

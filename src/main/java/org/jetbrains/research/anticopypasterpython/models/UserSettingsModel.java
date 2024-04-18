@@ -50,12 +50,32 @@ public class UserSettingsModel extends PredictionModel{
 
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
 
+        System.out.println("Enables:\n");
+        System.out.println(settings.sizeEnabled);
+        System.out.println(settings.complexityEnabled);
+        System.out.println(settings.keywordsEnabled);
+        System.out.println(settings.couplingEnabled);
+        System.out.println("");
         boolean sizeTriggered = settings.sizeEnabled && sizeMetrics.isFlagTriggered(featuresVector);
         boolean complexityTriggered = settings.complexityEnabled && complexityMetrics.isFlagTriggered(featuresVector);
         boolean keywordsTriggered = settings.keywordsEnabled && keywordsMetrics.isFlagTriggered(featuresVector);
         boolean couplingTriggered = settings.couplingEnabled && couplingMetrics.isFlagTriggered(featuresVector);
+        System.out.println("Triggers:\n");
+        System.out.println(sizeTriggered);
+        System.out.println(complexityTriggered);
+        System.out.println(keywordsTriggered);
+        System.out.println(couplingTriggered);
+        System.out.println("");
+        System.out.println("Requires:\n");
+        System.out.println(settings.sizeRequired);
+        System.out.println(settings.complexityEnabled);
+        System.out.println(settings.keywordsRequired);
+        System.out.println(settings.couplingRequired);
+        System.out.println("");
 
         boolean shouldNotify = sizeTriggered || complexityTriggered || keywordsTriggered || couplingTriggered;
+        System.out.println("Shouldnotify:\n");
+        System.out.println(shouldNotify);
         if (shouldNotify) {
             if (!sizeTriggered && settings.sizeRequired)
                 shouldNotify = false;
@@ -66,6 +86,7 @@ public class UserSettingsModel extends PredictionModel{
             else if (!couplingTriggered && settings.couplingRequired)
                 shouldNotify = false;
         }
+        System.out.println(shouldNotify);
 
         return shouldNotify ? 1 : 0;
     }

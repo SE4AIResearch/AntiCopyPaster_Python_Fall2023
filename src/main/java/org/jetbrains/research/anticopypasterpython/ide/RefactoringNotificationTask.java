@@ -64,7 +64,7 @@ import com.intellij.openapi.editor.colors.EditorColors;
  */
 public class RefactoringNotificationTask extends TimerTask {
     private static final Logger LOG = Logger.getInstance(RefactoringNotificationTask.class);
-    private static float tensorflowPredictionThreshold = 0.01f; // certainty threshold for TensorFlow model
+    private static float tensorflowPredictionThreshold = 0.05f; // certainty threshold for TensorFlow model
     private static float usersettingsPredictionThreshold = 0.5f; // certainty threshold for UserSettings model
     private static float predictionThreshold = usersettingsPredictionThreshold; // Prediction threshold at runtime.
     private final DuplicatesInspection inspection;

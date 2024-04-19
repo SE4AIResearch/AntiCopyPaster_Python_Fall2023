@@ -108,14 +108,16 @@ public abstract class Flag{
         lastCalculatedMetric = getMetric(featuresVector);
         boolean flagTripped = false;
         for (int i = 0; i < numFeatures; i++) {
+            System.out.println(i);
             System.out.println(lastCalculatedMetric[i]);
             System.out.println(thresholds[i]);
-            if (lastCalculatedMetric[i] >= thresholds[i]) {
+            if (lastCalculatedMetric[i] >= thresholds[i]) { // Used to be >, changed for edge-case mitigation.
                 flagTripped = true;
             } else {
                 for (Feature requiredMetric : requiredMetrics) {
                     if (requiredMetric == selectedMetrics.get(i)) {
                         // Required metric does not pass.
+                        System.out.println("We have reached the fail case.");
                         return false;
                     }
                 }

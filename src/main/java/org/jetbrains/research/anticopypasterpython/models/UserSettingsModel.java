@@ -51,25 +51,37 @@ public class UserSettingsModel extends PredictionModel{
         ProjectSettingsState settings = ProjectSettingsState.getInstance(project);
 
         System.out.println("Enables:\n");
+        System.out.println("Size:");
         System.out.println(settings.sizeEnabled);
+        System.out.println("Complexity:");
         System.out.println(settings.complexityEnabled);
+        System.out.println("Keywords:");
         System.out.println(settings.keywordsEnabled);
+        System.out.println("Coupling");
         System.out.println(settings.couplingEnabled);
-        System.out.println("");
+        System.out.println("Triggers:");
+        System.out.println("Size:");
         boolean sizeTriggered = settings.sizeEnabled && sizeMetrics.isFlagTriggered(featuresVector);
-        boolean complexityTriggered = settings.complexityEnabled && complexityMetrics.isFlagTriggered(featuresVector);
-        boolean keywordsTriggered = settings.keywordsEnabled && keywordsMetrics.isFlagTriggered(featuresVector);
-        boolean couplingTriggered = settings.couplingEnabled && couplingMetrics.isFlagTriggered(featuresVector);
-        System.out.println("Triggers:\n");
         System.out.println(sizeTriggered);
+        System.out.println("Complexity:");
+        boolean complexityTriggered = settings.complexityEnabled && complexityMetrics.isFlagTriggered(featuresVector);
         System.out.println(complexityTriggered);
+        System.out.println("Keywords:");
+        boolean keywordsTriggered = settings.keywordsEnabled && keywordsMetrics.isFlagTriggered(featuresVector);
         System.out.println(keywordsTriggered);
+        System.out.println("Coupling:");
+        boolean couplingTriggered = settings.couplingEnabled && couplingMetrics.isFlagTriggered(featuresVector);
         System.out.println(couplingTriggered);
         System.out.println("");
+
         System.out.println("Requires:\n");
+        System.out.println("Size:");
         System.out.println(settings.sizeRequired);
+        System.out.println("Complexity:");
         System.out.println(settings.complexityEnabled);
+        System.out.println("Keywords:");
         System.out.println(settings.keywordsRequired);
+        System.out.println("Coupling:");
         System.out.println(settings.couplingRequired);
         System.out.println("");
 

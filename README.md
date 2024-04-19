@@ -41,6 +41,9 @@ AntiCopyPasterPython analyzes code fragments by considering four main categories
 
 These categories can be individually configured further in the plugin's advanced settings menu.
 
+### More Information
+More information on how the plugin was developed and specific changes can be found [here](https://se4airesearch.github.io/AntiCopyPaster_Python_Website_Fall2023/index.html).
+
 ## Contacts
 
 If you have any questions or propositions, do not hesitate to contact Eman AlOmar at ealomar@stevens.edu.

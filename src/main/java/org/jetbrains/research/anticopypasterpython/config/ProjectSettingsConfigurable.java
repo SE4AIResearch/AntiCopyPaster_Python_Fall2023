@@ -93,7 +93,6 @@ public class ProjectSettingsConfigurable implements Configurable {
         settingsComponent.setMinimumDuplicateMethods(settings.minimumDuplicateMethods);
         settingsComponent.setTimeBuffer(settings.timeBuffer);
         settingsComponent.setHighLightTimerSelector(settings.highlightTimer);
-        System.out.println(settings.highlightTimer);
         settingsComponent.setKeywordsSensitivity(settings.keywordsSensitivity);
         settingsComponent.setKeywordsEnabled(settings.keywordsEnabled);
         settingsComponent.setKeywordsRequired(settings.keywordsRequired);

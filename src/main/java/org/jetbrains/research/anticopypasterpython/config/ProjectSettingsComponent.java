@@ -45,7 +45,7 @@ public class ProjectSettingsComponent {
 
     private JCheckBox highlight;
     private JLabel generalPrefHelp;
-    private JSpinner spinner1;
+    private JSpinner highLightTimerSelector;
     private JLabel highlightTimer;
     private static final Logger LOG = Logger.getInstance(ProjectSettingsComponent.class);
 
@@ -102,9 +102,9 @@ public class ProjectSettingsComponent {
 
     public void setMinimumDuplicateMethods(int minimumMethods) { if(minimumMethods < 0){minimumMethods = 0;} minimumMethodSelector.setValue(minimumMethods); }
 
-    public int getSpinner() {if((int)spinner1.getValue() < 0){return 0;} else{return (int) spinner1.getValue();} }
+    public int getHighlightTimerSelector() {if((int)highLightTimerSelector.getValue() < 0){return 0;} else{return (int) highLightTimerSelector.getValue();} }
 
-    public void setSpinner(int highlightDelay) { if(highlightDelay < 0){highlightDelay = 0;} spinner1.setValue(highlightDelay); }
+    public void setHighLightTimerSelector(int highlightDelay) { if(highlightDelay < 0){highlightDelay = 0;} highLightTimerSelector.setValue(highlightDelay); }
 
     public int getTimeBuffer() { if((int)timeBufferSelector.getValue() < 0){return 0;} else{return (int) timeBufferSelector.getValue();} }
 

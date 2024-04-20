@@ -658,7 +658,7 @@
               <toolTipText resource-bundle="AntiCopyPasterPythonBundle" key="settings.tooltip.Highlighttimer"/>
             </properties>
           </component>
-          <component id="3e7aa" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
+          <component id="3e7aa" class="javax.swing.JSpinner" binding="highLightTimerSelector">
             <constraints>
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="2" use-parent-layout="false">
                 <preferred-size width="50" height="-1"/>

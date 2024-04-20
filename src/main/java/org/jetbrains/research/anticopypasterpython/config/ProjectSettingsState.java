@@ -20,20 +20,20 @@ import java.util.EnumMap;
 public final class ProjectSettingsState implements PersistentStateComponent<ProjectSettingsState> {
 
     // PRIMARY SETTINGS STATES
-    public int minimumDuplicateMethods = 0;
-    public int timeBuffer = 1;
+    public int minimumDuplicateMethods = 1;
+    public int timeBuffer = 10;
 
     public int highlightTimer = 10;
     public boolean highlight = false;
     public boolean keywordsEnabled = true, couplingEnabled = true, sizeEnabled = true, complexityEnabled = true,
-            keywordsRequired = true, couplingRequired = true, sizeRequired = true, complexityRequired = true;
+            keywordsRequired = false, couplingRequired = false, sizeRequired = false, complexityRequired = false;
     public int keywordsSensitivity = 50, couplingSensitivity = 50, sizeSensitivity = 50, complexitySensitivity = 50;
 
     // ADVANCED SETTINGS STATES
     // Each boolean array of two elements follow this scheme {boolean submetric_enabled, boolean submetric_required}
 
     // TENSORFLOW MODEL
-    public boolean tensorFlowEnabled = false;
+    public boolean tensorFlowEnabled = true;
 
     // Keyword Metric
     public Boolean[] measureKeywordsTotal = {false, false}, measureKeywordsDensity = {true, true};

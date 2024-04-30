@@ -189,9 +189,12 @@ public class PsiUtil {
         int difference = secondLineIndentation-firstLineIndentation;
 
         int indexOfHash=newText.substring(firstNewLine,firstNewLine+secondLineIndentation).indexOf("#");
-        for(int i=secondLineIndentation;i>firstLineIndentation;i--){
-            if(newText.charAt(i)==':' && i<indexOfHash){        //if a colon is before a comment
+        for(int i=secondLineIndentation+firstNewLine;i>firstLineIndentation;i--){
+            //System.out.println(newText.charAt(i));
+            if(newText.charAt(i)==':' && (indexOfHash>-1 ? i<indexOfHash : true)){        //if a colon is before a comment, and if a comment exists on that line
                 difference-=4;
+                //newText=newText.replace("(\\n)(\\s){"+difference+"}","\n");
+                //difference+=4;
                 break;
             }
         }

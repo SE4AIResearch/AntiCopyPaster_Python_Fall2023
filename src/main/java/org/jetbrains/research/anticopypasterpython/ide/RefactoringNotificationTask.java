@@ -207,7 +207,7 @@ public class RefactoringNotificationTask extends TimerTask {
                 scheduleExtraction(event.getProject(),
                         event.getFile(),
                         event.getEditor(),
-                        event.getText());
+                        fixedWhitespaceText);
 
                 AntiCopyPasterUsageStatistics.getInstance(event.getProject()).extractMethodApplied();
             } else {

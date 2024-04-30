@@ -30,7 +30,7 @@ import com.jetbrains.python.PythonFileType;
 import com.jetbrains.python.refactoring.introduce.*;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 public class PsiUtil {
 
@@ -165,17 +165,56 @@ public class PsiUtil {
         return elements;
     }
 
+    public static String getFixedWhitespaceText(Editor editor, PsiFile file, String newText){
+
+        //find number of spaces from the beginning of the line they did not highlight
+        //in the text from the paste, get the difference between the indents of the first and second lines
+        //if the first line ends in a colon, subtract 4 from that difference.
+
+        Pattern nonSpace=Pattern.compile("\\S");
+        Matcher m=nonSpace.matcher(newText);
+        int firstLineIndentation=0;
+        if(m.find()){
+            firstLineIndentation=m.start();
+        }
+
+        int firstNewLine=newText.indexOf("\n");
+        m=nonSpace.matcher(newText.substring(firstNewLine));
+        int secondLineIndentation=0;
+
+        if(m.find()){
+            secondLineIndentation=m.start();
+        }
+
+        int difference = secondLineIndentation-firstLineIndentation;
+
+        int indexOfHash=newText.substring(firstNewLine,firstNewLine+secondLineIndentation).indexOf("#");
+        for(int i=secondLineIndentation;i>firstLineIndentation;i--){
+            if(newText.charAt(i)==':' && i<indexOfHash){        //if a colon is before a comment
+                difference-=4;
+                break;
+            }
+        }
+        difference=difference-1;
+        newText=newText.replaceAll("(\\n)(\\s){"+difference+"}","\n");
+        return newText;
+    }
+
     public static int getStartOffset(Editor editor, PsiFile file, String text) {
         int caretPos = editor.getCaretModel().getOffset();
+
         String fileText = file.getText();
         int best_dist = 1000000000;
         int startOffset = -1;
 
         int fromIdx = 0;
-        while (true) {
-            int idx = fileText.indexOf(text, fromIdx);
-            fromIdx = idx + 1;
 
+        String newText=getFixedWhitespaceText(editor,file,text);
+
+        int idx;
+        while (true) {
+            idx = fileText.indexOf(newText, fromIdx);
+            fromIdx = idx + 1;
             if (idx == -1) {
                 break;
             }
@@ -186,6 +225,10 @@ public class PsiUtil {
                 startOffset = idx;
             }
         }
+//        System.out.println("File text:\n"+fileText);
+        System.out.println("text from paste:\n"+text);
+        System.out.println("new text:\n"+newText);
+        System.out.println("getStartOffset Called:"+startOffset);
         return startOffset;
     }
 

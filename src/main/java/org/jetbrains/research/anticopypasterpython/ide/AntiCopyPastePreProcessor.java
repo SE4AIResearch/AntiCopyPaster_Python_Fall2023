@@ -96,6 +96,9 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         {
             text1= text.substring(endIndex+2);
         }
+        System.out.println("Selected text:"+text1);
+        System.out.println("Destination method:"+destinationMethod.getText());
+        System.out.println("Offset:"+offset);
         //number of lines in fragment
         int linesOfCode = getCountOfCodeLines(text);
         rnt.addEvent(

@@ -8,7 +8,7 @@ suggests extracting duplicates into a new method as soon as they are introduced 
 
 ## How To Install
 
-AntiCopyPasterPython requires Pycharm version 2023.3 or later to work. To install the plugin:
+AntiCopyPasterPython requires Pycharm version 2024.1 or later to work. To install the plugin:
 
 1. Download the pre-built version of the plugin from 
    [here](https://github.com/SE4AIResearch/AntiCopyPaster_Python_Fall2023/releases/tag/v1.0).

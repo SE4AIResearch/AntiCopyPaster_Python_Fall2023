@@ -11,12 +11,28 @@ suggests extracting duplicates into a new method as soon as they are introduced 
 AntiCopyPasterPython requires Pycharm version 2024.1 or later to work. To install the plugin:
 
 1. Download the pre-built version of the plugin from 
-   [here](https://github.com/SE4AIResearch/AntiCopyPaster_Python_Fall2023/releases/tag/v1.0).
+   [here](https://github.com/SE4AIResearch/AntiCopyPaster_Python_Fall2023/releases).
 2. Open Pycharm and go to `File`/`Settings`/`Plugins`.
 3. Select the gear icon, and choose `Install Plugin from Disk...`.
 4. Choose the downloaded ZIP archive.
 5. Click `Apply`.
 6. Restart the IDE.
+
+## New Changes
+
+AntiCopyPaster has been ported to work with Python code on the Pycharm IDE, including both community and ultimate edition. Based on various metrics such as Python keywords, code complexity, coupling and size or an AI model, AntiCopyPasterPython triggers a notification within PyCharm, recommending the extraction of duplicate code into a new method. 
+
+### Highlighting
+
+Users now have the option to enable a feature in the plugin that highlights the specific code block triggering a refactoring notification. This enhancement aims to provide clearer guidance on what code block is being recommended for refactoring. Users can manually remove these highlights by adjusting the settings, acknowledging the notification, or choosing to ignore it for a customizable duration. 
+
+### Model Setting
+
+Users have the choice between the manual heuristic model or the TensorFlow AI model for evaluating refactoring calls, providing flexibility to suit their preferences and workflow. 
+
+### Setting Menu
+
+To go along with the fixes and new features, we have adjusted the settings menu to allow for more user input. 
 
 ## Technical Information
 

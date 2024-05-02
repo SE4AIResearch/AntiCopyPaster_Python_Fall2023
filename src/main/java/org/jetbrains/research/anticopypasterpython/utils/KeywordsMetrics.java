@@ -8,7 +8,7 @@ import org.jetbrains.research.anticopypasterpython.metrics.features.FeaturesVect
 import java.util.List;
 import org.jetbrains.research.anticopypasterpython.config.advanced.AdvancedProjectSettingsComponent.PythonKeywords;
 
-public class KeywordsMetrics extends Flag{
+public class KeywordsMetrics extends Flag {
 
     public KeywordsMetrics(List<FeaturesVector> featuresVectorList, Project project){
         super(featuresVectorList, project);

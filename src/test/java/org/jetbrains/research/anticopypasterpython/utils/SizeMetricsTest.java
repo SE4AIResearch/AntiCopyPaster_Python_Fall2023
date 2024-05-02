@@ -13,7 +13,7 @@ public class SizeMetricsTest {
 
     /**
      * Testing variant of SizeMetrics.
-     * Stores project settings locally rather than through IntelliJ systems.
+     * Stores project settings locally rather than through Pycharm systems.
      */
     private static class TestingSizeMetrics extends SizeMetrics {
 

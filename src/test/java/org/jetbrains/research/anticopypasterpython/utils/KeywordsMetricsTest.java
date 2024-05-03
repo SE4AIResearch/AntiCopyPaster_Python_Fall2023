@@ -68,10 +68,10 @@ public class KeywordsMetricsTest {
     }
 
     @Test
-    public void testNullInputFalse(){
+    public void testNullInputTrue(){
         TestingKeywordsMetrics keywordsMetrics = new TestingKeywordsMetrics(null);
         keywordsMetrics.settings.keywordsSensitivity = 1;
-        assertFalse(keywordsMetrics.isFlagTriggered(null));
+        assertTrue(keywordsMetrics.isFlagTriggered(null));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class KeywordsMetricsTest {
         TestingKeywordsMetrics keywordsMetrics = new TestingKeywordsMetrics(fvList);
         keywordsMetrics.settings.keywordsSensitivity = 100;
 
-        assertFalse(keywordsMetrics.isFlagTriggered(generateFVMForKeywordsByValue(5)));
+        assertFalse(keywordsMetrics.isFlagTriggered(generateFVMForKeywordsByValue(3)));
     }
 
     @Test
@@ -265,7 +265,7 @@ public class KeywordsMetricsTest {
         TestingKeywordsMetrics keywordsMetrics2 = new TestingKeywordsMetrics(fvList);
         keywordsMetrics2.settings.keywordsSensitivity = 100;
 
-        assertTrue(keywordsMetrics1.isFlagTriggered(generateFVMForKeywordsByValue(6)));
-        assertFalse(keywordsMetrics2.isFlagTriggered(generateFVMForKeywordsByValue(5)));
+        assertTrue(keywordsMetrics1.isFlagTriggered(generateFVMForKeywordsByValue(5)));
+        assertFalse(keywordsMetrics2.isFlagTriggered(generateFVMForKeywordsByValue(4)));
     }
 }

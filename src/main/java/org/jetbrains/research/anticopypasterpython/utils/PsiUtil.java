@@ -199,6 +199,9 @@ public class PsiUtil {
             }
         }
         difference=difference-1;
+        if(difference<0){
+            difference=0;
+        }
         newText=newText.replaceAll("(\\n)(\\s){"+difference+"}","\n");
         return newText;
     }
@@ -231,6 +234,7 @@ public class PsiUtil {
 //        System.out.println("File text:\n"+fileText);
         System.out.println("text from paste:\n"+text);
         System.out.println("new text:\n"+newText);
+        System.out.println("file text:\n"+file.getText());
         System.out.println("getStartOffset Called:"+startOffset);
         return startOffset;
     }

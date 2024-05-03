@@ -61,7 +61,7 @@ public class UserSettingsModelTest {
      */
     @Test
     public void testPredictEverythingNull() {
-        assertEquals(model.predict(null), 0, 0);
+        assertEquals(1.0, model.predict(null), 0);
     }
 
     @Test

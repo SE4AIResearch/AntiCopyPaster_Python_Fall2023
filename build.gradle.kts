@@ -62,8 +62,8 @@ tasks {
         maxHeapSize = "1g"
     }
     //test task
-   // test {
-     //   useJUnitPlatform()
-   // }
+    test {
+        useJUnitPlatform()
+    }
 }
 

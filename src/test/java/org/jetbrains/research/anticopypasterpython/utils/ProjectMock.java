@@ -9,8 +9,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Class providing a mocked IntelliJ project whose only functionality is returning a provided
- * {@code ProjectSettingsState}. More lightweight than simulating a full IntelliJ project.
+ * Class providing a mocked Pycharm project whose only functionality is returning a provided
+ * {@code ProjectSettingsState}. More lightweight than simulating a full Pycharm project.
  */
 public class ProjectMock {
 

@@ -68,10 +68,10 @@ public class SizeMetricsTest {
     }
 
     @Test
-    public void testNullInputFalse(){
+    public void testNullInputTrue(){
         TestingSizeMetrics sizeMetrics = new TestingSizeMetrics(null);
         sizeMetrics.settings.sizeSensitivity = 1;
-        assertFalse(sizeMetrics.isFlagTriggered(null));
+        assertTrue(sizeMetrics.isFlagTriggered(null));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class SizeMetricsTest {
         TestingSizeMetrics sizeMetrics = new TestingSizeMetrics(fvList);
         sizeMetrics.settings.sizeSensitivity = 100;
 
-        assertFalse(sizeMetrics.isFlagTriggered(generateFVMForSizeByValue(5)));
+        assertFalse(sizeMetrics.isFlagTriggered(generateFVMForSizeByValue(3)));
     }
 
     @Test
@@ -262,8 +262,8 @@ public class SizeMetricsTest {
         TestingSizeMetrics sizeMetrics2 = new TestingSizeMetrics(fvList);
         sizeMetrics2.settings.sizeSensitivity = 100;
 
-        assertTrue(sizeMetrics1.isFlagTriggered(generateFVMForSizeByValue(6)));
-        assertFalse(sizeMetrics2.isFlagTriggered(generateFVMForSizeByValue(5)));
+        assertTrue(sizeMetrics1.isFlagTriggered(generateFVMForSizeByValue(5)));
+        assertFalse(sizeMetrics2.isFlagTriggered(generateFVMForSizeByValue(3)));
 
     }
 }

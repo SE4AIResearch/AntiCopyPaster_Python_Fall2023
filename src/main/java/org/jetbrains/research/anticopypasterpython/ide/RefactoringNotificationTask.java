@@ -145,31 +145,34 @@ public class RefactoringNotificationTask extends TimerTask {
         int endOffset = event.getDestinationMethod().getTextRange().getEndOffset();
 
         int startOffset2 = getStartOffset(event.getEditor(),event.getFile(),event.getText());
-        if(startOffset2 < 0){
-            startOffset2 = event.getText().length();
-        }
-        String fixedWhitespaceText = getFixedWhitespaceText(event.getEditor(),event.getFile(),event.getText());
-        int endOffset2 = startOffset2+fixedWhitespaceText.length();
-        TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
+//        if(startOffset2 < 0){
+//            startOffset2 = event.getText().length();
+//        }
+        if(startOffset2!=-1){
+            String fixedWhitespaceText = getFixedWhitespaceText(event.getEditor(),event.getFile(),event.getText());
+            int endOffset2 = startOffset2+fixedWhitespaceText.length();
+            TextAttributesKey betterColor = EditorColors. INJECTED_LANGUAGE_FRAGMENT;
 //      System.out.println("Event text: "+event.getText());
 //      collection.clear();
-        System.out.println("Start offset 1:"+startOffset);
-        System.out.println("Start offset 2:"+startOffset2);
-        System.out.println("End offset 1:"+endOffset);
-        System.out.println("End offset 2:"+endOffset2);
+            System.out.println("Start offset 1:"+startOffset);
+            System.out.println("Start offset 2:"+startOffset2);
+            System.out.println("End offset 1:"+endOffset);
+            System.out.println("End offset 2:"+endOffset2);
 
-        hm.addOccurrenceHighlight(event.getEditor(), startOffset2, endOffset2, betterColor, 001, collection);
-        final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
+            hm.addOccurrenceHighlight(event.getEditor(), startOffset2, endOffset2, betterColor, 001, collection);
+            final Notification notification = notificationGroup.createNotification( AntiCopyPasterPythonBundle.message(
                     "extract.method.refactoring.is.available"), NotificationType.INFORMATION);
-        notification.addAction(NotificationAction.createSimple(
-                AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.notification.action"),
-                callback));
-        notification.notify(project);
-        AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
-        ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
-        if(settings.highlightTimer != 0) {
-            scheduleRemoveHighlight(project, collection, event, settings.highlightTimer);
+            notification.addAction(NotificationAction.createSimple(
+                    AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.notification.action"),
+                    callback));
+            notification.notify(project);
+            AntiCopyPasterUsageStatistics.getInstance(project).notificationShown();
+            ProjectSettingsState settings = ProjectSettingsState.getInstance(this.p);
+            if(settings.highlightTimer != 0) {
+                scheduleRemoveHighlight(project, collection, event, settings.highlightTimer);
+            }
         }
+
     }
 
     public boolean canBeExtracted(RefactoringEvent event) {
@@ -188,13 +191,14 @@ public class RefactoringNotificationTask extends TimerTask {
 //                message = AntiCopyPasterPythonBundle.message("extract.method.to.simplify.logic.of.enclosing.method");
             }
             String fixedWhitespaceText = getFixedWhitespaceText(event.getEditor(), event.getFile(), event.getText());
-
-            int startOffset = getStartOffset(event.getEditor(), event.getFile(), event.getText());
+            System.out.println("get runnable - fixedWhitespaceText:\n"+fixedWhitespaceText);
+            int startOffset = getStartOffset(event.getEditor(), event.getFile(), fixedWhitespaceText);
             if(startOffset==-1){    //"fixes" the -1 startoffset error
-                startOffset=event.getText().length();
+                startOffset=fixedWhitespaceText.length();
             }
-            event.getEditor().getSelectionModel().setSelection(startOffset, startOffset + fixedWhitespaceText.length());
-
+            else {
+                event.getEditor().getSelectionModel().setSelection(startOffset, startOffset + fixedWhitespaceText.length());
+            }
             int result =
                     Messages.showOkCancelDialog(message,
                             AntiCopyPasterPythonBundle.message("anticopypasterpython.recommendation.dialog.name"),

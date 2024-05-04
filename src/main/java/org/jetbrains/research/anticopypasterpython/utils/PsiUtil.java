@@ -199,6 +199,9 @@ public class PsiUtil {
             }
         }
         difference=difference-1;
+        if(difference<0){
+            difference=0;
+        }
         newText=newText.replaceAll("(\\n)(\\s){"+difference+"}","\n");
         return newText;
     }
@@ -215,22 +218,34 @@ public class PsiUtil {
         String newText=getFixedWhitespaceText(editor,file,text);
 
         int idx;
+        //regex: replace comment lines (spaces before, the comment itself, spaces after, then the newline) with just a newline
+//        String fileTextNoComments=fileText.replaceAll("\s?#.*?\n","\n");
+//        String newTextNoComments=newText.replaceAll("\s?#.*?\n","\n");
+
+//        System.out.println("file text no comments:\n"+fileTextNoComments);
+//        System.out.println("new text no comments:\n"+newTextNoComments);
+//        int lenDifferenceFileText=fileText.length()-fileTextNoComments.length();
+//        int lenDifferenceNewText=newText.length()-newTextNoComments.length();
+
+//        System.out.println("lenDifferenceFileText:"+lenDifferenceFileText);
+//        System.out.println("lenDifferenceNewText:"+lenDifferenceNewText);
+
         while (true) {
             idx = fileText.indexOf(newText, fromIdx);
             fromIdx = idx + 1;
             if (idx == -1) {
                 break;
             }
-
+//            idx+=lenDifferenceNewText;
             int dist = Math.abs(idx - caretPos) + Math.abs(idx + text.length() - 1 - caretPos);
             if (dist < best_dist) {
                 best_dist = dist;
                 startOffset = idx;
             }
         }
-//        System.out.println("File text:\n"+fileText);
         System.out.println("text from paste:\n"+text);
         System.out.println("new text:\n"+newText);
+//        System.out.println("file text:\n"+file.getText());
         System.out.println("getStartOffset Called:"+startOffset);
         return startOffset;
     }

@@ -27,8 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Timer;
 
-import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.findMethodByOffset;
-import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.getCountOfCodeLines;
+import static org.jetbrains.research.anticopypasterpython.utils.PsiUtil.*;
 
 /**
  * Handles any copy-paste action and checks if the pasted code fragment could be extracted into a separate method.
@@ -96,15 +95,15 @@ public class AntiCopyPastePreProcessor implements CopyPastePreProcessor {
         {
             text1= text.substring(endIndex+2);
         }
-        System.out.println("Selected text:"+text1);
-        System.out.println("Destination method:"+destinationMethod.getText());
+        System.out.println("Selected text:\n"+text1);
+        System.out.println("Destination method:\n"+destinationMethod.getText());
+//        System.out.println("file text:\n"+file.getText());
         System.out.println("Offset:"+offset);
         //number of lines in fragment
         int linesOfCode = getCountOfCodeLines(text);
         rnt.addEvent(
                 new RefactoringEvent((PyFile) file, destinationMethod, text1, result.getDuplicatesCount(),
                         project, editor, linesOfCode));
-
 
         return text;
     }
